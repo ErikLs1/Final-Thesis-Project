@@ -1,6 +1,6 @@
 namespace App.Domain;
 
-public class SomEntity
+public class User
 {
     
 }
