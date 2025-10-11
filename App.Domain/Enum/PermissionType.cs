@@ -1,6 +1,6 @@
 namespace App.Domain.Enum;
 
-public enum RolesPermissions
+public enum PermissionType
 {
     
 }

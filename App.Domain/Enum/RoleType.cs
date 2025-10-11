@@ -1,6 +1,6 @@
 namespace App.Domain.Enum;
 
-public enum UserRoles
+public enum RoleType
 {
     Admin,
     Reviewer,
