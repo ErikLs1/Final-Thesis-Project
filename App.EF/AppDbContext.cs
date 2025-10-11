@@ -11,10 +11,10 @@ public class AppDbContext : DbContext
     public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Languages> Languages { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
-    public DbSet<Roles> Roles { get; set; } = null!;
+    public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<Permissions> Permissions { get; set; } = null!;
     public DbSet<UserLanguages> UserLanguages { get; set; } = null!;
-    public DbSet<UserRoles> UserRoles { get; set; } = null!;
+    public DbSet<UserRole> UserRoles { get; set; } = null!;
     public DbSet<RolePermissions> RolePermissions { get; set; } = null!;
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -140,7 +140,7 @@ public class AppDbContext : DbContext
         });
 
         // ROLES
-        b.Entity<Roles>(e =>
+        b.Entity<Role>(e =>
         {
             e.ToTable("roles");
 
@@ -209,7 +209,7 @@ public class AppDbContext : DbContext
         });
 
         // USER_ROLES
-        b.Entity<UserRoles>(e =>
+        b.Entity<UserRole>(e =>
         {
             e.ToTable("user_roles");
 

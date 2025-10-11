@@ -1,9 +1,10 @@
+using App.Domain.Base;
 using App.Domain.Identity;
 
 namespace App.Domain;
 
 // TODO: IMPLEMENT LATER
-public class Languages
+public class Languages : IDomainId
 {
     public Guid Id { get; set; }
 

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace App.Repository;
+namespace App.Repository.DalUow;
 
 public class BaseUow<TDbContext> : IBaseUow
     where TDbContext : DbContext
@@ -12,8 +12,8 @@ public class BaseUow<TDbContext> : IBaseUow
         UowDbContext = context;
     }
     
-    public Task<int> SaveChangesAsync()
+    public async Task<int> SaveChangesAsync()
     {
-        throw new NotImplementedException();
+        return await UowDbContext.SaveChangesAsync();
     }
 }

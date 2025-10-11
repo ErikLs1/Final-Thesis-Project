@@ -1,4 +1,4 @@
-namespace App.Repository;
+namespace App.Repository.DalUow;
 
 public interface IBaseUow
 {

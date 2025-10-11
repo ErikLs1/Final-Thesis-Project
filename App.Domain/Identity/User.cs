@@ -1,12 +1,17 @@
+using App.Domain.Base;
+using App.Domain.Base.Identity;
+
 namespace App.Domain.Identity;
 
-public class User
+public class User : BaseUser<UserRole>
 {
     public Guid Id { get; set; }
-    public string Username { get; set; } = null!;
-    public string Email { get; set; } = null!;
-    public string Password { get; set; } = null!;
+    public string FirstName { get; set; } = default!;
+    
+    [MinLength(1)]
+    [MaxLength(128)]
+    public string LastName { get; set; } = default!;
 
-    public ICollection<UserRoles> UserRoles { get; set; } = new List<UserRoles>();
     public ICollection<UserLanguages> UserLanguages { get; set; } = new List<UserLanguages>();
+    public ICollection<RefreshToken>? RefreshTokens { get; set; }
 }

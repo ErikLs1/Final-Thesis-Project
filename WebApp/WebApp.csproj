@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0"/>
@@ -19,11 +20,6 @@
       <ProjectReference Include="..\App.EF\App.EF.csproj" />
       <ProjectReference Include="..\App.Repository\App.Repository.csproj" />
       <ProjectReference Include="..\App.Service\App.Service.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="DTO\" />
-      <Folder Include="Mappers\" />
     </ItemGroup>
 
 </Project>
