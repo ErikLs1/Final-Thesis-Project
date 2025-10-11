@@ -17,6 +17,13 @@
 
     <ItemGroup>
       <ProjectReference Include="..\App.EF\App.EF.csproj" />
+      <ProjectReference Include="..\App.Repository\App.Repository.csproj" />
+      <ProjectReference Include="..\App.Service\App.Service.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="DTO\" />
+      <Folder Include="Mappers\" />
     </ItemGroup>
 
 </Project>

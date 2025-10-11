@@ -1,4 +1,6 @@
 using App.EF;
+using App.Repository;
+using App.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -33,6 +35,8 @@ else
     );
 }
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddScoped<IAppUow, AppUow>();
+builder.Services.AddScoped<IAppBll, AppBll>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<AppDbContext>();

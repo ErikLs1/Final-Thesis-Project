@@ -1,6 +1,6 @@
 namespace App.Repository.Interface;
 
-public interface ISomeRepository
+public interface IProductRepository
 {
     
 }
