@@ -1,5 +1,5 @@
+using App.Domain.Identity;
 using App.EF;
-using App.Repository;
 using App.Repository.DalUow;
 using App.Service;
 using App.Service.BllUow;
@@ -40,9 +40,18 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IAppUow, AppUow>();
 builder.Services.AddScoped<IAppBll, AppBll>();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(o => o.SignIn.RequireConfirmedAccount = false)
+    .AddDefaultUI()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    //.AddEntityFrameworkStores<AppDbContext>();
+//builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
@@ -61,6 +70,7 @@ else
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -72,5 +82,34 @@ app.MapControllerRoute(
 
 app.MapRazorPages()
     .WithStaticAssets();
+
+// TODO: CHNAGE LATER. [TEST IMPL]
+using (var scope = app.Services.CreateScope())
+{
+    var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+    var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+
+    var roles = new[] { "Admin", "Reviewer", "Translator" };
+    foreach (var r in roles)
+        if (!await roleMgr.RoleExistsAsync(r))
+            await roleMgr.CreateAsync(new IdentityRole<Guid>(r));
+
+    async Task EnsureUserAsync(string email, string role)
+    {
+        var user = await userMgr.FindByEmailAsync(email);
+        if (user == null)
+        {
+            user = new AppUser { UserName = email, Email = email, EmailConfirmed = true };
+            await userMgr.CreateAsync(user, "Passw0rd!");
+        }
+
+        if (!await userMgr.IsInRoleAsync(user, role))
+            await userMgr.AddToRoleAsync(user, role);
+    }
+
+    await EnsureUserAsync("admin@mail.com", "Admin");
+    await EnsureUserAsync("reviewer@mail.com", "Reviewer");
+    await EnsureUserAsync("translator@mail.com", "Translator");
+}
 
 app.Run();

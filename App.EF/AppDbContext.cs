@@ -1,21 +1,18 @@
 using App.Domain;
 using App.Domain.Common;
 using App.Domain.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.EF;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Languages> Languages { get; set; } = null!;
-    public DbSet<User> Users { get; set; } = null!;
-    public DbSet<Role> Roles { get; set; } = null!;
-    public DbSet<Permissions> Permissions { get; set; } = null!;
     public DbSet<UserLanguages> UserLanguages { get; set; } = null!;
-    public DbSet<UserRole> UserRoles { get; set; } = null!;
-    public DbSet<RolePermissions> RolePermissions { get; set; } = null!;
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
@@ -116,79 +113,6 @@ public class AppDbContext : DbContext
                 .ValueGeneratedOnAdd();
         });
 
-        // USER
-        b.Entity<User>(e =>
-        {
-            e.ToTable("user");
-
-            e.Property(p => p.Id)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .ValueGeneratedOnAdd();
-
-            e.Property(p => p.Username)
-                .HasMaxLength(255)
-                .IsRequired();
-            
-            e.Property(p => p.Email)
-                .HasMaxLength(300)
-                .IsRequired();
-            
-            e.Property(p => p.Password)
-                .HasMaxLength(512)
-                .IsRequired();
-
-            e.HasIndex(p => p.Username)
-                .IsUnique();
-            
-            e.HasIndex(p => p.Email)
-                .IsUnique();
-        });
-
-        // ROLES
-        b.Entity<Role>(e =>
-        {
-            e.ToTable("roles");
-
-            e.Property(p => p.Id)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .ValueGeneratedOnAdd();
-
-            e.Property(p => p.Name)
-                .HasConversion<string>()
-                .HasMaxLength(200)
-                .HasColumnType("varchar(200)")
-                .IsRequired();
-
-            e.Property(p => p.Description)
-                .HasMaxLength(1024);
-
-            e.HasIndex(p => p.Name)
-                .IsUnique();
-
-        });
-
-        // PERMISSIONS
-        b.Entity<Permissions>(e =>
-        {
-            e.ToTable("permissions");
-
-            e.Property(p => p.Id)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .ValueGeneratedOnAdd();
-            
-            e.Property(p => p.Name)
-                .HasConversion<string>()
-                .HasMaxLength(200)
-                .HasColumnType("varchar(200)")
-                .IsRequired();
-
-            e.Property(p => p.Description)
-                .HasMaxLength(1024);
-
-            e.HasIndex(p => p.Name)
-                .IsUnique();
-        });
-
         // USER_LANGUAGES
         b.Entity<UserLanguages>(e =>
         {
@@ -212,58 +136,5 @@ public class AppDbContext : DbContext
                 .HasForeignKey(r => r.LanguageId)
                 .OnDelete(DeleteBehavior.Restrict);
         });
-
-        // USER_ROLES
-        b.Entity<UserRole>(e =>
-        {
-            e.ToTable("user_roles");
-
-            e.HasIndex(p => new { p.UserId, p.RoleId }).IsUnique();
-            e.HasIndex(p => p.UserId);
-            e.HasIndex(p => p.RoleId);
-            
-            e.Property(p => p.Id)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .ValueGeneratedOnAdd();
-
-            e.HasOne(p => p.User)
-                .WithMany(u => u.UserRoles)
-                .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            e.HasOne(p => p.Role)
-                .WithMany(u => u.UserRoles)
-                .HasForeignKey(r => r.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-
-        // ROLE_PERMISSIONS
-        b.Entity<RolePermissions>(e =>
-        {
-            e.ToTable("role_permissions");
-
-            e.Property(p => p.Id)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .ValueGeneratedOnAdd();
-            
-            e.HasIndex(p => new { p.RoleId, p.PermissionId }).IsUnique();
-            e.HasIndex(p => p.RoleId);
-            e.HasIndex(p => p.PermissionId);
-            
-            e.Property(p => p.Id)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .ValueGeneratedOnAdd();
-
-            e.HasOne(p => p.Role)
-                .WithMany(u => u.RolePermissions)
-                .HasForeignKey(r => r.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            e.HasOne(p => p.Permission)
-                .WithMany(u => u.RolePermissions)
-                .HasForeignKey(r => r.PermissionId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-
     }
 }

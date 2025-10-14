@@ -2,7 +2,6 @@ using App.Domain.Identity;
 
 namespace App.Domain;
 
-// TODO: IMPLEMENT LATER
 public class Languages
 {
     public Guid Id { get; set; }
