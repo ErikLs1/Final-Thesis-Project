@@ -1,10 +1,8 @@
-using App.Domain.Base;
-using App.Domain.Base.Identity;
 using App.Domain.Enum;
 
 namespace App.Domain.Identity;
 
-public class Role : BaseRole<UserRole>
+public class Role
 {
     public Guid Id { get; set; }
     public RoleType Name { get; set; }

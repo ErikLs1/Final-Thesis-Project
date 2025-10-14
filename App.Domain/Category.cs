@@ -1,8 +1,6 @@
-using App.Domain.Base;
-
 namespace App.Domain;
 
-public class Category : IDomainId
+public class Category
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;

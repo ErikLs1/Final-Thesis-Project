@@ -104,7 +104,7 @@ public class BaseRepository<TDomainEntity, TKey> : IBaseRepository<TDomainEntity
             if (ShouldUseUserId(userId) && !((IDomainUserId<TKey>)dbEntity).UserId.Equals(userId)) return null;
         }
         
-        return RepositoryDbSet.Update(domainEntity).Entity!;
+        return RepositoryDbSet.Update(entity).Entity!;
     }
 
     public void Remove(TDomainEntity entity, TKey? userId = default)

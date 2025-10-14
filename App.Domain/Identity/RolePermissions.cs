@@ -1,9 +1,7 @@
-using App.Domain.Base;
-
 namespace App.Domain.Identity;
 
 // TODO: Maybe do not need for demo
-public class RolePermissions : IDomainId
+public class RolePermissions
 {
     public Guid Id { get; set; }
     public Guid RoleId { get; set; }
