@@ -1,13 +1,12 @@
 using App.Domain;
 using App.EF;
-using App.Repository.DalUow;
 using App.Repository.Interface;
 
 namespace App.Repository.Impl;
 
-public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
+public class CategoryRepository : ICategoryRepository
 {
-    public CategoryRepository(AppDbContext repositoryDbContext) : base(repositoryDbContext)
+    public CategoryRepository(AppDbContext repositoryDbContext)
     {
     }
 
