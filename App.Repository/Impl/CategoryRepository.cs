@@ -6,12 +6,15 @@ namespace App.Repository.Impl;
 
 public class CategoryRepository : ICategoryRepository
 {
+    private readonly AppDbContext _db;
+    
     public CategoryRepository(AppDbContext repositoryDbContext)
     {
+        _db = repositoryDbContext;
     }
 
-    public Task AddCategory(Category entity)
+    public async Task AddCategory(Category entity)
     {
-        throw new NotImplementedException();
+        await _db.Categories.AddAsync(entity);
     }
 }

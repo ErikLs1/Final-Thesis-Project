@@ -1,4 +1,4 @@
-using WebApp.DTO.Category;
+using App.Service.Dto;
 
 namespace WebApp.Mappers.Category;
 

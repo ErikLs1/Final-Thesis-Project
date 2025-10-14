@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace App.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreat : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,25 +49,6 @@ namespace App.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "products",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false),
-                    Price = table.Column<double>(type: "double precision", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_products", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "roles",
                 columns: table => new
                 {
@@ -92,6 +73,32 @@ namespace App.EF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_user", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "products",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
+                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false),
+                    Price = table.Column<double>(type: "double precision", nullable: false),
+                    Quantity = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_products_category_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -182,6 +189,11 @@ namespace App.EF.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_products_CategoryId",
+                table: "products",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_role_permissions_PermissionId",
                 table: "role_permissions",
                 column: "PermissionId");
@@ -252,9 +264,6 @@ namespace App.EF.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "category");
-
-            migrationBuilder.DropTable(
                 name: "products");
 
             migrationBuilder.DropTable(
@@ -265,6 +274,9 @@ namespace App.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "user_roles");
+
+            migrationBuilder.DropTable(
+                name: "category");
 
             migrationBuilder.DropTable(
                 name: "permissions");

@@ -98,6 +98,11 @@ public class AppDbContext : DbContext
             
             e.Property(p => p.UpdatedBy)
                 .HasMaxLength(100);
+            
+            e.HasOne(p => p.Category)
+                .WithMany(u => u.Products)
+                .HasForeignKey(r => r.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         // LANGUAGES

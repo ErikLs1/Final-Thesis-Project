@@ -1,4 +1,4 @@
-namespace WebApp.DTO.Category;
+namespace App.Service.Dto;
 
 public class CategoryCreateDto
 {

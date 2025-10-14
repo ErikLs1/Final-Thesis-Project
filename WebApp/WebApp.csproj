@@ -22,4 +22,8 @@
       <ProjectReference Include="..\App.Service\App.Service.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="DTO\Category\" />
+    </ItemGroup>
+
 </Project>

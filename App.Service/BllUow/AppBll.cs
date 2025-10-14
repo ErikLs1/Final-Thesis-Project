@@ -1,5 +1,6 @@
 using App.Repository;
 using App.Repository.DalUow;
+using App.Service.BllUow;
 using App.Service.Impl;
 using App.Service.Interface;
 
@@ -15,4 +16,9 @@ public class AppBll : BaseBll<IAppUow>, IAppBll
 
     public IProductService ProductService =>
         _productService ??= new ProductService(BllUow);
+    
+    public ICategoryService? _categoryService;
+
+    public ICategoryService CategoryService =>
+        _categoryService ??= new CategoryService(BllUow);
 }

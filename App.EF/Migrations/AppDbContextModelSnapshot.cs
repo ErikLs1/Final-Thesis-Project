@@ -72,6 +72,31 @@ namespace App.EF.Migrations
                     b.ToTable("permissions", (string)null);
                 });
 
+            modelBuilder.Entity("App.Domain.Identity.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("roles", (string)null);
+                });
+
             modelBuilder.Entity("App.Domain.Identity.RolePermissions", b =>
                 {
                     b.Property<Guid>("Id")
@@ -95,31 +120,6 @@ namespace App.EF.Migrations
                         .IsUnique();
 
                     b.ToTable("role_permissions", (string)null);
-                });
-
-            modelBuilder.Entity("App.Domain.Identity.Roles", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1024)
-                        .HasColumnType("character varying(1024)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("varchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("roles", (string)null);
                 });
 
             modelBuilder.Entity("App.Domain.Identity.User", b =>
@@ -180,7 +180,7 @@ namespace App.EF.Migrations
                     b.ToTable("user_languages", (string)null);
                 });
 
-            modelBuilder.Entity("App.Domain.Identity.UserRoles", b =>
+            modelBuilder.Entity("App.Domain.Identity.UserRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -224,6 +224,9 @@ namespace App.EF.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -259,6 +262,8 @@ namespace App.EF.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("products", (string)null);
                 });
 
@@ -270,7 +275,7 @@ namespace App.EF.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("App.Domain.Identity.Roles", "Role")
+                    b.HasOne("App.Domain.Identity.Role", "Role")
                         .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -300,9 +305,9 @@ namespace App.EF.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("App.Domain.Identity.UserRoles", b =>
+            modelBuilder.Entity("App.Domain.Identity.UserRole", b =>
                 {
-                    b.HasOne("App.Domain.Identity.Roles", "Role")
+                    b.HasOne("App.Domain.Identity.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -319,12 +324,28 @@ namespace App.EF.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("App.Domain.Product", b =>
+                {
+                    b.HasOne("App.Domain.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("App.Domain.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("App.Domain.Identity.Permissions", b =>
                 {
                     b.Navigation("RolePermissions");
                 });
 
-            modelBuilder.Entity("App.Domain.Identity.Roles", b =>
+            modelBuilder.Entity("App.Domain.Identity.Role", b =>
                 {
                     b.Navigation("RolePermissions");
 
