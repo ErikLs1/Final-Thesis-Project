@@ -44,5 +44,59 @@ namespace App.Data.Resources.Navigation {
                 resourceCulture = value;
             }
         }
+        
+        internal static string Navigation_Sidebar_Category_Headphones_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Sidebar_Category_Headphones_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Sidebar_Category_Keyboard_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Sidebar_Category_Keyboard_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Sidebar_Category_Laptop_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Sidebar_Category_Laptop_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Sidebar_Category_Monitor_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Sidebar_Category_Monitor_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Sidebar_Category_Mouse_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Sidebar_Category_Mouse_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Sidebar_Dashboard_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Sidebar_Dashboard_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Sidebar_Home_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Sidebar_Home_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Sidebar_Order_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Sidebar_Order_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Sidebar_Product_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Sidebar_Product_Text", resourceCulture);
+            }
+        }
     }
 }

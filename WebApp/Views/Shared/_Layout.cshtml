@@ -1,6 +1,10 @@
-﻿@using App.Domain.Enum
+﻿@using System.Globalization
+@using App.Data
+@using App.Data.Resources
+@inject Microsoft.Extensions.Localization.IStringLocalizer<Navigation> Nav
+@using App.Domain.Enum
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@CultureInfo.CurrentUICulture.Name">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -22,7 +26,7 @@
 
             <div class="collapse navbar-collapse" id="topNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">@Nav["Navigation_Sidebar_Home_Text"]</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Catalog" asp-action="Index">Products</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Pages" asp-action="About">About us</a></li>
                     <li class="nav-item"><a class="nav-link" asp-controller="Pages" asp-action="Contact">Contact</a></li>
@@ -32,11 +36,8 @@
                     <input class="form-control me-2" type="search" name="q" placeholder="Search…" />
                     <button class="btn btn-outline-primary" type="submit">Search</button>
                 </form>
-
-                <ul class="navbar-nav me-3">
-                    <li class="nav-item"><a class="nav-link" asp-controller="Cart" asp-action="Index"><i class="bi bi-bag"></i> Cart</a></li>
-                </ul>
-
+                
+                <partial name="_LanguageSelection" />
                 <partial name="_LoginPartial" />
             </div>
         </div>

@@ -18,4 +18,31 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Navigation_Sidebar_Category_Headphones_Text" xml:space="preserve">
+        <value>Kõrvaklapid</value>
+    </data>
+    <data name="Navigation_Sidebar_Category_Keyboard_Text" xml:space="preserve">
+        <value>Klaviatuurid</value>
+    </data>
+    <data name="Navigation_Sidebar_Category_Laptop_Text" xml:space="preserve">
+        <value>Sülearvutid</value>
+    </data>
+    <data name="Navigation_Sidebar_Category_Monitor_Text" xml:space="preserve">
+        <value>Monitorid</value>
+    </data>
+    <data name="Navigation_Sidebar_Category_Mouse_Text" xml:space="preserve">
+        <value>Hiired</value>
+    </data>
+    <data name="Navigation_Sidebar_Dashboard_Text" xml:space="preserve">
+        <value>Töölaud</value>
+    </data>
+    <data name="Navigation_Sidebar_Home_Text" xml:space="preserve">
+        <value>Avaleht</value>
+    </data>
+    <data name="Navigation_Sidebar_Order_Text" xml:space="preserve">
+        <value>Tellimused</value>
+    </data>
+    <data name="Navigation_Sidebar_Product_Text" xml:space="preserve">
+        <value>Tooted</value>
+    </data>
 </root>

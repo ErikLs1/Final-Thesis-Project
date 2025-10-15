@@ -1,0 +1,36 @@
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+@using System.Globalization
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{
+    var options = LocOptions.Value;
+    var cultures = options.SupportedUICultures ?? new List<CultureInfo>();
+    var current = CultureInfo.CurrentUICulture;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+}
+
+<ul class="navbar-nav">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button"
+           data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-translate"></i> @current.NativeName
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
+            @foreach (var c in cultures)
+            {
+                <li>
+                    <form class="d-inline" method="post" asp-controller="Localization" asp-action="SetLanguage">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="culture" value="@c.Name" />
+                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                        <button type="submit"
+                                class="dropdown-item @(current.Name.Equals(c.Name, StringComparison.OrdinalIgnoreCase) ? "active" : "")">
+                            @c.NativeName
+                        </button>
+                    </form>
+                </li>
+            }
+        </ul>
+    </li>
+</ul>
