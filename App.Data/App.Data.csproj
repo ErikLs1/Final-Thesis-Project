@@ -7,7 +7,239 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Resources\" />
+      <Folder Include="Resources\Common\" />
+      <Folder Include="Resources\Validation\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\Errors\Errors.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Errors\Errors.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Errors.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Errors\Errors.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Errors.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Errors\Errors.ru-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Errors.ru-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Errors\Errors.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Errors.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Navigation\Navigation.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Navigation.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Navigation\Navigation.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Navigation.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Navigation\Navigation.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Navigation.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Navigation\Navigation.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Navigation.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Navigation\Navigation.ru-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Navigation.ru-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Button\Button.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Button.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Button\Button.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Button.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Button\Button.ru-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Button.ru-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Button\Button.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Button.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Button\Button.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Button.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Heading\Heading.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Heading.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Heading\Heading.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Heading.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Heading\Heading.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Heading.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Heading\Heading.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Heading.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Heading\Heading.ru-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Heading.ru-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Label\Label.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Label.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Label\Label.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Label.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Label\Label.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Label.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Label\Label.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Label.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Resources\Label\Label.ru-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Label.ru-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Resources\Errors\Errors.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Errors.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Errors\Errors.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Errors.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Errors\Errors.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Errors.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Errors\Errors.ru-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Errors.ru-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Errors\Errors.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Errors.et-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Navigation\Navigation.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Navigation.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Navigation\Navigation.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Navigation.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Navigation\Navigation.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Navigation.et-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Navigation\Navigation.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Navigation.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Navigation\Navigation.ru-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Navigation.ru-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Button\Button.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Button.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Button\Button.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Button.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Button\Button.ru-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Button.ru-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Button\Button.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Button.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Button\Button.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Button.et-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Heading\Heading.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Heading.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Heading\Heading.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Heading.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Heading\Heading.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Heading.et-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Heading\Heading.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Heading.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Heading\Heading.ru-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Heading.ru-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Label\Label.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Label.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Label\Label.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Label.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Label\Label.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Label.et-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Label\Label.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Label.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Resources\Label\Label.ru-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Label.ru-EE.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>
