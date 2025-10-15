@@ -42,6 +42,7 @@ else
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IAppUow, AppUow>();
 builder.Services.AddScoped<IAppBll, AppBll>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(o => o.SignIn.RequireConfirmedAccount = false)
     .AddDefaultUI()

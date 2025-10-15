@@ -1,0 +1,112 @@
+@using App.Domain.Enum
+@inject IHttpContextAccessor Http
+
+@functions{
+    bool IsActive(string controller, string? action = null)
+    {
+        var route = Http.HttpContext?.GetRouteData().Values;
+        var c = (route?["controller"]?.ToString() ?? "").ToLowerInvariant();
+        var a = (route?["action"]?.ToString() ?? "").ToLowerInvariant();
+        return c == controller.ToLowerInvariant() && (action == null || a == action.ToLowerInvariant());
+    }
+}
+
+<div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-bg-dark sticky-top"
+     style="width:100%; height: calc(100vh - 56px); top: 56px;">
+    <a asp-controller="Home" asp-action="Index" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <i class="bi bi-bag me-2" style="font-size:1.8rem;"></i>
+        <span class="fs-4">Shop</span>
+    </a>
+
+    <hr class="border-secondary" />
+
+    <!-- Main navigation -->
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+            <a class="nav-link @(IsActive("Home","Index") ? "active" : "text-white")" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-house-door me-2"></i> Home
+            </a>
+        </li>
+        <li>
+            <a class="nav-link @(IsActive("Catalog","Index") ? "active" : "text-white")" asp-controller="Catalog" asp-action="Index">
+                <i class="bi bi-speedometer2 me-2"></i> Dashboard
+            </a>
+        </li>
+        <li>
+            <a class="nav-link @(IsActive("Orders") ? "active" : "text-white")" asp-controller="Orders" asp-action="Index">
+                <i class="bi bi-table me-2"></i> Orders
+            </a>
+        </li>
+        <li>
+            <a class="nav-link @(IsActive("Catalog","Products") ? "active" : "text-white")" asp-controller="Catalog" asp-action="Products">
+                <i class="bi bi-grid me-2"></i> Products
+            </a>
+        </li>
+        <li>
+            <a class="nav-link @(IsActive("Customers") ? "active" : "text-white")" asp-controller="Customers" asp-action="Index">
+                <i class="bi bi-people me-2"></i> Customers
+            </a>
+        </li>
+    </ul>
+
+    <hr class="border-secondary" />
+
+    <!-- Categories (example) -->
+    <div class="text-uppercase text-secondary small mb-2">Categories</div>
+    <ul class="nav nav-pills flex-column mb-3">
+        <li><a class="nav-link text-white" asp-controller="Catalog" asp-action="Category" asp-route-slug="monitors"><i class="bi bi-display me-2"></i> Monitors</a></li>
+        <li><a class="nav-link text-white" asp-controller="Catalog" asp-action="Category" asp-route-slug="laptops"><i class="bi bi-laptop me-2"></i> Laptops</a></li>
+        <li><a class="nav-link text-white" asp-controller="Catalog" asp-action="Category" asp-route-slug="keyboards"><i class="bi bi-keyboard me-2"></i> Keyboards</a></li>
+        <li><a class="nav-link text-white" asp-controller="Catalog" asp-action="Category" asp-route-slug="mice"><i class="bi bi-mouse me-2"></i> Mice</a></li>
+        <li><a class="nav-link text-white" asp-controller="Catalog" asp-action="Category" asp-route-slug="audio"><i class="bi bi-headphones me-2"></i> Headphones</a></li>
+    </ul>
+
+    <!-- Role-specific area -->
+    @if (User.IsInRole(RoleType.Admin.ToString()) || User.IsInRole("Admin"))
+    {
+        <div class="text-uppercase text-secondary small mb-2">Admin</div>
+        <ul class="nav nav-pills flex-column mb-3">
+            <li><a class="nav-link text-white" asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer me-2"></i> Dashboard</a></li>
+            <li><a class="nav-link text-white" asp-area="Admin" asp-controller="Products" asp-action="Index"><i class="bi bi-box-seam me-2"></i> Manage Products</a></li>
+            <li><a class="nav-link text-white" asp-area="Admin" asp-controller="Categories" asp-action="Index"><i class="bi bi-tags me-2"></i> Manage Categories</a></li>
+        </ul>
+    }
+    else if (User.IsInRole(RoleType.Reviewer.ToString()))
+    {
+        <div class="text-uppercase text-secondary small mb-2">Reviewer</div>
+        <ul class="nav nav-pills flex-column mb-3">
+            <li><a class="nav-link text-white" asp-controller="Reviews" asp-action="Queue"><i class="bi bi-inboxes me-2"></i> Review Queue</a></li>
+        </ul>
+    }
+    else if (User.IsInRole(RoleType.Translator.ToString()))
+    {
+        <div class="text-uppercase text-secondary small mb-2">Translator</div>
+        <ul class="nav nav-pills flex-column mb-3">
+            <li><a class="nav-link text-white" asp-controller="Localization" asp-action="Index"><i class="bi bi-translate me-2"></i> Translate</a></li>
+        </ul>
+    }
+
+    <div class="dropdown mt-auto">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://avatars.githubusercontent.com/u/1?v=4" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong>@(User.Identity?.IsAuthenticated == true ? User.Identity?.Name : "Guest")</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a></li>
+            <li><a class="dropdown-item" asp-controller="Pages" asp-action="Settings">Settings</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <form method="post" asp-area="Identity" asp-page="/Account/Logout">
+                        <button type="submit" class="dropdown-item">Sign out</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Sign in</a>
+                }
+            </li>
+        </ul>
+    </div>
+</div>
