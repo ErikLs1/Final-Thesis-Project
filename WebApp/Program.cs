@@ -1,9 +1,12 @@
+using System.Globalization;
 using App.Domain.Identity;
 using App.EF;
 using App.Repository.DalUow;
 using App.Service;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -53,6 +56,39 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+// https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization/make-content-localizable?view=aspnetcore-9.0
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services
+    .AddMvc()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization();
+
+var defaultCulture = builder.Configuration["DefaultCulture"] ?? "en"; // default fallback culture if nothing found
+var supportedCultureNames = builder.Configuration.GetSection("SupportedCultures").Get<string[]>()!;
+var supportedCultures = supportedCultureNames.Select(x => new CultureInfo(x)).ToList(); // culture switching support
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    // if nothing is found, use default culture
+    options.DefaultRequestCulture = new RequestCulture(defaultCulture);
+    // datetime and currency support
+    options.SupportedCultures = supportedCultures; // Maybe delete since not relate to ui
+    // UI translated strings
+    options.SupportedUICultures = supportedCultures;
+    // Fallbacks
+    options.FallBackToParentCultures = true; // Maybe delete since not related to ui
+    options.FallBackToParentUICultures = true;
+    
+
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
+    { 
+        // Order of evaluation
+        // add support for ?culture=ru-RU
+        new QueryStringRequestCultureProvider(),
+        new CookieRequestCultureProvider()
+    };
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -66,6 +102,8 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseRequestLocalization();
 
 app.UseHttpsRedirection();
 app.UseRouting();
