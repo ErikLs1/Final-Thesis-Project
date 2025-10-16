@@ -114,12 +114,22 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
         // LANGUAGES
         b.Entity<Languages>(e =>
         {
-            // TODO: IMPLEMENT LATER
             e.ToTable("languages");
 
+            e.HasIndex(p => p.LanguageTag).IsUnique();
+                
             e.Property(p => p.Id)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .ValueGeneratedOnAdd();
+            
+            e.Property(p => p.LanguageTag)
+                .IsRequired();
+            
+            e.Property(p => p.LanguageName)
+                .IsRequired();
+            
+            e.Property(p => p.IsDefaultLanguage)
+                .IsRequired();
         });
 
         // USER_LANGUAGES
@@ -143,6 +153,158 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             e.HasOne(p => p.Language)
                 .WithMany(u => u.UserLanguages)
                 .HasForeignKey(r => r.LanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+        
+        // UI_RESOURCE_KEYS
+        b.Entity<UIResourceKeys>(e =>
+        {
+            e.ToTable("ui_resource_keys");
+            
+            e.HasIndex(p => p.ResourceKey).IsUnique();
+            
+            e.Property(p => p.Id)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .ValueGeneratedOnAdd();
+
+            e.Property(p => p.ResourceKey)
+                .IsRequired();
+            
+            e.Property(p => p.Content)
+                .IsRequired();
+        });
+        
+        
+        // UI_TRANSLATION_VERSIONS
+        b.Entity<UITranslationVersions>(e =>
+        {
+            e.ToTable("ui_translation_versions");
+
+            e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId });
+            
+            e.Property(p => p.Id)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .ValueGeneratedOnAdd();
+
+            e.Property(p => p.CreatedAt)
+                .IsRequired();
+            
+            e.Property(p => p.CreatedBy)
+                .IsRequired();
+
+            e.HasOne(p => p.UIResourceKeys)
+                .WithMany(p => p.UITranslationVersions)
+                .HasForeignKey(p => p.ResourceKeyId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            e.HasOne(p => p.Language)
+                .WithMany(p => p.UITranslationVersions)
+                .HasForeignKey(p => p.LanguageId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+        
+        // UI_TRANSLATIONS
+        b.Entity<UITranslations>(e =>
+        {
+            e.ToTable("ui_translations");
+            
+            e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId }).IsUnique();
+            
+            e.Property(p => p.Id)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .ValueGeneratedOnAdd();
+            
+            e.Property(p => p.PublishedAt)
+                .IsRequired();
+            
+            e.Property(p => p.PublishedBy)
+                .IsRequired();
+            
+            e.HasOne(p => p.Language)
+                .WithOne(l => l.UITranslations)
+                .HasForeignKey<UITranslations>(p => p.LanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            e.HasOne(p => p.UIResourceKeys)
+                .WithOne(rk => rk.UITranslations)
+                .HasForeignKey<UITranslations>(p => p.ResourceKeyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            e.HasOne(p => p.UITranslationVersions)
+                .WithMany()
+                .HasForeignKey(p => new { p.LanguageId, p.ResourceKeyId, p.TranslationVersionId })
+                .HasPrincipalKey(v => new { v.LanguageId, v.ResourceKeyId, v.Id })
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+        
+        // UI_TRANSLATION_AUDIT_LOG
+        b.Entity<UITranslationAuditLog>(e =>
+        {
+            e.ToTable("ui_translation_audit_log");
+            
+            e.Property(p => p.Id)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .ValueGeneratedOnAdd();
+            
+            e.Property(p => p.ActivatedAt)
+                .IsRequired();
+            
+            e.Property(p => p.ActivatedBy)
+                .IsRequired();
+            
+            e.Property(p => p.DeactivatedAt)
+                .IsRequired();
+            
+            e.Property(p => p.DeactivatedBy)
+                .IsRequired();
+
+            e.HasOne(p => p.Language)
+                .WithMany(l => l.UITranslationAuditLogs)
+                .HasForeignKey(p => p.LanguageId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            e.HasOne(p => p.UIResourceKeys)
+                .WithMany(rk => rk.UITranslationAuditLogs)
+                .HasForeignKey(p => p.ResourceKeyId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            e.HasOne(p => p.UITranslationVersions)
+                .WithMany(v => v.UITranslationAuditLogs)
+                .HasForeignKey(p => p.TranslationVersionId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+        
+        // UI_EXPERIMENTS
+        b.Entity<UIExperiment>(e =>
+        {
+            e.ToTable("ui_experiments");
+            
+            e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId }).IsUnique();
+            
+            e.Property(p => p.Id)
+                .HasDefaultValueSql("gen_random_uuid()")
+                .ValueGeneratedOnAdd();
+            
+            e.Property(p => p.ExperimentName)
+                .IsRequired();
+            
+            e.Property(p => p.Option)
+                .IsRequired();
+            
+            e.HasOne(p => p.Language)
+                .WithMany(l => l.UIExperiments)
+                .HasForeignKey(p => p.LanguageId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            e.HasOne(p => p.UIResourceKeys)
+                .WithMany(rk => rk.UIExperiments)
+                .HasForeignKey(p => p.ResourceKeyId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            e.HasOne(p => p.UITranslationVersions)
+                .WithMany()
+                .HasForeignKey(p => new { p.LanguageId, p.ResourceKeyId, p.TranslationVersionId })
+                .HasPrincipalKey(v => new { v.LanguageId, v.ResourceKeyId, v.Id })
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }
