@@ -45,15 +45,15 @@ namespace App.Data.Resources.Heading {
             }
         }
         
-        internal static string Heading_Products_Text {
+        internal static string Heading_Products {
             get {
-                return ResourceManager.GetString("Heading_Products_Text", resourceCulture);
+                return ResourceManager.GetString("Heading_Products", resourceCulture);
             }
         }
         
-        internal static string Heading_Categories_Text {
+        internal static string Heading_Categories {
             get {
-                return ResourceManager.GetString("Heading_Categories_Text", resourceCulture);
+                return ResourceManager.GetString("Heading_Categories", resourceCulture);
             }
         }
         

@@ -45,15 +45,15 @@ namespace App.Data.Resources.Button {
             }
         }
         
-        internal static string Button_Product_Add_To_Cart_Text {
+        internal static string Button_Product_Add_To_Cart {
             get {
-                return ResourceManager.GetString("Button_Product_Add_To_Cart_Text", resourceCulture);
+                return ResourceManager.GetString("Button_Product_Add_To_Cart", resourceCulture);
             }
         }
         
-        internal static string Button_Product_Details_Text {
+        internal static string Button_Product_Details {
             get {
-                return ResourceManager.GetString("Button_Product_Details_Text", resourceCulture);
+                return ResourceManager.GetString("Button_Product_Details", resourceCulture);
             }
         }
     }

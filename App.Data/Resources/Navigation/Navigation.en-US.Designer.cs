@@ -45,87 +45,87 @@ namespace App.Data.Resources.Navigation {
             }
         }
         
-        internal static string Navigation_About_Us_Text {
+        internal static string Navigation_About_Us {
             get {
-                return ResourceManager.GetString("Navigation_About_Us_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_About_Us", resourceCulture);
             }
         }
         
-        internal static string Navigation_Category_Headphones_Text {
+        internal static string Navigation_Category_Headphones {
             get {
-                return ResourceManager.GetString("Navigation_Category_Headphones_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Category_Headphones", resourceCulture);
             }
         }
         
-        internal static string Navigation_Category_Laptop_Text {
+        internal static string Navigation_Category_Laptop {
             get {
-                return ResourceManager.GetString("Navigation_Category_Laptop_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Category_Laptop", resourceCulture);
             }
         }
         
-        internal static string Navigation_Category_Keyboard_Text {
+        internal static string Navigation_Category_Keyboard {
             get {
-                return ResourceManager.GetString("Navigation_Category_Keyboard_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Category_Keyboard", resourceCulture);
             }
         }
         
-        internal static string Navigation_Category_Monitor_Text {
+        internal static string Navigation_Category_Monitor {
             get {
-                return ResourceManager.GetString("Navigation_Category_Monitor_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Category_Monitor", resourceCulture);
             }
         }
         
-        internal static string Navigation_Category_Mouse_Text {
+        internal static string Navigation_Category_Mouse {
             get {
-                return ResourceManager.GetString("Navigation_Category_Mouse_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Category_Mouse", resourceCulture);
             }
         }
         
-        internal static string Navigation_Dashboard_Text {
+        internal static string Navigation_Dashboard {
             get {
-                return ResourceManager.GetString("Navigation_Dashboard_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Dashboard", resourceCulture);
             }
         }
         
-        internal static string Navigation_Home_Text {
+        internal static string Navigation_Home {
             get {
-                return ResourceManager.GetString("Navigation_Home_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Home", resourceCulture);
             }
         }
         
-        internal static string Navigation_Order_Text {
+        internal static string Navigation_Order {
             get {
-                return ResourceManager.GetString("Navigation_Order_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Order", resourceCulture);
             }
         }
         
-        internal static string Navigation_Product_Text {
+        internal static string Navigation_Product {
             get {
-                return ResourceManager.GetString("Navigation_Product_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Product", resourceCulture);
             }
         }
         
-        internal static string Navigation_Contact_Text {
+        internal static string Navigation_Contact {
             get {
-                return ResourceManager.GetString("Navigation_Contact_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Contact", resourceCulture);
             }
         }
         
-        internal static string Navigation_Login_Text {
+        internal static string Navigation_Login {
             get {
-                return ResourceManager.GetString("Navigation_Login_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Login", resourceCulture);
             }
         }
         
-        internal static string Navigation_Logout_Text {
+        internal static string Navigation_Logout {
             get {
-                return ResourceManager.GetString("Navigation_Logout_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Logout", resourceCulture);
             }
         }
         
-        internal static string Navigation_Register_Text {
+        internal static string Navigation_Register {
             get {
-                return ResourceManager.GetString("Navigation_Register_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Register", resourceCulture);
             }
         }
     }
