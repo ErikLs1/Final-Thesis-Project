@@ -1,6 +1,8 @@
 using App.Domain;
+using App.Domain.AB;
 using App.Domain.Common;
 using App.Domain.Identity;
+using App.Domain.UITranslationEntities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +15,13 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Languages> Languages { get; set; } = null!;
     public DbSet<UserLanguages> UserLanguages { get; set; } = null!;
+    
+    // UI TRANSLATIONS
+    public DbSet<UIExperiment> UIExperiments { get; set; } = null!;
+    public DbSet<UIResourceKeys> UIResourceKeys { get; set; } = null!;
+    public DbSet<UITranslationAuditLog> UITranslation { get; set; } = null!;
+    public DbSet<UITranslations> UITranslations { get; set; } = null!;
+    public DbSet<UITranslationVersions> UITranslationVersions { get; set; } = null!;
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
