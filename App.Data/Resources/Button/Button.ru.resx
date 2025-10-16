@@ -18,4 +18,10 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Button_Product_Add_To_Cart_Text" xml:space="preserve">
+        <value>Добавить в корзину</value>
+    </data>
+    <data name="Button_Product_Details_Text" xml:space="preserve">
+        <value>Подробности</value>
+    </data>
 </root>

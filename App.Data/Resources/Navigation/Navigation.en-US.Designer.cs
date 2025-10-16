@@ -45,57 +45,87 @@ namespace App.Data.Resources.Navigation {
             }
         }
         
-        internal static string Navigation_Sidebar_Category_Headphones_Text {
+        internal static string Navigation_About_Us_Text {
             get {
-                return ResourceManager.GetString("Navigation_Sidebar_Category_Headphones_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_About_Us_Text", resourceCulture);
             }
         }
         
-        internal static string Navigation_Sidebar_Category_Keyboard_Text {
+        internal static string Navigation_Category_Headphones_Text {
             get {
-                return ResourceManager.GetString("Navigation_Sidebar_Category_Keyboard_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Category_Headphones_Text", resourceCulture);
             }
         }
         
-        internal static string Navigation_Sidebar_Category_Laptop_Text {
+        internal static string Navigation_Category_Laptop_Text {
             get {
-                return ResourceManager.GetString("Navigation_Sidebar_Category_Laptop_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Category_Laptop_Text", resourceCulture);
             }
         }
         
-        internal static string Navigation_Sidebar_Category_Monitor_Text {
+        internal static string Navigation_Category_Keyboard_Text {
             get {
-                return ResourceManager.GetString("Navigation_Sidebar_Category_Monitor_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Category_Keyboard_Text", resourceCulture);
             }
         }
         
-        internal static string Navigation_Sidebar_Category_Mouse_Text {
+        internal static string Navigation_Category_Monitor_Text {
             get {
-                return ResourceManager.GetString("Navigation_Sidebar_Category_Mouse_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Category_Monitor_Text", resourceCulture);
             }
         }
         
-        internal static string Navigation_Sidebar_Dashboard_Text {
+        internal static string Navigation_Category_Mouse_Text {
             get {
-                return ResourceManager.GetString("Navigation_Sidebar_Dashboard_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Category_Mouse_Text", resourceCulture);
             }
         }
         
-        internal static string Navigation_Sidebar_Order_Text {
+        internal static string Navigation_Dashboard_Text {
             get {
-                return ResourceManager.GetString("Navigation_Sidebar_Order_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Dashboard_Text", resourceCulture);
             }
         }
         
-        internal static string Navigation_Sidebar_Home_Text {
+        internal static string Navigation_Home_Text {
             get {
-                return ResourceManager.GetString("Navigation_Sidebar_Home_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Home_Text", resourceCulture);
             }
         }
         
-        internal static string Navigation_Sidebar_Product_Text {
+        internal static string Navigation_Order_Text {
             get {
-                return ResourceManager.GetString("Navigation_Sidebar_Product_Text", resourceCulture);
+                return ResourceManager.GetString("Navigation_Order_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Product_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Product_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Contact_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Contact_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Login_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Login_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Logout_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Logout_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Register_Text {
+            get {
+                return ResourceManager.GetString("Navigation_Register_Text", resourceCulture);
             }
         }
     }

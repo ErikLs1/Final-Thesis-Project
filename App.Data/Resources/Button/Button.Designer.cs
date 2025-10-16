@@ -44,5 +44,17 @@ namespace App.Data.Resources.Button {
                 resourceCulture = value;
             }
         }
+        
+        internal static string Button_Product_Add_To_Cart_Text {
+            get {
+                return ResourceManager.GetString("Button_Product_Add_To_Cart_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Button_Product_Details_Text {
+            get {
+                return ResourceManager.GetString("Button_Product_Details_Text", resourceCulture);
+            }
+        }
     }
 }

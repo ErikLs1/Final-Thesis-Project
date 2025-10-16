@@ -44,5 +44,23 @@ namespace App.Data.Resources.Heading {
                 resourceCulture = value;
             }
         }
+        
+        internal static string Heading_Categories_Text {
+            get {
+                return ResourceManager.GetString("Heading_Categories_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Heading_Products_Text {
+            get {
+                return ResourceManager.GetString("Heading_Products_Text", resourceCulture);
+            }
+        }
+        
+        internal static string Heading_Shop {
+            get {
+                return ResourceManager.GetString("Heading_Shop", resourceCulture);
+            }
+        }
     }
 }

@@ -1,45 +1,44 @@
-﻿@{
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizerFactory Factory
+
+@{
     ViewData["Title"] = "Home Page";
+    var button = Factory.Create("Button.Button", "App.Data");
+    var heading = Factory.Create("Heading.Heading", "App.Data");
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="mb-0">Featured products</h2>
-        <a class="btn btn-outline-primary" asp-controller="Catalog" asp-action="Index">View all</a>
+        <h2 class="mb-0">@heading["Heading_Products_Text"]</h2>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
 
         <div class="col">
             <div class="card h-100 shadow-sm">
-                <span class="badge bg-success position-absolute m-2">New</span>
                 <div class="card-body">
                     <h5 class="card-title mb-1">Laptop Pro X</h5>
-                    <div class="text-muted small mb-2">Powerful 14” ultrabook with 16GB RAM</div>
                     <div class="fw-bold h5 mb-3">€1,499.00</div>
                     <div class="mb-2" aria-label="rating">★★★★★</div>
                     <p class="card-text">Perfect for creators and students who need performance in a compact body.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0 d-grid gap-2">
-                    <a class="btn btn-primary" asp-controller="Cart" asp-action="Add" asp-route-id="11111111-1111-1111-1111-111111111111">Add to cart</a>
-                    <a class="btn btn-outline-secondary" asp-controller="Catalog" asp-action="Details" asp-route-id="11111111-1111-1111-1111-111111111111">Details</a>
+                    <a class="btn btn-primary">@button["Button_Product_Add_To_Cart_Text"]</a>
+                    <a class="btn btn-outline-secondary">@button["Button_Product_Details_Text"]</a>
                 </div>
             </div>
         </div>
 
         <div class="col">
             <div class="card h-100 shadow-sm">
-                <span class="badge bg-warning text-dark position-absolute m-2">-20%</span>
                 <div class="card-body">
                     <h5 class="card-title mb-1">Wireless Headphones</h5>
-                    <div class="text-muted small mb-2">ANC • 30h battery • Bluetooth 5.3</div>
-                    <div class="fw-bold h5 mb-3">€199.00 <span class="text-muted text-decoration-line-through h6">€249.00</span></div>
+                    <div class="fw-bold h5 mb-3">€199.00</div>
                     <div class="mb-2" aria-label="rating">★★★★☆</div>
                     <p class="card-text">Immersive sound with active noise cancelling and all-day comfort.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0 d-grid gap-2">
-                    <a class="btn btn-primary" asp-controller="Cart" asp-action="Add" asp-route-id="22222222-2222-2222-2222-222222222222">Add to cart</a>
-                    <a class="btn btn-outline-secondary" asp-controller="Catalog" asp-action="Details" asp-route-id="22222222-2222-2222-2222-222222222222">Details</a>
+                    <a class="btn btn-primary">@button["Button_Product_Add_To_Cart_Text"]</a>
+                    <a class="btn btn-outline-secondary">@button["Button_Product_Details_Text"]</a>
                 </div>
             </div>
         </div>
@@ -48,14 +47,13 @@
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title mb-1">4K Monitor 27"</h5>
-                    <div class="text-muted small mb-2">IPS • 144Hz • HDR10</div>
                     <div class="fw-bold h5 mb-3">€329.00</div>
                     <div class="mb-2" aria-label="rating">★★★★☆</div>
                     <p class="card-text">Crisp visuals and smooth motion — perfect for work and play.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0 d-grid gap-2">
-                    <a class="btn btn-primary" asp-controller="Cart" asp-action="Add" asp-route-id="33333333-3333-3333-3333-333333333333">Add to cart</a>
-                    <a class="btn btn-outline-secondary" asp-controller="Catalog" asp-action="Details" asp-route-id="33333333-3333-3333-3333-333333333333">Details</a>
+                    <a class="btn btn-primary">@button["Button_Product_Add_To_Cart_Text"]</a>
+                    <a class="btn btn-outline-secondary">@button["Button_Product_Details_Text"]</a>
                 </div>
             </div>
         </div>
