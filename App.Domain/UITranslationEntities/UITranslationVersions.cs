@@ -8,6 +8,7 @@ public class UITranslationVersions
     public Guid LanguageId { get; set; }
     public Guid ResourceKeyId { get; set; }
     public TranslationState TranslationState { get; set; }
+    public string Content { get; set; } = null!;
     public DateTime CreatedAt { get; set; } 
     public string CreatedBy { get; set; } = null!;
 

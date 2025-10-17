@@ -180,12 +180,18 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
         {
             e.ToTable("ui_translation_versions");
 
-            e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId });
+            //e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId });
             
             e.Property(p => p.Id)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .ValueGeneratedOnAdd();
 
+            e.Property(p => p.Content)
+                .IsRequired();
+            
+            e.Property(p => p.TranslationState)
+                .IsRequired();
+            
             e.Property(p => p.CreatedAt)
                 .IsRequired();
             

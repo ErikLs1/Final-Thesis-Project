@@ -4,6 +4,7 @@ public enum TranslationState
 {
     Active,
     Inactive,
+    Published,
     Accepted,
     Rejected,
     WaitingReview

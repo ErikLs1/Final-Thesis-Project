@@ -60,4 +60,19 @@
     <data name="Navigation_Logout" xml:space="preserve">
         <value>Logout</value>
     </data>
+    <data name="Heading_Categories" xml:space="preserve">
+        <value>Categories</value>
+    </data>
+    <data name="Heading_Products" xml:space="preserve">
+        <value>Featured products</value>
+    </data>
+    <data name="Heading_Shop" xml:space="preserve">
+        <value>Shop</value>
+    </data>
+    <data name="Button_Product_Add_To_Cart" xml:space="preserve">
+        <value>Add to cart</value>
+    </data>
+    <data name="Button_Product_Details" xml:space="preserve">
+        <value>Details</value>
+    </data>
 </root>

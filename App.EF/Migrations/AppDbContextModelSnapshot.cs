@@ -320,6 +320,10 @@ namespace App.EF.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -339,8 +343,6 @@ namespace App.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ResourceKeyId");
-
-                    b.HasIndex("LanguageId", "ResourceKeyId");
 
                     b.ToTable("ui_translation_versions", (string)null);
                 });

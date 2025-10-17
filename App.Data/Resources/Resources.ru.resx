@@ -60,4 +60,19 @@
     <data name="Navigation_Login" xml:space="preserve">
         <value>Авторизоваться</value>
     </data>
+    <data name="Heading_Products" xml:space="preserve">
+        <value>Рекомендуемые продукты</value>
+    </data>
+    <data name="Heading_Categories" xml:space="preserve">
+        <value>Категории</value>
+    </data>
+    <data name="Heading_Shop" xml:space="preserve">
+        <value>Магазин</value>
+    </data>
+    <data name="Button_Product_Add_To_Cart" xml:space="preserve">
+        <value>Добавить в корзину</value>
+    </data>
+    <data name="Button_Product_Details" xml:space="preserve">
+        <value>Подробности</value>
+    </data>
 </root>

@@ -7,28 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace App.Data.Resources.Navigation {
+namespace App.Data.Resources {
     using System;
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Navigation_en_US {
+    internal class Resources_en_US {
         
         private static System.Resources.ResourceManager resourceMan;
         
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Navigation_en_US() {
+        internal Resources_en_US() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
-                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("App.Data.Resources.Navigation.Navigation_en_US", typeof(Navigation_en_US).Assembly);
+                    System.Resources.ResourceManager temp = new System.Resources.ResourceManager("App.Data.Resources.Resources_en_US", typeof(Resources_en_US).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -45,51 +45,15 @@ namespace App.Data.Resources.Navigation {
             }
         }
         
-        internal static string Navigation_About_Us {
+        internal static string Navigation_Home {
             get {
-                return ResourceManager.GetString("Navigation_About_Us", resourceCulture);
-            }
-        }
-        
-        internal static string Navigation_Category_Headphones {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Headphones", resourceCulture);
-            }
-        }
-        
-        internal static string Navigation_Category_Laptop {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Laptop", resourceCulture);
-            }
-        }
-        
-        internal static string Navigation_Category_Keyboard {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Keyboard", resourceCulture);
-            }
-        }
-        
-        internal static string Navigation_Category_Monitor {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Monitor", resourceCulture);
-            }
-        }
-        
-        internal static string Navigation_Category_Mouse {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Mouse", resourceCulture);
+                return ResourceManager.GetString("Navigation_Home", resourceCulture);
             }
         }
         
         internal static string Navigation_Dashboard {
             get {
                 return ResourceManager.GetString("Navigation_Dashboard", resourceCulture);
-            }
-        }
-        
-        internal static string Navigation_Home {
-            get {
-                return ResourceManager.GetString("Navigation_Home", resourceCulture);
             }
         }
         
@@ -105,9 +69,51 @@ namespace App.Data.Resources.Navigation {
             }
         }
         
+        internal static string Navigation_Category_Monitor {
+            get {
+                return ResourceManager.GetString("Navigation_Category_Monitor", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Category_Laptop {
+            get {
+                return ResourceManager.GetString("Navigation_Category_Laptop", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Category_Keyboard {
+            get {
+                return ResourceManager.GetString("Navigation_Category_Keyboard", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Category_Mouse {
+            get {
+                return ResourceManager.GetString("Navigation_Category_Mouse", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Category_Headphones {
+            get {
+                return ResourceManager.GetString("Navigation_Category_Headphones", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_About_Us {
+            get {
+                return ResourceManager.GetString("Navigation_About_Us", resourceCulture);
+            }
+        }
+        
         internal static string Navigation_Contact {
             get {
                 return ResourceManager.GetString("Navigation_Contact", resourceCulture);
+            }
+        }
+        
+        internal static string Navigation_Register {
+            get {
+                return ResourceManager.GetString("Navigation_Register", resourceCulture);
             }
         }
         
@@ -123,9 +129,33 @@ namespace App.Data.Resources.Navigation {
             }
         }
         
-        internal static string Navigation_Register {
+        internal static string Heading_Products {
             get {
-                return ResourceManager.GetString("Navigation_Register", resourceCulture);
+                return ResourceManager.GetString("Heading_Products", resourceCulture);
+            }
+        }
+        
+        internal static string Heading_Categories {
+            get {
+                return ResourceManager.GetString("Heading_Categories", resourceCulture);
+            }
+        }
+        
+        internal static string Heading_Shop {
+            get {
+                return ResourceManager.GetString("Heading_Shop", resourceCulture);
+            }
+        }
+        
+        internal static string Button_Product_Add_To_Cart {
+            get {
+                return ResourceManager.GetString("Button_Product_Add_To_Cart", resourceCulture);
+            }
+        }
+        
+        internal static string Button_Product_Details {
+            get {
+                return ResourceManager.GetString("Button_Product_Details", resourceCulture);
             }
         }
     }
