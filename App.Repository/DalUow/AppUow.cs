@@ -17,4 +17,36 @@ public class AppUow : BaseUow<AppDbContext>, IAppUow
     public ICategoryRepository? _categoryRepository;
     public ICategoryRepository CategoryRepository =>
         _categoryRepository ??= new CategoryRepository(UowDbContext);
+
+    public ILanguageRepository? _languageRepository;
+    public ILanguageRepository LanguageRepository =>
+        _languageRepository ??= new LanguageRepository(UowDbContext);
+    
+    public IResxImportRepository? _resxImportRepository;
+    public IResxImportRepository ResxImportRepository =>
+        _resxImportRepository ??= new ResxImportRepository(UowDbContext);
+    
+    public IUIExperimentRepository? _UIExperimentRepository;
+    public IUIExperimentRepository UIExperimentRepository =>
+        _UIExperimentRepository ??= new UIExperimentRepository(UowDbContext);
+    
+    public IUIResourceKeysRepository? _UIResourceKeysRepository;
+    public IUIResourceKeysRepository UIResourceKeysRepository =>
+        _UIResourceKeysRepository ??= new UIResourceKeysRepository(UowDbContext);
+    
+    public IUITranslationAuditLogRepository? _UITranslationAuditLogRepository;
+    public IUITranslationAuditLogRepository UITranslationAuditLogRepository =>
+        _UITranslationAuditLogRepository ??= new UITranslationAuditLogRepository(UowDbContext);
+    
+    public IUITranslationRepository? _UITranslationRepository;
+    public IUITranslationRepository UITranslationRepository =>
+        _UITranslationRepository ??= new UITranslationRepository(UowDbContext);
+    
+    public IUITranslationsVersionsRepository? _UITranslationsVersionsRepository;
+    public IUITranslationsVersionsRepository UITranslationsVersionsRepository =>
+        _UITranslationsVersionsRepository ??= new UITranslationsVersionsRepository(UowDbContext);
+    
+    public IUserLanguageRepository? _userLanguageRepository;
+    public IUserLanguageRepository UserLanguageRepository =>
+        _userLanguageRepository ??= new UserLanguageRepository(UowDbContext);
 }

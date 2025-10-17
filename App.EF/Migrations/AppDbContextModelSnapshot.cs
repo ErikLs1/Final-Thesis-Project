@@ -22,6 +22,42 @@ namespace App.EF.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("App.Domain.AB.UIExperiment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("ExperimentName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("LanguageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Option")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ResourceKeyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TranslationVersionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResourceKeyId");
+
+                    b.HasIndex("LanguageId", "ResourceKeyId")
+                        .IsUnique();
+
+                    b.HasIndex("LanguageId", "ResourceKeyId", "TranslationVersionId");
+
+                    b.ToTable("ui_experiments", (string)null);
+                });
+
             modelBuilder.Entity("App.Domain.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -144,7 +180,21 @@ namespace App.EF.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<bool>("IsDefaultLanguage")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("LanguageName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LanguageTag")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("LanguageTag")
+                        .IsUnique();
 
                     b.ToTable("languages", (string)null);
                 });
@@ -197,6 +247,141 @@ namespace App.EF.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("products", (string)null);
+                });
+
+            modelBuilder.Entity("App.Domain.UITranslationEntities.UIResourceKeys", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ResourceKey")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResourceKey")
+                        .IsUnique();
+
+                    b.ToTable("ui_resource_keys", (string)null);
+                });
+
+            modelBuilder.Entity("App.Domain.UITranslationEntities.UITranslationAuditLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<DateTime>("ActivatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ActivatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DeactivatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeactivatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("LanguageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ResourceKeyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TranslationVersionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("ResourceKeyId");
+
+                    b.HasIndex("TranslationVersionId");
+
+                    b.ToTable("ui_translation_audit_log", (string)null);
+                });
+
+            modelBuilder.Entity("App.Domain.UITranslationEntities.UITranslationVersions", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("LanguageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ResourceKeyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("TranslationState")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResourceKeyId");
+
+                    b.HasIndex("LanguageId", "ResourceKeyId");
+
+                    b.ToTable("ui_translation_versions", (string)null);
+                });
+
+            modelBuilder.Entity("App.Domain.UITranslationEntities.UITranslations", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
+                    b.Property<Guid>("LanguageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("PublishedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PublishedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ResourceKeyId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TranslationVersionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId")
+                        .IsUnique();
+
+                    b.HasIndex("ResourceKeyId")
+                        .IsUnique();
+
+                    b.HasIndex("LanguageId", "ResourceKeyId")
+                        .IsUnique();
+
+                    b.HasIndex("LanguageId", "ResourceKeyId", "TranslationVersionId");
+
+                    b.ToTable("ui_translations", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -329,6 +514,34 @@ namespace App.EF.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("App.Domain.AB.UIExperiment", b =>
+                {
+                    b.HasOne("App.Domain.Languages", "Language")
+                        .WithMany("UIExperiments")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.UITranslationEntities.UIResourceKeys", "UIResourceKeys")
+                        .WithMany("UIExperiments")
+                        .HasForeignKey("ResourceKeyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.UITranslationEntities.UITranslationVersions", "UITranslationVersions")
+                        .WithMany()
+                        .HasForeignKey("LanguageId", "ResourceKeyId", "TranslationVersionId")
+                        .HasPrincipalKey("LanguageId", "ResourceKeyId", "Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("UIResourceKeys");
+
+                    b.Navigation("UITranslationVersions");
+                });
+
             modelBuilder.Entity("App.Domain.Identity.UserLanguages", b =>
                 {
                     b.HasOne("App.Domain.Languages", "Language")
@@ -357,6 +570,80 @@ namespace App.EF.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("App.Domain.UITranslationEntities.UITranslationAuditLog", b =>
+                {
+                    b.HasOne("App.Domain.Languages", "Language")
+                        .WithMany("UITranslationAuditLogs")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.UITranslationEntities.UIResourceKeys", "UIResourceKeys")
+                        .WithMany("UITranslationAuditLogs")
+                        .HasForeignKey("ResourceKeyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.UITranslationEntities.UITranslationVersions", "UITranslationVersions")
+                        .WithMany("UITranslationAuditLogs")
+                        .HasForeignKey("TranslationVersionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("UIResourceKeys");
+
+                    b.Navigation("UITranslationVersions");
+                });
+
+            modelBuilder.Entity("App.Domain.UITranslationEntities.UITranslationVersions", b =>
+                {
+                    b.HasOne("App.Domain.Languages", "Language")
+                        .WithMany("UITranslationVersions")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.UITranslationEntities.UIResourceKeys", "UIResourceKeys")
+                        .WithMany("UITranslationVersions")
+                        .HasForeignKey("ResourceKeyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("UIResourceKeys");
+                });
+
+            modelBuilder.Entity("App.Domain.UITranslationEntities.UITranslations", b =>
+                {
+                    b.HasOne("App.Domain.Languages", "Language")
+                        .WithOne("UITranslations")
+                        .HasForeignKey("App.Domain.UITranslationEntities.UITranslations", "LanguageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.UITranslationEntities.UIResourceKeys", "UIResourceKeys")
+                        .WithOne("UITranslations")
+                        .HasForeignKey("App.Domain.UITranslationEntities.UITranslations", "ResourceKeyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("App.Domain.UITranslationEntities.UITranslationVersions", "UITranslationVersions")
+                        .WithMany()
+                        .HasForeignKey("LanguageId", "ResourceKeyId", "TranslationVersionId")
+                        .HasPrincipalKey("LanguageId", "ResourceKeyId", "Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("UIResourceKeys");
+
+                    b.Navigation("UITranslationVersions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -422,7 +709,33 @@ namespace App.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Languages", b =>
                 {
+                    b.Navigation("UIExperiments");
+
+                    b.Navigation("UITranslationAuditLogs");
+
+                    b.Navigation("UITranslationVersions");
+
+                    b.Navigation("UITranslations")
+                        .IsRequired();
+
                     b.Navigation("UserLanguages");
+                });
+
+            modelBuilder.Entity("App.Domain.UITranslationEntities.UIResourceKeys", b =>
+                {
+                    b.Navigation("UIExperiments");
+
+                    b.Navigation("UITranslationAuditLogs");
+
+                    b.Navigation("UITranslationVersions");
+
+                    b.Navigation("UITranslations")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("App.Domain.UITranslationEntities.UITranslationVersions", b =>
+                {
+                    b.Navigation("UITranslationAuditLogs");
                 });
 #pragma warning restore 612, 618
         }
