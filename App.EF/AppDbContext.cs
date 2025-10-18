@@ -168,6 +168,7 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 .ValueGeneratedOnAdd();
 
             e.Property(p => p.ResourceKey)
+                .HasMaxLength(255)
                 .IsRequired();
         });
         
@@ -177,7 +178,7 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
         {
             e.ToTable("ui_translation_versions");
 
-            //e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId });
+            e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId, p.VersionNumber });
             
             e.Property(p => p.Id)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -187,15 +188,19 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 .IsRequired();
             
             e.Property(p => p.Content)
+                .HasMaxLength(1024)
                 .IsRequired();
             
             e.Property(p => p.TranslationState)
+                .HasConversion<string>()
+                .HasMaxLength(150)
                 .IsRequired();
             
             e.Property(p => p.CreatedAt)
                 .IsRequired();
             
             e.Property(p => p.CreatedBy)
+                .HasMaxLength(255)
                 .IsRequired();
 
             e.HasOne(p => p.UIResourceKeys)
@@ -224,6 +229,7 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 .IsRequired();
             
             e.Property(p => p.PublishedBy)
+                .HasMaxLength(255)
                 .IsRequired();
             
             e.HasOne(p => p.Language)
@@ -256,12 +262,14 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 .IsRequired();
             
             e.Property(p => p.ActivatedBy)
+                .HasMaxLength(255)
                 .IsRequired();
             
             e.Property(p => p.DeactivatedAt)
                 .IsRequired();
             
             e.Property(p => p.DeactivatedBy)
+                .HasMaxLength(255)
                 .IsRequired();
 
             e.HasOne(p => p.Language)
@@ -292,9 +300,11 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 .ValueGeneratedOnAdd();
             
             e.Property(p => p.ExperimentName)
+                .HasMaxLength(255)
                 .IsRequired();
             
             e.Property(p => p.Option)
+                .HasMaxLength(255)
                 .IsRequired();
             
             e.HasOne(p => p.Language)

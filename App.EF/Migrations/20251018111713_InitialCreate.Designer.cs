@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251018105146_InitialCreate")]
+    [Migration("20251018111713_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -34,14 +34,16 @@ namespace App.EF.Migrations
 
                     b.Property<string>("ExperimentName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<Guid>("LanguageId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Option")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<Guid>("ResourceKeyId")
                         .HasColumnType("uuid");
@@ -261,7 +263,8 @@ namespace App.EF.Migrations
 
                     b.Property<string>("ResourceKey")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
 
@@ -283,14 +286,16 @@ namespace App.EF.Migrations
 
                     b.Property<string>("ActivatedBy")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<DateTime>("DeactivatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DeactivatedBy")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<Guid>("LanguageId")
                         .HasColumnType("uuid");
@@ -321,14 +326,16 @@ namespace App.EF.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(1024)
+                        .HasColumnType("character varying(1024)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<Guid>("LanguageId")
                         .HasColumnType("uuid");
@@ -336,8 +343,10 @@ namespace App.EF.Migrations
                     b.Property<Guid>("ResourceKeyId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("TranslationState")
-                        .HasColumnType("integer");
+                    b.Property<string>("TranslationState")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
 
                     b.Property<int>("VersionNumber")
                         .HasColumnType("integer");
@@ -345,6 +354,8 @@ namespace App.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ResourceKeyId");
+
+                    b.HasIndex("LanguageId", "ResourceKeyId", "VersionNumber");
 
                     b.ToTable("ui_translation_versions", (string)null);
                 });
@@ -364,7 +375,8 @@ namespace App.EF.Migrations
 
                     b.Property<string>("PublishedBy")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<Guid>("ResourceKeyId")
                         .HasColumnType("uuid");

@@ -83,7 +83,7 @@ namespace App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    ResourceKey = table.Column<string>(type: "text", nullable: false)
+                    ResourceKey = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -255,10 +255,10 @@ namespace App.EF.Migrations
                     LanguageId = table.Column<Guid>(type: "uuid", nullable: false),
                     ResourceKeyId = table.Column<Guid>(type: "uuid", nullable: false),
                     VersionNumber = table.Column<int>(type: "integer", nullable: false),
-                    TranslationState = table.Column<int>(type: "integer", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false),
+                    TranslationState = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    Content = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "text", nullable: false)
+                    CreatedBy = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -286,8 +286,8 @@ namespace App.EF.Migrations
                     LanguageId = table.Column<Guid>(type: "uuid", nullable: false),
                     ResourceKeyId = table.Column<Guid>(type: "uuid", nullable: false),
                     TranslationVersionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExperimentName = table.Column<string>(type: "text", nullable: false),
-                    Option = table.Column<string>(type: "text", nullable: false)
+                    ExperimentName = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Option = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -321,9 +321,9 @@ namespace App.EF.Migrations
                     ResourceKeyId = table.Column<Guid>(type: "uuid", nullable: false),
                     TranslationVersionId = table.Column<Guid>(type: "uuid", nullable: false),
                     ActivatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ActivatedBy = table.Column<string>(type: "text", nullable: false),
+                    ActivatedBy = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     DeactivatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeactivatedBy = table.Column<string>(type: "text", nullable: false)
+                    DeactivatedBy = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -357,7 +357,7 @@ namespace App.EF.Migrations
                     ResourceKeyId = table.Column<Guid>(type: "uuid", nullable: false),
                     TranslationVersionId = table.Column<Guid>(type: "uuid", nullable: false),
                     PublishedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    PublishedBy = table.Column<string>(type: "text", nullable: false)
+                    PublishedBy = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -472,6 +472,11 @@ namespace App.EF.Migrations
                 name: "IX_ui_translation_audit_log_TranslationVersionId",
                 table: "ui_translation_audit_log",
                 column: "TranslationVersionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ui_translation_versions_LanguageId_ResourceKeyId_VersionNum~",
+                table: "ui_translation_versions",
+                columns: new[] { "LanguageId", "ResourceKeyId", "VersionNumber" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ui_translation_versions_ResourceKeyId",
