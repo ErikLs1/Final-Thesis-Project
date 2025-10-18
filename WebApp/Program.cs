@@ -3,6 +3,7 @@ using App.Domain.Identity;
 using App.EF;
 using App.Repository.DalUow;
 using App.Repository.Impl;
+using App.Repository.Impl.ResxImport;
 using App.Service;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Identity;
@@ -43,6 +44,7 @@ else
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IAppUow, AppUow>();
 builder.Services.AddScoped<ResxImportRepository>();
+builder.Services.AddScoped<ResxVersionImportRepository>();
 builder.Services.AddScoped<IAppBll, AppBll>();
 builder.Services.AddHttpContextAccessor();
 
@@ -100,8 +102,8 @@ var app = builder.Build();
 if (importOnStartup && !string.IsNullOrWhiteSpace(resxFolder))
 {
     using var scope = app.Services.CreateScope();
-    var importer = scope.ServiceProvider.GetRequiredService<ResxImportRepository>();
-    await importer.ImportKeysAsync(resxFolder);
+    var importer = scope.ServiceProvider.GetRequiredService<ResxVersionImportRepository>();
+    await importer.ImportFirstTranslationVersionAsync(resxFolder);
 }
 
 // Configure the HTTP request pipeline.

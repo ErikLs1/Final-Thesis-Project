@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251018093053_InitialCreate")]
+    [Migration("20251018105146_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -337,6 +337,9 @@ namespace App.EF.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("TranslationState")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("VersionNumber")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

@@ -183,6 +183,9 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 .HasDefaultValueSql("gen_random_uuid()")
                 .ValueGeneratedOnAdd();
 
+            e.Property(p => p.VersionNumber)
+                .IsRequired();
+            
             e.Property(p => p.Content)
                 .IsRequired();
             

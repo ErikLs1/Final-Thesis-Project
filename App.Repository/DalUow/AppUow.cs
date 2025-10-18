@@ -1,5 +1,6 @@
 using App.EF;
 using App.Repository.Impl;
+using App.Repository.Impl.ResxImport;
 using App.Repository.Interface;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -6,7 +6,7 @@ using App.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace App.Repository.Impl;
+namespace App.Repository.Impl.ResxImport;
 
 public class ResxImportRepository : IResxImportRepository
 {

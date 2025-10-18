@@ -336,6 +336,9 @@ namespace App.EF.Migrations
                     b.Property<int>("TranslationState")
                         .HasColumnType("integer");
 
+                    b.Property<int>("VersionNumber")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ResourceKeyId");
