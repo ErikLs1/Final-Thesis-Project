@@ -92,17 +92,17 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 
-// var importOnStartup = builder.Configuration.GetValue<bool>("Resx:ImportOnStartup");
-// var resxFolder = builder.Configuration.GetValue<string>("Resx:Folder");
+var importOnStartup = builder.Configuration.GetValue<bool>("Resx:ImportOnStartup");
+var resxFolder = builder.Configuration.GetValue<string>("Resx:Folder");
 
 var app = builder.Build();
 
-// if (importOnStartup && !string.IsNullOrWhiteSpace(resxFolder))
-// {
-//     using var scope = app.Services.CreateScope();
-//     var importer = scope.ServiceProvider.GetRequiredService<ResxImportRepository>();
-//     await importer.ImportAsync(resxFolder);
-// }
+if (importOnStartup && !string.IsNullOrWhiteSpace(resxFolder))
+{
+    using var scope = app.Services.CreateScope();
+    var importer = scope.ServiceProvider.GetRequiredService<ResxImportRepository>();
+    await importer.ImportKeysAsync(resxFolder);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

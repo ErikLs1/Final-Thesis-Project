@@ -256,10 +256,6 @@ namespace App.EF.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("ResourceKey")
                         .IsRequired()
                         .HasColumnType("text");

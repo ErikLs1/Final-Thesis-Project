@@ -83,8 +83,7 @@ namespace App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    ResourceKey = table.Column<string>(type: "text", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false)
+                    ResourceKey = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

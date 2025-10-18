@@ -6,7 +6,6 @@ public class UIResourceKeys
 {
     public Guid Id { get; set; }
     public string ResourceKey { get; set; } = null!; // unique
-    public string Content { get; set; } = null!;
 
     public ICollection<UITranslationAuditLog> UITranslationAuditLogs { get; set; }= new List<UITranslationAuditLog>();
     public ICollection<UITranslationVersions> UITranslationVersions { get; set; }= new List<UITranslationVersions>();

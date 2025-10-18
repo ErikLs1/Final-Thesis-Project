@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251017193011_InitialCreate")]
+    [Migration("20251018093053_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -258,10 +258,6 @@ namespace App.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<string>("ResourceKey")
                         .IsRequired()

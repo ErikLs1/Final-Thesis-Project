@@ -1,13 +1,17 @@
 using App.EF;
 using App.Repository.Impl;
 using App.Repository.Interface;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Repository.DalUow;
 
 public class AppUow : BaseUow<AppDbContext>, IAppUow
 {
-    public AppUow(AppDbContext uowDbContext) : base(uowDbContext)
+    private readonly IServiceProvider _sp;
+    
+    public AppUow(AppDbContext uowDbContext, IServiceProvider sp) : base(uowDbContext)
     {
+        _sp = sp;
     }
 
     public IProductRepository? _productRepository;
@@ -23,8 +27,9 @@ public class AppUow : BaseUow<AppDbContext>, IAppUow
         _languageRepository ??= new LanguageRepository(UowDbContext);
     
     public IResxImportRepository? _resxImportRepository;
+
     public IResxImportRepository ResxImportRepository =>
-        _resxImportRepository ??= new ResxImportRepository(UowDbContext);
+        _resxImportRepository ??= ActivatorUtilities.CreateInstance<ResxImportRepository>(_sp, UowDbContext);
     
     public IUIExperimentRepository? _UIExperimentRepository;
     public IUIExperimentRepository UIExperimentRepository =>

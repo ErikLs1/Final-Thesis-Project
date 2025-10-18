@@ -169,9 +169,6 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 
             e.Property(p => p.ResourceKey)
                 .IsRequired();
-            
-            e.Property(p => p.Content)
-                .IsRequired();
         });
         
         
