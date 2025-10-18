@@ -6,4 +6,5 @@ public interface IAppBll : IBaseBll
 {
     IProductService ProductService { get; }
     ICategoryService CategoryService { get; }
+    IUserLanguageService UserLanguageService { get; }
 }

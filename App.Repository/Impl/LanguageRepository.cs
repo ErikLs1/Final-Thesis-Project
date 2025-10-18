@@ -1,5 +1,7 @@
 using App.EF;
+using App.Repository.DTO;
 using App.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace App.Repository.Impl;
 
@@ -10,5 +12,12 @@ public class LanguageRepository : ILanguageRepository
     public LanguageRepository(AppDbContext repositoryDbContext)
     {
         _db = repositoryDbContext;
+    }
+
+    public async Task<IReadOnlyList<LanguageDto>> GetAllLanguagesAsync(CancellationToken ct = default)
+    {
+        return await _db.Languages
+            .Select(l => new LanguageDto(l.Id, l.LanguageTag, l.LanguageName))
+            .ToListAsync(ct);
     }
 }

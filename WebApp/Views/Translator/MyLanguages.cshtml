@@ -1,0 +1,64 @@
+@model WebApp.Models.MyLanguagesVm
+@{
+    ViewData["Title"] = "My languages";
+}
+
+<h2 class="mb-3">@ViewData["Title"]</h2>
+
+@if (TempData["Success"] is string ok)
+{
+    <div id="saveAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+        @ok
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <script>
+        // Auto-dismiss after 3s (Bootstrap 5)
+        setTimeout(function () {
+            var el = document.getElementById('saveAlert');
+            if (!el) return;
+            var alert = bootstrap.Alert.getOrCreateInstance(el);
+            alert.close();
+        }, 3000);
+    </script>
+}
+
+@if (!Model.HasAny)
+{
+    <div class="alert alert-info">
+        You haven't selected any languages yet. Please select the languages you know.
+    </div>
+
+    <a asp-controller="Translator" asp-action="Languages" class="btn btn-primary">
+        Select languages
+    </a>
+}
+else
+{
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="text-muted">Languages you know</div>
+        <a asp-controller="Translator" asp-action="Languages" class="btn btn-outline-primary btn-sm">
+            Edit selection
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-sm align-middle">
+            <thead>
+            <tr>
+                <th style="width: 40%">Language</th>
+                <th style="width: 20%">Tag</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var lang in Model.Selected)
+            {
+                <tr>
+                    <td>@lang.Name</td>
+                    <td><code>@lang.Tag</code></td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
