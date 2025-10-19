@@ -383,11 +383,7 @@ namespace App.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageId")
-                        .IsUnique();
-
-                    b.HasIndex("ResourceKeyId")
-                        .IsUnique();
+                    b.HasIndex("ResourceKeyId");
 
                     b.HasIndex("LanguageId", "ResourceKeyId")
                         .IsUnique();
@@ -634,14 +630,14 @@ namespace App.EF.Migrations
             modelBuilder.Entity("App.Domain.UITranslationEntities.UITranslations", b =>
                 {
                     b.HasOne("App.Domain.Languages", "Language")
-                        .WithOne("UITranslations")
-                        .HasForeignKey("App.Domain.UITranslationEntities.UITranslations", "LanguageId")
+                        .WithMany("UITranslations")
+                        .HasForeignKey("LanguageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("App.Domain.UITranslationEntities.UIResourceKeys", "UIResourceKeys")
-                        .WithOne("UITranslations")
-                        .HasForeignKey("App.Domain.UITranslationEntities.UITranslations", "ResourceKeyId")
+                        .WithMany("UITranslations")
+                        .HasForeignKey("ResourceKeyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -728,8 +724,7 @@ namespace App.EF.Migrations
 
                     b.Navigation("UITranslationVersions");
 
-                    b.Navigation("UITranslations")
-                        .IsRequired();
+                    b.Navigation("UITranslations");
 
                     b.Navigation("UserLanguages");
                 });
@@ -742,8 +737,7 @@ namespace App.EF.Migrations
 
                     b.Navigation("UITranslationVersions");
 
-                    b.Navigation("UITranslations")
-                        .IsRequired();
+                    b.Navigation("UITranslations");
                 });
 
             modelBuilder.Entity("App.Domain.UITranslationEntities.UITranslationVersions", b =>

@@ -104,6 +104,7 @@ if (importOnStartup && !string.IsNullOrWhiteSpace(resxFolder))
     using var scope = app.Services.CreateScope();
     var importer = scope.ServiceProvider.GetRequiredService<ResxVersionImportRepository>();
     await importer.ImportFirstTranslationVersionAsync(resxFolder);
+    await importer.InialUITranslationsImportAsync("resx-import");
 }
 
 // Configure the HTTP request pipeline.

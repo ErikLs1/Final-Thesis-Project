@@ -484,12 +484,6 @@ namespace App.EF.Migrations
                 column: "ResourceKeyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ui_translations_LanguageId",
-                table: "ui_translations",
-                column: "LanguageId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ui_translations_LanguageId_ResourceKeyId",
                 table: "ui_translations",
                 columns: new[] { "LanguageId", "ResourceKeyId" },
@@ -503,8 +497,7 @@ namespace App.EF.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ui_translations_ResourceKeyId",
                 table: "ui_translations",
-                column: "ResourceKeyId",
-                unique: true);
+                column: "ResourceKeyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_user_languages_LanguageId",

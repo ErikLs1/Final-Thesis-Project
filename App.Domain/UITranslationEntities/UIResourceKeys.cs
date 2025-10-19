@@ -10,5 +10,5 @@ public class UIResourceKeys
     public ICollection<UITranslationAuditLog> UITranslationAuditLogs { get; set; }= new List<UITranslationAuditLog>();
     public ICollection<UITranslationVersions> UITranslationVersions { get; set; }= new List<UITranslationVersions>();
     public ICollection<UIExperiment> UIExperiments { get; set; }= new List<UIExperiment>();
-    public UITranslations UITranslations { get; set; } = null!; // Perform check to accept only one key
+    public ICollection<UITranslations> UITranslations { get; set; } = new List<UITranslations>();
 }
