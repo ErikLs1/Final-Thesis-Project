@@ -23,4 +23,28 @@ public class AppBll : BaseBll<IAppUow>, IAppBll
     public IUserLanguageService? _userLanguageService;
     public IUserLanguageService UserLanguageService =>
         _userLanguageService ??= new UserLanguageService(BllUow);
+    
+    public ILanguageService? _languageService;
+    public ILanguageService LanguageService =>
+        _languageService ??= new LanguageService(BllUow);
+    
+    public IUIExperimentService? _UIExperimentService;
+    public IUIExperimentService UIExperimentService =>
+        _UIExperimentService ??= new UIExperimentService(BllUow);
+    
+    public IUIResourceKeysService? _UIResourceKeysService;
+    public IUIResourceKeysService UIResourceKeysService =>
+        _UIResourceKeysService ??= new UIResourceKeysService(BllUow);
+    
+    public IUITranslationAuditLogService? _UITranslationAuditLogService;
+    public IUITranslationAuditLogService UITranslationAuditLogService =>
+        _UITranslationAuditLogService ??= new UITranslationAuditLogService(BllUow);
+    
+    public IUITranslationService? _UITranslationService;
+    public IUITranslationService UITranslationService =>
+        _UITranslationService ??= new UITranslationService(BllUow);
+    
+    public IUITranslationsVersionsService? _UITranslationsVersionsService;
+    public IUITranslationsVersionsService UITranslationsVersionsService =>
+        _UITranslationsVersionsService ??= new UITranslationsVersionsService(BllUow);
 }

@@ -21,7 +21,7 @@ public class TranslatorController : Controller
     public async Task<IActionResult> MyLanguages(CancellationToken ct)
     {
         var userId = User.GetUserId();
-        var allLanguages = await _bll.UserLanguageService.GetAllLanguages(ct);
+        var allLanguages = await _bll.LanguageService.GetAllLanguages(ct);
         var userLanguages = await _bll.UserLanguageService.GetUserLanguageIdsAsync(userId, ct);
         var selected = allLanguages
             .Where(l => userLanguages.Contains(l.Id))
@@ -38,7 +38,7 @@ public class TranslatorController : Controller
     public async Task<IActionResult> Languages(CancellationToken ct)
     {
         var userId = User.GetUserId();
-        var allLanguages = await _bll.UserLanguageService.GetAllLanguages(ct);
+        var allLanguages = await _bll.LanguageService.GetAllLanguages(ct);
         var userLanguages = await _bll.UserLanguageService.GetUserLanguageIdsAsync(userId, ct);
 
         var vm = new TranslatorLanguagesVm
