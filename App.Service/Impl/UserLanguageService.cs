@@ -18,11 +18,6 @@ public class UserLanguageService : IUserLanguageService
         return _uow.UserLanguageRepository.GetLanguageIdsByUserAsync(userId, ct);
     }
 
-    public Task<IReadOnlyList<LanguageDto>> GetAllLanguages(CancellationToken ct = default)
-    {
-        return _uow.LanguageRepository.GetAllLanguagesAsync(ct);
-    }
-
     public Task UpdateUserLanguagesAsync(Guid userId, IEnumerable<Guid> languageIds, CancellationToken ct = default)
     {
         return _uow.UserLanguageRepository.UpdateUserLanguagesAsync(userId, languageIds, ct);

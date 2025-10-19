@@ -20,4 +20,12 @@ public class LanguageRepository : ILanguageRepository
             .Select(l => new LanguageDto(l.Id, l.LanguageTag, l.LanguageName))
             .ToListAsync(ct);
     }
+
+    public async Task<Guid> GetDefaultLanguageIdAsync(CancellationToken ct = default)
+    {
+        return await _db.Languages
+            .Where(l => l.IsDefaultLanguage)
+            .Select(l => l.Id)
+            .SingleOrDefaultAsync(ct);
+    }
 }
