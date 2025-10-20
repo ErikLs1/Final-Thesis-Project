@@ -13,19 +13,19 @@ public class UITranslationsVersionsService : IUITranslationsVersionsService
         _uow = serviceUow;
     }
 
-    public async Task<IReadOnlyList<TranslationVersionRowDto>> GetDefaultLanguageTranslationsAsync(CancellationToken ct)
+    public async Task<IReadOnlyList<TranslationVersionRowDto>> GetDefaultLanguageTranslationsAsync()
     {
         var defaultLanguageId = await _uow.LanguageRepository.GetDefaultLanguageIdAsync();
-        return await _uow.UITranslationsVersionsRepository.GetDefaultLanguageTranslationsAsync(defaultLanguageId, ct);
+        return await _uow.UITranslationsVersionsRepository.GetDefaultLanguageTranslationsAsync(defaultLanguageId);
     }
 
-    public async Task<IReadOnlyList<TranslationVersionRowDto>> GetFilteredTranslationsAsync(Guid? languageId, int? version, CancellationToken ct)
+    public async Task<IReadOnlyList<TranslationVersionRowDto>> GetFilteredTranslationsAsync(Guid? languageId, int? version)
     {
-        return await _uow.UITranslationsVersionsRepository.GetTranslationVersionAsync(languageId, version, ct);
+        return await _uow.UITranslationsVersionsRepository.GetTranslationVersionAsync(languageId, version);
     }
 
-    public async Task<int> CreateTranslationVersionsAsync(CreateVersionRequestDto request, CancellationToken ct)
+    public async Task<int> CreateTranslationVersionsAsync(CreateVersionRequestDto request)
     {
-        return await _uow.UITranslationsVersionsRepository.CreateNewVersionAsync(request, ct);
+        return await _uow.UITranslationsVersionsRepository.CreateNewVersionAsync(request);
     }
 }

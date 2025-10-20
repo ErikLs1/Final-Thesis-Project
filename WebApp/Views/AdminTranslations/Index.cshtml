@@ -1,0 +1,81 @@
+@model AdminTranslationsIndexVm
+@using App.Domain.Enum
+
+@{
+    ViewData["Title"] = "Live translations";
+}
+
+<h2 class="mb-3">@ViewData["Title"]</h2>
+
+@if (TempData["Error"] is string err)
+{
+    <div class="alert alert-danger">@err</div>
+}
+@if (TempData["Success"] is string ok)
+{
+    <div class="alert alert-success">@ok</div>
+}
+
+<table class="table table-sm align-middle">
+    <thead>
+        <tr>
+            <th style="width:12%">Language</th>
+            <th style="width:25%">Resource key</th>
+            <th>Content</th>
+            <th class="text-end" style="width:8%">Version</th>
+            <th style="width:12%">State</th>
+            <th class="text-end" style="width:10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+    @if (Model.Rows.Count == 0)
+    {
+        <tr><td colspan="6" class="text-muted">No live translations.</td></tr>
+    }
+    else
+    {
+        foreach (var r in Model.Rows)
+        {
+            <tr>
+                <td>@r.LanguageTag</td>
+                <td>
+                    <div class="fw-semibold">@r.FriendlyKey</div>
+                    <div class="text-muted small">@r.ResourceKey</div>
+                </td>
+                <td class="text-truncate" style="max-width: 520px;">
+                    @(!string.IsNullOrWhiteSpace(r.Content) ? r.Content : Html.Raw("<span class=\"text-muted\">—</span>"))
+                </td>
+                <td class="text-end">@r.VersionNumber</td>
+                <td>
+                    @Html.Raw(StateBadge(r.TranslationState))
+                </td>
+                <td class="text-end">
+                    <a asp-action="ChangeState"
+                       asp-route-versionId="@r.TranslationVersionId"
+                       class="btn btn-sm btn-outline-primary">
+                       Change state
+                    </a>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+@functions{
+    // Map your enum to colorful Bootstrap badges
+    private static string StateBadge(TranslationState state)
+    {
+        // Adjust mapping to your actual enum names
+        var (cls, txt) = state switch
+        {
+            TranslationState.Published          => ("bg-secondary", "Published"),
+            TranslationState.WaitingReview  => ("bg-warning text-dark", "Waiting review"),
+            TranslationState.Approved       => ("bg-success", "Approved"),
+            TranslationState.Rejected       => ("bg-danger", "Rejected"),
+            TranslationState.Archived       => ("bg-dark", "Archived"),
+            _                               => ("bg-light text-dark", state.ToString())
+        };
+        return $"<span class=\"badge {cls}\">{txt}</span>";
+    }
+}

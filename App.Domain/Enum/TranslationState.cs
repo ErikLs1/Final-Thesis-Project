@@ -2,10 +2,9 @@ namespace App.Domain.Enum;
 
 public enum TranslationState
 {
-    Active,
-    Inactive,
+    Archived,
     Published,
-    Accepted,
+    Approved,
     Rejected,
     WaitingReview
 }

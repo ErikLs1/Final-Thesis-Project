@@ -25,7 +25,7 @@ public class HomeController : Controller
                   ?? CultureInfo.CurrentUICulture.Name
                   ?? "en";
 
-        var map = await _bll.UITranslationService.GetLiveTranslationsByLanguageTagAsync(tag, ct);
+        var map = await _bll.UITranslationService.GetLiveTranslationsByLanguageTagAsync(tag);
 
         var vm = new IndexVm { LanguageTag = tag, Translation = map };
         return View(vm);

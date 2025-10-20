@@ -13,8 +13,8 @@ public class LanguageService : ILanguageService
         _uow = serviceUow;
     }
 
-    public Task<IReadOnlyList<LanguageDto>> GetAllLanguages(CancellationToken ct = default)
+    public Task<IReadOnlyList<LanguageDto>> GetAllLanguages()
     {
-        return _uow.LanguageRepository.GetAllLanguagesAsync(ct);
+        return _uow.LanguageRepository.GetAllLanguagesAsync();
     }
 }

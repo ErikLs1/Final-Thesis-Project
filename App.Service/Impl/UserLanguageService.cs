@@ -13,14 +13,14 @@ public class UserLanguageService : IUserLanguageService
         _uow = serviceUow;
     }
 
-    public Task<IReadOnlyList<Guid>> GetUserLanguageIdsAsync(Guid userId, CancellationToken ct = default)
+    public Task<IReadOnlyList<Guid>> GetUserLanguageIdsAsync(Guid userId)
     {
-        return _uow.UserLanguageRepository.GetLanguageIdsByUserAsync(userId, ct);
+        return _uow.UserLanguageRepository.GetLanguageIdsByUserAsync(userId);
     }
 
-    public Task UpdateUserLanguagesAsync(Guid userId, IEnumerable<Guid> languageIds, CancellationToken ct = default)
+    public Task UpdateUserLanguagesAsync(Guid userId, IEnumerable<Guid> languageIds)
     {
-        return _uow.UserLanguageRepository.UpdateUserLanguagesAsync(userId, languageIds, ct);
+        return _uow.UserLanguageRepository.UpdateUserLanguagesAsync(userId, languageIds);
 
     }
 }

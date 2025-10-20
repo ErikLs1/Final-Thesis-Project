@@ -16,30 +16,28 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
         _db = repositoryDbContext;
     }
 
-    public async Task<IReadOnlyList<TranslationVersionRowDto>> GetDefaultLanguageTranslationsAsync(Guid? languageId, CancellationToken ct = default)
+    public async Task<IReadOnlyList<TranslationVersionRowDto>> GetDefaultLanguageTranslationsAsync(Guid? languageId)
     {
         var languageTag = await _db.Languages
             .Where(l => l.Id == languageId)
             .Select(l => l.LanguageTag)
-            .SingleAsync(ct);
+            .SingleAsync();
         
         // Get all ResourceKeys
         var keys = await _db.UIResourceKeys
-            .AsNoTracking()
             .Select(rk => new { rk.Id, rk.ResourceKey })
             .OrderBy(rk => rk.ResourceKey)
-            .ToListAsync(ct);
+            .ToListAsync();
         
         // Get latest version per key
         var latestRows = await _db.UITranslationVersions
-            .AsNoTracking()
             .Where(v => v.LanguageId == languageId)
             .GroupBy(v => v.ResourceKeyId)
             .Select(g => g
                 .OrderByDescending(v => v.VersionNumber)
                 .ThenByDescending(v => v.CreatedAt)
                 .First())
-            .ToDictionaryAsync(v => v.ResourceKeyId, ct);
+            .ToDictionaryAsync(v => v.ResourceKeyId);
         
         var rows = keys.Select(k =>
         {
@@ -58,16 +56,18 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
         return rows;
     }
 
-    public async Task<IReadOnlyList<TranslationVersionRowDto>> GetTranslationVersionAsync(Guid? languageId, int? version, CancellationToken ct = default)
+    public async Task<IReadOnlyList<TranslationVersionRowDto>> GetTranslationVersionAsync(Guid? languageId, int? version)
     {
-        var langTag = await _db.Languages.Where(l => l.Id == languageId).Select(l => l.LanguageTag).SingleAsync(ct);
+        var langTag = await _db.Languages
+            .Where(l => l.Id == languageId)
+            .Select(l => l.LanguageTag)
+            .SingleAsync();
 
         // 1) Get All Keys
         var keys = await _db.UIResourceKeys
-            .AsNoTracking()
             .Select(rk => new { rk.Id, rk.ResourceKey })
             .OrderBy(rk => rk.ResourceKey)
-            .ToListAsync(ct);
+            .ToListAsync();
 
         // 2) pick versions into a dictionary<ResourceKeyId, VersionRow>
         Dictionary<Guid, UITranslationVersions> byKey;
@@ -77,22 +77,20 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
         {
             // latest per key
             byKey = await _db.UITranslationVersions
-                .AsNoTracking()
                 .Where(v => v.LanguageId == languageId)
                 .GroupBy(v => v.ResourceKeyId)
                 .Select(g => g
                     .OrderByDescending(v => v.VersionNumber)
                     .ThenByDescending(v => v.CreatedAt)
                     .First())
-                .ToDictionaryAsync(v => v.ResourceKeyId, ct);
+                .ToDictionaryAsync(v => v.ResourceKeyId);
         }
         else
         {
             // specific version
             byKey = await _db.UITranslationVersions
-                .AsNoTracking()
                 .Where(v => v.LanguageId == languageId && v.VersionNumber == version.Value)
-                .ToDictionaryAsync(v => v.ResourceKeyId, ct);
+                .ToDictionaryAsync(v => v.ResourceKeyId);
         }
 
         // 3) project in-memory
@@ -113,7 +111,7 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
         return rows;
     }
 
-    public async Task<int> CreateNewVersionAsync(CreateVersionRequestDto request, CancellationToken ct = default)
+    public async Task<int> CreateNewVersionAsync(CreateVersionRequestDto request)
     {
         if (request.ResourceKeyIds == null) return 0;
         
@@ -145,8 +143,8 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
             });
         }
 
-        await _db.UITranslationVersions.AddRangeAsync(toInsert, ct);
-        return await _db.SaveChangesAsync(ct);
+        await _db.UITranslationVersions.AddRangeAsync(toInsert);
+        return await _db.SaveChangesAsync();
     }
 
     private static string ConvertToFriendlyString(string resourceKey)

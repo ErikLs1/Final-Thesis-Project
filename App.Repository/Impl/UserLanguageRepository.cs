@@ -14,24 +14,27 @@ public class UserLanguageRepository : IUserLanguageRepository
         _db = repositoryDbContext;
     }
 
-    public async Task<IReadOnlyList<Guid>> GetLanguageIdsByUserAsync(Guid userId, CancellationToken ct = default)
+    public async Task<IReadOnlyList<Guid>> GetLanguageIdsByUserAsync(Guid userId)
     {
         return await _db.UserLanguages
             .Where(x => x.UserId == userId)
             .Select(x => x.LanguageId)
-            .ToListAsync(ct);
+            .ToListAsync();
     }
 
-    public async Task UpdateUserLanguagesAsync(Guid userId, IEnumerable<Guid> languagesIds, CancellationToken ct = default)
+    public async Task UpdateUserLanguagesAsync(Guid userId, IEnumerable<Guid> languagesIds)
     {
         var selectedLanguages = languagesIds?.Distinct().ToHashSet() ?? new HashSet<Guid>();
             
         var existingLanguages = await _db.UserLanguages
             .Where(x => x.UserId == userId)
-            .ToListAsync(ct);
+            .ToListAsync();
 
         // Remove Unselected Languages
-        var toRemove = existingLanguages.Where(x => !selectedLanguages.Contains(x.LanguageId)).ToList();
+        var toRemove = existingLanguages
+            .Where(x => !selectedLanguages.
+                Contains(x.LanguageId))
+            .ToList();
         _db.UserLanguages.RemoveRange(toRemove);
         
         // Add new User Languages
@@ -42,7 +45,7 @@ public class UserLanguageRepository : IUserLanguageRepository
             LanguageId = id
         });
 
-        await _db.UserLanguages.AddRangeAsync(toAdd,ct);
-        await _db.SaveChangesAsync(ct);
+        await _db.UserLanguages.AddRangeAsync(toAdd);
+        await _db.SaveChangesAsync();
     }
 }

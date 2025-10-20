@@ -1,0 +1,119 @@
+@model WebApp.Models.CreateVersionsVm
+
+@{
+    ViewData["Title"] = "Create new translation versions";
+}
+
+<h2 class="mb-3">@ViewData["Title"]</h2>
+
+@if (TempData["Error"] is string err)
+{
+    <div class="alert alert-danger">@err</div>
+}
+@if (TempData["Success"] is string ok)
+{
+    <div class="alert alert-success">@ok</div>
+}
+
+<form asp-action="CreateVersions" method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="row g-3 mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Target language</label>
+            <select asp-for="LanguageId"
+                    asp-items="@(new SelectList(Model.Languages, "Id", "Display", Model.LanguageId))"
+                    class="form-select">
+            </select>
+        </div>
+        <div class="col-md-6 d-flex align-items-end">
+            <div class="form-check ms-auto">
+                <input type="checkbox" class="form-check-input" id="select_all" />
+                <label for="select_all" class="form-check-label">Select all</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-sm align-middle">
+            <thead>
+                <tr>
+                    <th style="width:32%">Resource key</th>
+                    <th style="width:33%">Default content (for reference)</th>
+                    <th>New content</th>
+                    <th class="text-center" style="width:8%">Include</th>
+                </tr>
+            </thead>
+            <tbody>
+            @for (var i = 0; i < Model.Items.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="hidden" asp-for="@Model.Items[i].ResourceKeyId" />
+                        <input type="hidden" asp-for="@Model.Items[i].ResourceKey" />
+                        <input type="hidden" asp-for="@Model.Items[i].FriendlyKey" />
+                        <div class="fw-semibold">@Model.Items[i].FriendlyKey</div>
+                        <div class="text-muted small">@Model.Items[i].ResourceKey</div>
+                    </td>
+                    <td class="text-muted">
+                        @if (!string.IsNullOrWhiteSpace(Model.Items[i].DefaultContent))
+                        {
+                            @Model.Items[i].DefaultContent
+                        }
+                        else
+                        {
+                            @Html.Raw("<span class=\"text-muted\">—</span>")
+                        }
+                    </td>
+                    <td>
+                        <textarea class="form-control content-box"
+                                  asp-for="@Model.Items[i].Content"
+                                  rows="3"
+                                  placeholder="Enter content (optional)"></textarea>
+                        <span asp-validation-for="@Model.Items[i].Content" class="text-danger"></span>
+                    </td>
+                    <td class="text-center">
+                        <input class="form-check-input include-toggle"
+                               type="checkbox"
+                               asp-for="@Model.Items[i].Include" />
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-3 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Create versions</button>
+        <a asp-action="Index" asp-route-languageId="@Model.LanguageId" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        (function () {
+            const selectAll = document.getElementById('select_all');
+            const toggles = document.querySelectorAll('.include-toggle');
+
+            selectAll?.addEventListener('change', function () {
+                toggles.forEach(cb => {
+                    cb.checked = selectAll.checked;
+                    cb.dispatchEvent(new Event('change'));
+                });
+            });
+
+            document.querySelectorAll('.include-toggle').forEach(function (cb) {
+                cb.addEventListener('change', function () {
+                    const row = cb.closest('tr');
+                    const ta = row.querySelector('.content-box');
+                    if (cb.checked) {
+                        ta.removeAttribute('disabled');
+                    } else {
+                        ta.setAttribute('disabled', 'disabled');
+                    }
+                });
+                cb.dispatchEvent(new Event('change'));
+            });
+        })();
+    </script>
+}

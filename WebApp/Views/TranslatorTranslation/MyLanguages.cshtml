@@ -13,7 +13,6 @@
     </div>
 
     <script>
-        // Auto-dismiss after 3s (Bootstrap 5)
         setTimeout(function () {
             var el = document.getElementById('saveAlert');
             if (!el) return;
@@ -29,14 +28,14 @@
         You haven't selected any languages yet. Please select the languages you know.
     </div>
 
-    <a asp-controller="Translator" asp-action="Languages" class="btn btn-primary">
+    <a asp-controller="TranslatorTranslation" asp-action="Languages" class="btn btn-primary">
         Select languages
     </a>
 }
 else
 {
     <div class="d-flex justify-content-between align-items-center mb-2">
-        <a asp-controller="Translator" asp-action="Languages" class="btn btn-outline-primary btn-sm">
+        <a asp-controller="TranslatorTranslation" asp-action="Languages" class="btn btn-outline-primary btn-sm">
             Edit
         </a>
     </div>

@@ -4,6 +4,6 @@ namespace App.Service.Interface;
 
 public interface ILanguageService
 {
-    Task<IReadOnlyList<LanguageDto>> GetAllLanguages(CancellationToken ct = default);
+    Task<IReadOnlyList<LanguageDto>> GetAllLanguages();
 
 }

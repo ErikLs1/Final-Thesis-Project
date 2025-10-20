@@ -1,6 +1,6 @@
 namespace WebApp.Models;
 
-public class LanguageChoice
+public class LanguageVmDto
 {
     public Guid Id { get; set; }
     public string? Display { get; set; }

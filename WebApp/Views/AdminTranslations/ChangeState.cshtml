@@ -1,0 +1,81 @@
+@model ChangeStateVm
+@using App.Domain.Enum
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+@{
+    ViewData["Title"] = "Change translation state";
+}
+
+<h2 class="mb-3">@ViewData["Title"]</h2>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Language</dt>
+            <dd class="col-sm-9">@Model.LanguageTag</dd>
+
+            <dt class="col-sm-3">Resource key</dt>
+            <dd class="col-sm-9">
+                <div class="fw-semibold">@Model.FriendlyKey</div>
+                <div class="text-muted small">@Model.ResourceKey</div>
+            </dd>
+
+            <dt class="col-sm-3">Version</dt>
+            <dd class="col-sm-9">@Model.VersionNumber</dd>
+
+            <dt class="col-sm-3">Current state</dt>
+            <dd class="col-sm-9">@Html.Raw(StateBadge(Model.CurrentState))</dd>
+
+            <dt class="col-sm-3">Content</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrWhiteSpace(Model.Content))
+                {
+                    <div class="border rounded p-2 bg-light">@Model.Content</div>
+                }
+                else
+                {
+                    <span class="text-muted">—</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<form asp-action="ChangeState" method="post" class="mt-3">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="TranslationVersionId" />
+
+    <div class="mb-3">
+        <label class="form-label">New state</label>
+        <select asp-for="NewState"
+                class="form-select"
+                asp-items="@(new SelectList(Enum.GetValues(typeof(TranslationState))))">
+        </select>
+        <span asp-validation-for="NewState" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@functions{
+    private static string StateBadge(TranslationState state)
+    {
+        var (cls, txt) = state switch
+        {
+            TranslationState.Published => ("bg-secondary", "Published"),
+            TranslationState.WaitingReview  => ("bg-warning text-dark", "Waiting review"),
+            TranslationState.Approved => ("bg-success", "Approved"),
+            TranslationState.Rejected => ("bg-danger", "Rejected"),
+            TranslationState.Archived => ("bg-dark", "Archived"),
+            _ => ("bg-light text-dark", state.ToString())
+        };
+        return $"<span class=\"badge {cls}\">{txt}</span>";
+    }
+}

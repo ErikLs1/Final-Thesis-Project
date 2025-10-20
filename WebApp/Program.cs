@@ -60,7 +60,6 @@ else
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IAppUow, AppUow>();
 builder.Services.AddScoped<ResxImportRepository>();
-builder.Services.AddScoped<ResxVersionImportRepository>();
 builder.Services.AddScoped<IAppBll, AppBll>();
 builder.Services.AddHttpContextAccessor();
 
@@ -118,7 +117,7 @@ var app = builder.Build();
 if (importOnStartup && !string.IsNullOrWhiteSpace(resxFolder))
 {
     using var scope = app.Services.CreateScope();
-    var importer = scope.ServiceProvider.GetRequiredService<ResxVersionImportRepository>();
+    var importer = scope.ServiceProvider.GetRequiredService<ResxImportRepository>();
     await importer.ImportFirstTranslationVersionAsync(resxFolder);
     await importer.InialUITranslationsImportAsync("resx-import");
 }

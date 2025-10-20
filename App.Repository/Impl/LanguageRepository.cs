@@ -14,18 +14,18 @@ public class LanguageRepository : ILanguageRepository
         _db = repositoryDbContext;
     }
 
-    public async Task<IReadOnlyList<LanguageDto>> GetAllLanguagesAsync(CancellationToken ct = default)
+    public async Task<IReadOnlyList<LanguageDto>> GetAllLanguagesAsync()
     {
         return await _db.Languages
             .Select(l => new LanguageDto(l.Id, l.LanguageTag, l.LanguageName))
-            .ToListAsync(ct);
+            .ToListAsync();
     }
 
-    public async Task<Guid> GetDefaultLanguageIdAsync(CancellationToken ct = default)
+    public async Task<Guid> GetDefaultLanguageIdAsync()
     {
         return await _db.Languages
             .Where(l => l.IsDefaultLanguage)
             .Select(l => l.Id)
-            .SingleOrDefaultAsync(ct);
+            .SingleOrDefaultAsync();
     }
 }
