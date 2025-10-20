@@ -2,9 +2,7 @@ using System.Globalization;
 using App.Domain.Identity;
 using App.EF;
 using App.Repository.DalUow;
-using App.Repository.Impl;
 using App.Repository.Impl.ResxImport;
-using App.Service;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -12,7 +10,25 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-var builder = WebApplication.CreateBuilder(args);
+/////////// REDIS ////////////
+using NRedisStack;
+using NRedisStack.RedisStackCommands;
+using StackExchange.Redis;
+
+var builder = WebApplication.CreateBuilder(args);//no redis
+
+ConfigurationOptions conf = new ConfigurationOptions {
+    EndPoints = { "localhost:6379" },
+    User = "yourUsername",
+    Password = "yourPassword"
+};
+
+ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(conf);
+IDatabase db = redis.GetDatabase();
+
+db.StringSet("foo", "bar");
+Console.WriteLine(db.StringGet("foo"));
+/////////// REDIS ////////////
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??

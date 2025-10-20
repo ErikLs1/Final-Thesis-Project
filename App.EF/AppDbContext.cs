@@ -19,7 +19,7 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     // UI TRANSLATIONS
     public DbSet<UIExperiment> UIExperiments { get; set; } = null!;
     public DbSet<UIResourceKeys> UIResourceKeys { get; set; } = null!;
-    public DbSet<UITranslationAuditLog> UITranslation { get; set; } = null!;
+    public DbSet<UITranslationAuditLog> UITranslationAuditLogs { get; set; } = null!;
     public DbSet<UITranslations> UITranslations { get; set; } = null!;
     public DbSet<UITranslationVersions> UITranslationVersions { get; set; } = null!;
 
@@ -233,13 +233,13 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                 .IsRequired();
             
             e.HasOne(p => p.Language)
-                .WithOne(l => l.UITranslations)
-                .HasForeignKey<UITranslations>(p => p.LanguageId)
+                .WithMany(l => l.UITranslations)
+                .HasForeignKey(p => p.LanguageId)
                 .OnDelete(DeleteBehavior.Restrict);
             
             e.HasOne(p => p.UIResourceKeys)
-                .WithOne(rk => rk.UITranslations)
-                .HasForeignKey<UITranslations>(p => p.ResourceKeyId)
+                .WithMany(rk => rk.UITranslations)
+                .HasForeignKey(p => p.ResourceKeyId)
                 .OnDelete(DeleteBehavior.Restrict);
             
             e.HasOne(p => p.UITranslationVersions)

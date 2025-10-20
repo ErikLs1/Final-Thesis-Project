@@ -1,15 +1,13 @@
 @using App.Domain.Enum
 @inject IHttpContextAccessor Http
-@inject Microsoft.Extensions.Localization.IStringLocalizerFactory Factory
-@{
-    var resources = Factory.Create("Resources", "App.Data");
-}
+@model WebApp.Models.DynamicTranslations.IndexVm
+
 
 <div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-bg-dark sticky-top"
      style="width:100%; height: calc(100vh - 56px); top: 56px;">
     <a asp-controller="Home" asp-action="Index" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <i class="bi bi-bag me-2" style="font-size:1.8rem;"></i>
-        <span class="fs-4">@resources["Heading_Shop"]</span>
+        <span class="fs-4">@Model.Value("Heading_Shop")</span>
     </a>
 
     <hr class="border-secondary" />
@@ -17,22 +15,22 @@
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
             <a class="nav-link text-white" asp-controller="Home" asp-action="Index">
-                <i class="bi bi-house-door me-2"></i> @resources["Navigation_Home"]
+                <i class="bi bi-house-door me-2"></i> @Model.Value("Navigation_Home")
             </a>
         </li>
         <li>
             <a class="nav-link text-white">
-                <i class="bi bi-speedometer2 me-2"></i> @resources["Navigation_Dashboard"]
+                <i class="bi bi-speedometer2 me-2"></i> @Model.Value("Navigation_Dashboard")
             </a>
         </li>
         <li>
             <a class="nav-link text-white">
-                <i class="bi bi-table me-2"></i> @resources["Navigation_Order"]
+                <i class="bi bi-table me-2"></i> @Model.Value("Navigation_Order")
             </a>
         </li>
         <li>
             <a class="nav-link text-white">
-                <i class="bi bi-grid me-2"></i> @resources["Navigation_Product"]
+                <i class="bi bi-grid me-2"></i> @Model.Value("Navigation_Product")
             </a>
         </li>
     </ul>
@@ -40,13 +38,13 @@
     <hr class="border-secondary" />
 
     <!-- Categories -->
-    <div class="text-uppercase text-secondary small mb-2">@resources["Heading_Categories"]</div>
+    <div class="text-uppercase text-secondary small mb-2">@Model.Value("Heading_Categories")</div>
     <ul class="nav nav-pills flex-column mb-3">
-        <li><a class="nav-link text-white" asp-route-slug="monitors"><i class="bi bi-display me-2"></i> @resources["Navigation_Category_Monitor"]</a></li>
-        <li><a class="nav-link text-white" asp-route-slug="laptops"><i class="bi bi-laptop me-2"></i> @resources["Navigation_Category_Laptop"]</a></li>
-        <li><a class="nav-link text-white" asp-route-slug="keyboards"><i class="bi bi-keyboard me-2"></i> @resources["Navigation_Category_Keyboard"]</a></li>
-        <li><a class="nav-link text-white" asp-route-slug="mice"><i class="bi bi-mouse me-2"></i> @resources["Navigation_Category_Mouse"]</a></li>
-        <li><a class="nav-link text-white" asp-route-slug="audio"><i class="bi bi-headphones me-2"></i> @resources["Navigation_Category_Headphones"]</a></li>
+        <li><a class="nav-link text-white" asp-route-slug="monitors"><i class="bi bi-display me-2"></i> @Model.Value("Navigation_Category_Monitor")</a></li>
+        <li><a class="nav-link text-white" asp-route-slug="laptops"><i class="bi bi-laptop me-2"></i> @Model.Value("Navigation_Category_Laptop")</a></li>
+        <li><a class="nav-link text-white" asp-route-slug="keyboards"><i class="bi bi-keyboard me-2"></i> @Model.Value("Navigation_Category_Keyboard")</a></li>
+        <li><a class="nav-link text-white" asp-route-slug="mice"><i class="bi bi-mouse me-2"></i> @Model.Value("Navigation_Category_Mouse")</a></li>
+        <li><a class="nav-link text-white" asp-route-slug="audio"><i class="bi bi-headphones me-2"></i> @Model.Value("Navigation_Category_Headphones")</a></li>
     </ul>
 
     <!-- Role-specific area -->
@@ -54,7 +52,7 @@
     {
         <div class="text-uppercase text-secondary small mb-2">Admin</div>
         <ul class="nav nav-pills flex-column mb-3">
-            <li><a class="nav-link text-white" asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer me-2"></i> Manage Translation</a></li>
+            <li><a class="nav-link text-white" asp-controller="AdminTranslations" asp-action="Index"><i class="bi bi-speedometer me-2"></i> Manage Translation</a></li>
         </ul>
     }
     else if (User.IsInRole(RoleType.Reviewer.ToString()))
@@ -69,6 +67,9 @@
         <div class="text-uppercase text-secondary small mb-2">Translator</div>
         <ul class="nav nav-pills flex-column mb-3">
             <li><a class="nav-link text-white" asp-controller="Translator" asp-action="MyLanguages"><i class="bi bi-translate me-2"></i> Language Selection</a></li>
+        </ul>
+        <ul class="nav nav-pills flex-column mb-3">
+            <li><a class="nav-link text-white" asp-controller="Translations" asp-action="Index"><i class="bi bi-translate me-2"></i> Translations</a></li>
         </ul>
     }
 </div>

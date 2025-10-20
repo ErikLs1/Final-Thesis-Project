@@ -1,21 +1,34 @@
 using System.Diagnostics;
+using System.Globalization;
+using App.Service.BllUow;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Models.DynamicTranslations;
 
 namespace WebApp.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly IAppBll _bll;
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IAppBll bll)
     {
         _logger = logger;
+        _bll = bll;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index(CancellationToken ct)
     {
-        return View();
+        var tag = HttpContext.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.Name
+                  ?? CultureInfo.CurrentUICulture.Name
+                  ?? "en";
+
+        var map = await _bll.UITranslationService.GetLiveTranslationsByLanguageTagAsync(tag, ct);
+
+        var vm = new IndexVm { LanguageTag = tag, Translation = map };
+        return View(vm);
     }
 
     public IActionResult Privacy()

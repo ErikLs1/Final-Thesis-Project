@@ -2,11 +2,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
-@inject Microsoft.Extensions.Localization.IStringLocalizerFactory Factory
-
-@{
-    var resources = Factory.Create("Resources", "App.Data");
-}
+@model WebApp.Models.DynamicTranslations.IndexVm
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
@@ -16,17 +12,17 @@
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">@resources["Navigation_Logout"]</button>
+                <button type="submit" class="nav-link btn btn-link text-dark">@Model.Value("Navigation_Logout")</button>
             </form>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">@resources["Navigation_Register"]</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">@Model.Value("Navigation_Register")</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">@resources["Navigation_Login"]</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">@Model.Value("Navigation_Login")</a>
         </li>
     }
 </ul>
