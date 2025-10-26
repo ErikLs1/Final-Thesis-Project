@@ -1,12 +1,10 @@
-﻿@model WebApp.Models.DynamicTranslations.IndexVm
-
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="mb-0">@Model.Value("Heading_Products")</h2>
+        <h2 class="mb-0">@Translation["Heading_Products"]</h2>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -20,8 +18,8 @@
                     <p class="card-text">Perfect for creators and students who need performance in a compact body.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0 d-grid gap-2">
-                    <a class="btn btn-primary">@Model.Value("Button_Product_Add_To_Cart")</a>
-                    <a class="btn btn-outline-secondary">@Model.Value("Button_Product_Details")</a>
+                    <a class="btn btn-primary">@Translation["Button_Product_Add_To_Cart"]</a>
+                    <a class="btn btn-outline-secondary">@Translation["Button_Product_Details"]</a>
                 </div>
             </div>
         </div>
@@ -35,8 +33,8 @@
                     <p class="card-text">Immersive sound with active noise cancelling and all-day comfort.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0 d-grid gap-2">
-                    <a class="btn btn-primary">@Model.Value("Button_Product_Add_To_Cart")</a>
-                    <a class="btn btn-outline-secondary">@Model.Value("Button_Product_Details")</a>
+                    <a class="btn btn-primary">@Translation["Button_Product_Add_To_Cart"]</a>
+                    <a class="btn btn-outline-secondary">@Translation["Button_Product_Details"]</a>
                 </div>
             </div>
         </div>
@@ -50,8 +48,8 @@
                     <p class="card-text">Crisp visuals and smooth motion — perfect for work and play.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0 d-grid gap-2">
-                    <a class="btn btn-primary">@Model.Value("Button_Product_Add_To_Cart")</a>
-                    <a class="btn btn-outline-secondary">@Model.Value("Button_Product_Details")</a>
+                    <a class="btn btn-primary">@Translation["Button_Product_Add_To_Cart"]</a>
+                    <a class="btn btn-outline-secondary">@Translation["Button_Product_Details"]</a>
                 </div>
             </div>
         </div>

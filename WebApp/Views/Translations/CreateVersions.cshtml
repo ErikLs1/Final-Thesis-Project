@@ -10,10 +10,6 @@
 {
     <div class="alert alert-danger">@err</div>
 }
-@if (TempData["Success"] is string ok)
-{
-    <div class="alert alert-success">@ok</div>
-}
 
 <form asp-action="CreateVersions" method="post">
     @Html.AntiForgeryToken()
@@ -25,12 +21,6 @@
                     asp-items="@(new SelectList(Model.LanguageOptions, "Id", "Display", Model.LanguageId))"
                     class="form-select">
             </select>
-        </div>
-        <div class="col-md-6 d-flex align-items-end">
-            <div class="form-check ms-auto">
-                <input type="checkbox" class="form-check-input" id="select_all" />
-                <label for="select_all" class="form-check-label">Select all</label>
-            </div>
         </div>
     </div>
 
@@ -53,7 +43,6 @@
                         <input type="hidden" asp-for="@Model.Items[i].ResourceKey" />
                         <input type="hidden" asp-for="@Model.Items[i].FriendlyKey" />
                         <div class="fw-semibold">@Model.Items[i].FriendlyKey</div>
-                        <div class="text-muted small">@Model.Items[i].ResourceKey</div>
                     </td>
                     <td class="text-muted">
                         @if (!string.IsNullOrWhiteSpace(Model.Items[i].DefaultContent))
@@ -89,31 +78,3 @@
     </div>
 </form>
 
-@section Scripts {
-    <script>
-        (function () {
-            const selectAll = document.getElementById('select_all');
-            const toggles = document.querySelectorAll('.include-toggle');
-
-            selectAll?.addEventListener('change', function () {
-                toggles.forEach(cb => {
-                    cb.checked = selectAll.checked;
-                    cb.dispatchEvent(new Event('change'));
-                });
-            });
-
-            document.querySelectorAll('.include-toggle').forEach(function (cb) {
-                cb.addEventListener('change', function () {
-                    const row = cb.closest('tr');
-                    const ta = row.querySelector('.content-box');
-                    if (cb.checked) {
-                        ta.removeAttribute('disabled');
-                    } else {
-                        ta.setAttribute('disabled', 'disabled');
-                    }
-                });
-                cb.dispatchEvent(new Event('change'));
-            });
-        })();
-    </script>
-}

@@ -2,7 +2,6 @@ using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Helpers;
-using WebApp.Models;
 using WebApp.Models.Translator.Languages;
 
 namespace WebApp.Controllers.Translator;
