@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using NRedisStack;
 using NRedisStack.RedisStackCommands;
 using StackExchange.Redis;
+using WebApp.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);//no redis
 
@@ -60,6 +61,7 @@ else
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IAppUow, AppUow>();
 builder.Services.AddScoped<ResxImportRepository>();
+builder.Services.AddScoped<IUITranslationsProvider, UITranslationsProvider>();
 builder.Services.AddScoped<IAppBll, AppBll>();
 builder.Services.AddHttpContextAccessor();
 
