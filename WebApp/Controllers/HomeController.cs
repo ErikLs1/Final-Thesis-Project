@@ -8,6 +8,7 @@ using WebApp.Models.DynamicTranslations;
 
 namespace WebApp.Controllers;
 
+// TODO: REFACTOR
 public class HomeController : Controller
 {
     private readonly IAppBll _bll;

@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Helpers;
-using WebApp.Models;
+using WebApp.Models.Shared;
+using WebApp.Models.Translator.Translations;
+using WebApp.Models.Translator.Versions;
 
 namespace WebApp.Controllers.Translator;
 
@@ -34,10 +36,7 @@ public class TranslationsController : Controller
         // Fallback if language not provided
         if (languageId == null)
         {
-            languageId = await _db.Languages
-                .Where(l => l.IsDefaultLanguage)
-                .Select(l => l.Id)
-                .SingleAsync();
+            languageId = await _bll.LanguageService.GetDefaultLanguageIdAsync();
         }
         
         // Get translations
@@ -50,14 +49,14 @@ public class TranslationsController : Controller
         {
             SelectedLanguageId = languageId,
             SelectedVersion = version,
-            Languages = userLanguages
-                .Select(l => new TranslationsIndexVm.LanguageOption
+            LanguageOptions = userLanguages
+                .Select(l => new LanguageOptionVm
                 {
                     Id = l.Id,
                     Display = l.DisplayValue
                 })
                 .ToList(),
-            Rows = translations.Select(d => new TranslationsIndexVm.Row
+            Rows = translations.Select(d => new TranslatorTranslationsRowVm
             {
                 ResourceKeyId = d.ResourceKeyId,
                 ResourceKey = d.ResourceKey,
@@ -76,7 +75,7 @@ public class TranslationsController : Controller
     {
         var languages = await _db.Languages
             .OrderBy(l => l.LanguageName)
-            .Select(l => new CreateVersionsVm.LanguageOption
+            .Select(l => new LanguageOptionVm
             {
                 Id = l.Id,
                 Display = $"{l.LanguageName} ({l.LanguageTag})"
@@ -85,24 +84,16 @@ public class TranslationsController : Controller
     
         if (languageId is null)
         {
-            languageId = await _db.Languages
-                .Where(l => l.IsDefaultLanguage)
-                .Select(l => l.Id)
-                .SingleAsync();
+            languageId = await _bll.LanguageService.GetDefaultLanguageIdAsync();
         }
-    
-        var defaultLangId = await _db.Languages
-            .Where(l => l.IsDefaultLanguage)
-            .Select(l => l.Id)
-            .SingleAsync();
     
         var rows = await _bll.UITranslationsVersionsService.GetDefaultLanguageTranslationsAsync();
     
         var vm = new CreateVersionsVm
         {
             LanguageId = languageId.Value,
-            Languages = languages,
-            Items = rows.Select(r => new CreateVersionsVm.Item
+            LanguageOptions = languages,
+            Items = rows.Select(r => new TranslatorCreateNewVersionItemVm
             {
                 ResourceKeyId = r.ResourceKeyId,
                 ResourceKey = r.ResourceKey,
@@ -121,9 +112,9 @@ public class TranslationsController : Controller
     {
         if (!ModelState.IsValid)
         {
-            vm.Languages = await _db.Languages
+            vm.LanguageOptions = await _db.Languages
                 .OrderBy(l => l.LanguageName)
-                .Select(l => new CreateVersionsVm.LanguageOption
+                .Select(l => new LanguageOptionVm
                 {
                     Id = l.Id,
                     Display = $"{l.LanguageName} ({l.LanguageTag})"

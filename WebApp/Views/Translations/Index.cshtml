@@ -1,4 +1,4 @@
-@model TranslationsIndexVm
+@model WebApp.Models.Translator.Translations.TranslationsIndexVm
 @{
     ViewData["Title"] = "Translations";
 }
@@ -8,7 +8,7 @@
     <div class="d-flex gap-2">
         <form method="get" class="d-flex gap-2">
             <select name="languageId" class="form-select">
-                @foreach (var l in Model.Languages)
+                @foreach (var l in Model.LanguageOptions)
                 {
                     <option value="@l.Id" selected="@(l.Id == Model.SelectedLanguageId ? "selected" : null)">
                         @l.Display
@@ -16,7 +16,7 @@
                 }
             </select>
             <input type="number" class="form-control" name="version" min="1"
-                   value="@(Model.SelectedVersion?.ToString() ?? "")" placeholder="Version (latest if empty)" />
+                   value="@(Model.SelectedVersion?.ToString() ?? "")" placeholder="Version" />
             <button type="submit" class="btn btn-outline-secondary">Filter</button>
         </form>
         <a asp-action="CreateVersions" asp-route-languageId="@Model.SelectedLanguageId" class="btn btn-primary">

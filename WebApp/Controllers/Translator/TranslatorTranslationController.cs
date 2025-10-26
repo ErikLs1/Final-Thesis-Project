@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Helpers;
 using WebApp.Models;
+using WebApp.Models.Translator.Languages;
 
 namespace WebApp.Controllers.Translator;
 
@@ -26,10 +27,19 @@ public class TranslatorTranslationController : Controller
         var selected = allLanguages
             .Where(l => userLanguages.Contains(l.Id))
             .OrderBy(l => l.Name)
-            .Select(l => new LanguageRow { Id = l.Id, Tag = l.Tag, Name = l.Name })
+            .Select(l => new TranslatorKnownLanguageRowVm
+            {
+                Id = l.Id, 
+                Tag = l.Tag, 
+                Name = l.Name
+            })
             .ToList();
 
-        var vm = new MyLanguagesVm { Selected = selected };
+        var vm = new TranslatorMyLanguagesVm
+        {
+            Selected = selected 
+        };
+        
         return View(vm);
     }
     
@@ -41,9 +51,9 @@ public class TranslatorTranslationController : Controller
         var allLanguages = await _bll.LanguageService.GetAllLanguages();
         var userLanguages = await _bll.UserLanguageService.GetUserLanguageIdsAsync(userId);
 
-        var vm = new TranslatorLanguagesVm
+        var vm = new TranslatorLanguagesSelectionVm
         {
-            Languages = allLanguages.Select(x => new LanguageVmDto
+            Languages = allLanguages.Select(x => new TranslatorLanguageSelectionItemVm
             {
                 Id = x.Id,
                 Display = $"{x.Name} ({x.Tag})",
@@ -56,10 +66,13 @@ public class TranslatorTranslationController : Controller
     
     // SELECTION PAGE
     [HttpPost]
-    public async Task<IActionResult> Languages(TranslatorLanguagesVm vm)
+    public async Task<IActionResult> Languages(TranslatorLanguagesSelectionVm vm)
     {
         var userId = User.GetUserId();
-        var selectedLanguages = vm.Languages.Where(x => x.Selected).Select(x => x.Id);
+        var selectedLanguages = vm.Languages
+            .Where(x => x.Selected)
+            .Select(x => x.Id);
+        
         await _bll.UserLanguageService.UpdateUserLanguagesAsync(userId, selectedLanguages);
         
         TempData["Success"] = "Languages were successfully saved.";

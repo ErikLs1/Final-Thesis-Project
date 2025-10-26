@@ -17,4 +17,9 @@ public class LanguageService : ILanguageService
     {
         return _uow.LanguageRepository.GetAllLanguagesAsync();
     }
+
+    public Task<Guid> GetDefaultLanguageIdAsync()
+    {
+        return _uow.LanguageRepository.GetDefaultLanguageIdAsync();
+    }
 }

@@ -1,4 +1,4 @@
-@model WebApp.Models.CreateVersionsVm
+@model WebApp.Models.Translator.Versions.CreateVersionsVm
 
 @{
     ViewData["Title"] = "Create new translation versions";
@@ -22,7 +22,7 @@
         <div class="col-md-6">
             <label class="form-label">Target language</label>
             <select asp-for="LanguageId"
-                    asp-items="@(new SelectList(Model.Languages, "Id", "Display", Model.LanguageId))"
+                    asp-items="@(new SelectList(Model.LanguageOptions, "Id", "Display", Model.LanguageId))"
                     class="form-select">
             </select>
         </div>
