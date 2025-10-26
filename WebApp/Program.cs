@@ -9,29 +9,19 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-
-/////////// REDIS ////////////
 using NRedisStack;
 using NRedisStack.RedisStackCommands;
 using StackExchange.Redis;
 using WebApp.Helpers;
+using WebApp.Redis.Client;
+using WebApp.Redis.Client.Impl;
+using WebApp.Redis.Services;
+using WebApp.Redis.Services.Impl;
 
-var builder = WebApplication.CreateBuilder(args);//no redis
 
-ConfigurationOptions conf = new ConfigurationOptions {
-    EndPoints = { "localhost:6379" },
-    User = "yourUsername",
-    Password = "yourPassword"
-};
+var builder = WebApplication.CreateBuilder(args);
 
-ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(conf);
-IDatabase db = redis.GetDatabase();
-
-db.StringSet("foo", "bar");
-Console.WriteLine(db.StringGet("foo"));
-/////////// REDIS ////////////
-
-// Add services to the container.
+// PostgreSQL Database connection
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
@@ -58,11 +48,16 @@ else
             .EnableSensitiveDataLogging()
     );
 }
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IAppUow, AppUow>();
 builder.Services.AddScoped<ResxImportRepository>();
-builder.Services.AddScoped<IUITranslationsProvider, UITranslationsProvider>();
 builder.Services.AddScoped<IAppBll, AppBll>();
+
+// Redis Database Connection - https://redis.io/docs/latest/develop/clients/dotnet/connect/
+builder.Services.AddSingleton<IRedisClient, RedisClient>();
+builder.Services.AddScoped<IRedisTranslationService, RedisTranslationService>();
+builder.Services.AddScoped<IUITranslationsProvider, UITranslationsProvider>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(o => o.SignIn.RequireConfirmedAccount = false)

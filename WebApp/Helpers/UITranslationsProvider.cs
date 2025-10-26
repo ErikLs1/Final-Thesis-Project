@@ -1,20 +1,20 @@
 using System.Globalization;
-using App.Service.BllUow;
 using Microsoft.AspNetCore.Localization;
+using WebApp.Redis.Services;
 
 namespace WebApp.Helpers;
 
 public class UITranslationsProvider : IUITranslationsProvider 
 {
-    private readonly IAppBll _bll;
+    private readonly IRedisTranslationService _redisTranslation;
     private readonly IHttpContextAccessor _http;
 
     private Dictionary<string, string>? _map;
     public string LanguageTag { get; }
 
-    public UITranslationsProvider(IAppBll bll, IHttpContextAccessor http)
+    public UITranslationsProvider(IRedisTranslationService redisTranslation, IHttpContextAccessor http)
     {
-        _bll = bll;
+        _redisTranslation = redisTranslation;
         _http = http;
 
         LanguageTag =
@@ -35,8 +35,9 @@ public class UITranslationsProvider : IUITranslationsProvider
     {
         if (_map != null) return;
         
-        _map = _bll.UITranslationService
-            .GetLiveTranslationsByLanguageTagAsync(LanguageTag)
-            .GetAwaiter().GetResult();
+        _map = _redisTranslation
+            .GetTranslationsAsync(LanguageTag)
+            .GetAwaiter()
+            .GetResult();
     }
 }

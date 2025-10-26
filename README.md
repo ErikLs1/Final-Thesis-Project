@@ -18,3 +18,11 @@ values
 (false, 'Eeesti (Eesti)', 'et-EE'),
 (false, 'Русский', 'ru');
 ~~~
+
+
+REDIS HASHES
+
+[SOME OPERATION (GET/SET)] [HASH KEY] [KEY] [VALUE] [KEY] [VALUE] ETC.
+HSET UI:TRANSLATION:EN translation_key translation_value
+
+On application start we insert all the keys but then after then later when we have tu update something or something is missing we perform and update only specific keys.
