@@ -11,15 +11,6 @@
         @ok
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-
-    <script>
-        setTimeout(function () {
-            var el = document.getElementById('saveAlert');
-            if (!el) return;
-            var alert = bootstrap.Alert.getOrCreateInstance(el);
-            alert.close();
-        }, 3000);
-    </script>
 }
 
 @if (!Model.HasAny)

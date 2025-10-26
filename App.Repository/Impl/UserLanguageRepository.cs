@@ -1,5 +1,6 @@
 using App.Domain.Identity;
 using App.EF;
+using App.Repository.DTO;
 using App.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,20 @@ public class UserLanguageRepository : IUserLanguageRepository
         return await _db.UserLanguages
             .Where(x => x.UserId == userId)
             .Select(x => x.LanguageId)
+            .ToListAsync();
+    }
+
+    public async Task<IReadOnlyList<UserKnownLanguagesDto>> GetUserKnownLanguagesAsync(Guid userId)
+    {
+        return await _db.UserLanguages
+            .Where(x => x.UserId == userId)
+            .Select(x => new UserKnownLanguagesDto
+            {
+                Id = x.LanguageId,
+                LanguageName = x.Language.LanguageTag,
+                LanguageTag = x.Language.LanguageTag,
+            })
+            .OrderBy(x => x.LanguageName)
             .ToListAsync();
     }
 

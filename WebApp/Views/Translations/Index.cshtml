@@ -29,7 +29,7 @@
     <thead>
         <tr>
             <th style="width:40%">Resource key</th>
-            <th>Content (@Model.Rows.FirstOrDefault()?.LanguageTag ?? "")</th>
+            <th>Content(@Model.Rows.FirstOrDefault()?.LanguageTag)</th>
             <th class="text-end" style="width:10%">Version</th>
         </tr>
     </thead>
@@ -47,7 +47,7 @@
             <tr>
                 <td>
                     <div class="fw-semibold">@r.FriendlyKey</div>
-                    <div class="text-muted small">@r.ResourceKey</div>
+                    @* <div class="text-muted small">@r.ResourceKey</div> *@
                 </td>
                 <td>@(string.IsNullOrWhiteSpace(r.Content) ? Html.Raw("<span class=\"text-muted\">—</span>") : r.Content)</td>
                 <td class="text-end">@((r.VersionNumber is null) ? Html.Raw("<span class=\"text-muted\">—</span>") : r.VersionNumber)</td>

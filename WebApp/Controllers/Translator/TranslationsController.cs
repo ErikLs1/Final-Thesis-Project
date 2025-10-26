@@ -4,6 +4,7 @@ using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Helpers;
 using WebApp.Models;
 
 namespace WebApp.Controllers.Translator;
@@ -23,16 +24,14 @@ public class TranslationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(Guid? languageId, int? version)
     {
-        var languages = await _db.Languages
-            .AsNoTracking()
-            .OrderBy(l => l.LanguageName)
-            .Select(l => new TranslationsIndexVm.LanguageOption
-            {
-                Id = l.Id,
-                Display = $"{l.LanguageName} ({l.LanguageTag})"
-            })
-            .ToListAsync();
+        var userId = User.GetUserId();
         
+        // Get user known languages
+        var userLanguages = await _bll
+            .UserLanguageService
+            .GetUserKnownLanguagesAsync(userId);
+
+        // Fallback if language not provided
         if (languageId == null)
         {
             languageId = await _db.Languages
@@ -40,16 +39,25 @@ public class TranslationsController : Controller
                 .Select(l => l.Id)
                 .SingleAsync();
         }
-
-        // Fetch rows via your repository (latest per key when version == null)
-        var rowsDto = await _bll.UITranslationsVersionsService.GetFilteredTranslationsAsync(languageId, version);
-
+        
+        // Get translations
+        var translations = await _bll
+            .UITranslationsVersionsService
+            .GetFilteredTranslationsAsync(languageId, version);
+        
+        // Build vm
         var vm = new TranslationsIndexVm
         {
             SelectedLanguageId = languageId,
             SelectedVersion = version,
-            Languages = languages,
-            Rows = rowsDto.Select(d => new TranslationsIndexVm.Row
+            Languages = userLanguages
+                .Select(l => new TranslationsIndexVm.LanguageOption
+                {
+                    Id = l.Id,
+                    Display = l.DisplayValue
+                })
+                .ToList(),
+            Rows = translations.Select(d => new TranslationsIndexVm.Row
             {
                 ResourceKeyId = d.ResourceKeyId,
                 ResourceKey = d.ResourceKey,
@@ -63,7 +71,7 @@ public class TranslationsController : Controller
         return View(vm);
     }
     
-        [HttpGet]
+    [HttpGet]
     public async Task<IActionResult> CreateVersions(Guid? languageId)
     {
         var languages = await _db.Languages
@@ -74,7 +82,7 @@ public class TranslationsController : Controller
                 Display = $"{l.LanguageName} ({l.LanguageTag})"
             })
             .ToListAsync();
-
+    
         if (languageId is null)
         {
             languageId = await _db.Languages
@@ -82,14 +90,14 @@ public class TranslationsController : Controller
                 .Select(l => l.Id)
                 .SingleAsync();
         }
-
+    
         var defaultLangId = await _db.Languages
             .Where(l => l.IsDefaultLanguage)
             .Select(l => l.Id)
             .SingleAsync();
-
+    
         var rows = await _bll.UITranslationsVersionsService.GetDefaultLanguageTranslationsAsync();
-
+    
         var vm = new CreateVersionsVm
         {
             LanguageId = languageId.Value,
@@ -104,10 +112,10 @@ public class TranslationsController : Controller
                 Content = null  
             }).ToList()
         };
-
+    
         return View(vm);
     }
-
+    
     [HttpPost]
     public async Task<IActionResult> CreateVersions(CreateVersionsVm vm)
     {
@@ -121,31 +129,31 @@ public class TranslationsController : Controller
                     Display = $"{l.LanguageName} ({l.LanguageTag})"
                 })
                 .ToListAsync();
-
+    
             return View(vm);
         }
-
+    
         var chosen = vm.Items.Where(i => i.Include).ToList();
         if (chosen.Count == 0)
         {
             TempData["Error"] = "Select at least one resource key.";
             return RedirectToAction(nameof(CreateVersions), new { languageId = vm.LanguageId });
         }
-
+    
         var keyIds = chosen.Select(i => i.ResourceKeyId).ToList();
         var contentMap = chosen.ToDictionary(i => i.ResourceKeyId, i => i.Content ?? string.Empty);
-
+    
         var createdBy = User?.Identity?.Name ?? "system";
-
+    
         var req = new CreateVersionRequestDto(
             vm.LanguageId,
             keyIds,
             contentMap,
             createdBy
         );
-
+    
         await _bll.UITranslationsVersionsService.CreateTranslationVersionsAsync(req);
-
+    
         TempData["Success"] = $"Created {keyIds.Count} new version(s).";
         return RedirectToAction(nameof(Index), new { languageId = vm.LanguageId });
     }

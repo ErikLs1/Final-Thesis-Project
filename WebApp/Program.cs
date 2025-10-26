@@ -106,6 +106,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 
+// RESX Import. TODO: Change Import logic later
 var importOnStartup = builder.Configuration.GetValue<bool>("Resx:ImportOnStartup");
 var resxFolder = builder.Configuration.GetValue<string>("Resx:Folder");
 

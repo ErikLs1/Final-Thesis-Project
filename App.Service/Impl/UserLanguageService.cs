@@ -18,6 +18,11 @@ public class UserLanguageService : IUserLanguageService
         return _uow.UserLanguageRepository.GetLanguageIdsByUserAsync(userId);
     }
 
+    public Task<IReadOnlyList<UserKnownLanguagesDto>> GetUserKnownLanguagesAsync(Guid userId)
+    {
+        return _uow.UserLanguageRepository.GetUserKnownLanguagesAsync(userId);
+    }
+
     public Task UpdateUserLanguagesAsync(Guid userId, IEnumerable<Guid> languageIds)
     {
         return _uow.UserLanguageRepository.UpdateUserLanguagesAsync(userId, languageIds);
