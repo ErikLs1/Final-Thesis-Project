@@ -16,7 +16,6 @@
             <dt class="col-sm-3">Resource key</dt>
             <dd class="col-sm-9">
                 <div class="fw-semibold">@Model.FriendlyKey</div>
-                <div class="text-muted small">@Model.ResourceKey</div>
             </dd>
 
             <dt class="col-sm-3">Version</dt>
@@ -72,7 +71,7 @@
             TranslationState.WaitingReview  => ("bg-warning text-dark", "Waiting review"),
             TranslationState.Approved => ("bg-success", "Approved"),
             TranslationState.Rejected => ("bg-danger", "Rejected"),
-            TranslationState.Archived => ("bg-dark", "Archived"),
+            TranslationState.Depricated => ("bg-dark", "Archived"),
             _ => ("bg-light text-dark", state.ToString())
         };
         return $"<span class=\"badge {cls}\">{txt}</span>";

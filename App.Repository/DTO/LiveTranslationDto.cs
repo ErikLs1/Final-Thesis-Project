@@ -11,7 +11,5 @@ public record LiveTranslationDto(
     Guid TranslationVersionId,
     int VersionNumber,
     string Content,
-    TranslationState TranslationState,
-    DateTime PublishedAt,
-    string PublishedBy
+    TranslationState TranslationState
 );

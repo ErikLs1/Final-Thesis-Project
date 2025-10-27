@@ -142,7 +142,6 @@ public class TranslationsController : Controller
         
         if (chosenTranslations.Count == 0)
         {
-            TempData["Error"] = "Select at least one resource key.";
             return RedirectToAction(nameof(CreateVersions), new { languageId = vm.LanguageId });
         }
     

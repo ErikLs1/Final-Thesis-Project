@@ -1,4 +1,4 @@
-@model AdminTranslationsIndexVm
+@model WebApp.Models.Admin.Translations.AdminTranslationsIndexVm
 @using App.Domain.Enum
 
 @{
@@ -7,14 +7,52 @@
 
 <h2 class="mb-3">@ViewData["Title"]</h2>
 
-@if (TempData["Error"] is string err)
-{
-    <div class="alert alert-danger">@err</div>
-}
-@if (TempData["Success"] is string ok)
-{
-    <div class="alert alert-success">@ok</div>
-}
+<form method="get" class="row g-2 align-items-end mb-4">
+    <div class="col-md-4">
+        <label class="form-label">Language</label>
+        <select name="languageId" class="form-select">
+            @foreach (var lang in Model.LanguageOptions)
+            {
+                <option value="@lang.Id" elected="@(Model.SelectedLanguageId.HasValue && Model.SelectedLanguageId.Value == lang.Id
+                                                      ? "selected"
+                                                      : null)">
+                    @lang.Display
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">Version</label>
+        <input type="number"
+               class="form-control"
+               name="version"
+               min="1"
+               value="@(Model.SelectedVersion?.ToString() ?? "")"
+               placeholder="Any" />
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label">State</label>
+        <select name="state" class="form-select">
+            <option value="">All states</option>
+            @foreach (TranslationState st in Enum.GetValues(typeof(TranslationState)))
+            {
+                <option value="@st"
+                        selected="@(Model.SelectedState.HasValue && Model.SelectedState.Value == st
+                            ? "selected"
+                            : null)">
+                    @st
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-2 d-grid">
+        <button type="submit" class="btn btn-outline-secondary">Filter</button>
+    </div>
+</form>
+
 
 <table class="table table-sm align-middle">
     <thead>
@@ -40,10 +78,11 @@
                 <td>@r.LanguageTag</td>
                 <td>
                     <div class="fw-semibold">@r.FriendlyKey</div>
-                    <div class="text-muted small">@r.ResourceKey</div>
                 </td>
                 <td class="text-truncate" style="max-width: 520px;">
-                    @(!string.IsNullOrWhiteSpace(r.Content) ? r.Content : Html.Raw("<span class=\"text-muted\">—</span>"))
+                    @(!string.IsNullOrWhiteSpace(r.Content)
+                        ? r.Content
+                        : Html.Raw("<span class=\"text-muted\">—</span>"))
                 </td>
                 <td class="text-end">@r.VersionNumber</td>
                 <td>
@@ -53,7 +92,7 @@
                     <a asp-action="ChangeState"
                        asp-route-versionId="@r.TranslationVersionId"
                        class="btn btn-sm btn-outline-primary">
-                       Change state
+                        Change state
                     </a>
                 </td>
             </tr>
@@ -63,18 +102,16 @@
 </table>
 
 @functions{
-    // Map your enum to colorful Bootstrap badges
     private static string StateBadge(TranslationState state)
     {
-        // Adjust mapping to your actual enum names
         var (cls, txt) = state switch
         {
-            TranslationState.Published          => ("bg-secondary", "Published"),
+            TranslationState.Published      => ("bg-secondary", "Published"),
             TranslationState.WaitingReview  => ("bg-warning text-dark", "Waiting review"),
             TranslationState.Approved       => ("bg-success", "Approved"),
             TranslationState.Rejected       => ("bg-danger", "Rejected"),
-            TranslationState.Archived       => ("bg-dark", "Archived"),
-            _                               => ("bg-light text-dark", state.ToString())
+            TranslationState.Depricated     => ("bg-dark", "Archived"),
+            _                                => ("bg-light text-dark", state.ToString())
         };
         return $"<span class=\"badge {cls}\">{txt}</span>";
     }

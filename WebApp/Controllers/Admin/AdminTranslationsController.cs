@@ -1,7 +1,10 @@
+using App.Domain.Enum;
 using App.EF;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
+using WebApp.Models.Admin.Translations;
+using WebApp.Models.Shared;
 
 namespace WebApp.Controllers.Admin;
 
@@ -15,14 +18,53 @@ public class AdminTranslationsController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> Index(Guid? languageId)
+    public async Task<IActionResult> Index(Guid? languageId, int? version, TranslationState? state)
     {
-        var rows = await _bll.UITranslationService.GetLiveTranslationsAsync(languageId);
+        // Get all languages
+        var allLanguages = await _bll
+            .LanguageService
+            .GetAllLanguages();
+        
+        // Get default language
+        var defaultLanguage = await _bll
+            .LanguageService
+            .GetDefaultLanguageIdAsync();
+        
+        
+        var liveTranslations = await _bll
+            .UITranslationService
+            .GetLiveTranslationsAsync(languageId);
 
+        if (version.HasValue)
+        {
+            liveTranslations = liveTranslations
+                .Where(r => r.VersionNumber == version.Value)
+                .ToList();
+        }
+        
+        if (state.HasValue)
+        {
+            liveTranslations = liveTranslations
+                .Where(r => r.TranslationState == state.Value)
+                .ToList();
+        }
+        
+        var languageOptions = allLanguages
+            .OrderBy(l => l.Name)
+            .Select(l => new LanguageOptionVm
+            {
+                Id = l.Id,
+                Display = $"{l.Name} ({l.Tag})",
+                LanguageName = l.Name,
+                LanguageTag = l.Tag,
+            })
+            .ToList();
+        
         var vm = new AdminTranslationsIndexVm
         {
             SelectedLanguageId = languageId,
-            Rows = rows.Select(r => new AdminTranslationsIndexVm.Row
+            LanguageOptions = languageOptions,
+            Rows = liveTranslations.Select(r => new AdminTranslationsIndexRowVm
             {
                 TranslationVersionId = r.TranslationVersionId,
                 LanguageTag = r.LanguageTag,
@@ -30,9 +72,7 @@ public class AdminTranslationsController : Controller
                 FriendlyKey = r.FriendlyKey,
                 VersionNumber = r.VersionNumber,
                 Content = r.Content,
-                TranslationState = r.TranslationState,
-                PublishedAt = r.PublishedAt,
-                PublishedBy = r.PublishedBy
+                TranslationState = r.TranslationState
             }).ToList()
         };
 
@@ -76,7 +116,6 @@ public class AdminTranslationsController : Controller
         var changed = await _bll.UITranslationService.UpdateTranslationStateAsync(req);
         if (changed == 0)
         {
-            TempData["Error"] = "Update failed. The version may no longer exist.";
             return RedirectToAction(nameof(Index));
         }
 

@@ -57,17 +57,15 @@ public class UITranslationRepository : IUITranslationRepository
                 verMap.TryGetValue(x.TranslationVersionId, out var vinfo);
 
                 return new LiveTranslationDto(
-                    LanguageId: x.LanguageId,
-                    LanguageTag: langTag,
-                    ResourceKeyId: x.ResourceKeyId,
-                    ResourceKey: keyStr,
-                    FriendlyKey: frKey,
-                    TranslationVersionId: x.TranslationVersionId,
-                    VersionNumber: vinfo?.VersionNumber ?? 0,
-                    Content: vinfo?.Content ?? "",
-                    TranslationState: vinfo?.TranslationState ?? default,
-                    PublishedAt: x.PublishedAt,
-                    PublishedBy: x.PublishedBy
+                    x.LanguageId,
+                    langTag,
+                    x.ResourceKeyId,
+                    keyStr,
+                    frKey,
+                    x.TranslationVersionId,
+                    vinfo?.VersionNumber ?? 0,
+                    vinfo?.Content ?? "",
+                    vinfo?.TranslationState ?? default
                 );
             })
             .OrderBy(r => r.LanguageTag)

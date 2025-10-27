@@ -3,24 +3,24 @@
 @{
     ViewData["Title"] = "Create new translation versions";
 }
+@{
+    var currentLang = Model.LanguageOptions
+        .FirstOrDefault(l => l.Id == Model.LanguageId)?.Display;
+}
 
 <h2 class="mb-3">@ViewData["Title"]</h2>
 
-@if (TempData["Error"] is string err)
-{
-    <div class="alert alert-danger">@err</div>
-}
-
 <form asp-action="CreateVersions" method="post">
-    @Html.AntiForgeryToken()
-
     <div class="row g-3 mb-3">
-        <div class="col-md-6">
-            <label class="form-label">Target language</label>
-            <select asp-for="LanguageId"
-                    asp-items="@(new SelectList(Model.LanguageOptions, "Id", "Display", Model.LanguageId))"
-                    class="form-select">
-            </select>
+        <div class="col-md-12">
+            <label class="form-label fw-semibold">
+                Currently you create translations for
+                <span class="badge bg-primary" style="font-size: 0.95rem;">
+                    @currentLang
+                </span>
+            </label>
+
+            <input type="hidden" asp-for="LanguageId" />
         </div>
     </div>
 
@@ -28,10 +28,9 @@
         <table class="table table-sm align-middle">
             <thead>
                 <tr>
-                    <th style="width:32%">Resource key</th>
-                    <th style="width:33%">Default content (for reference)</th>
-                    <th>New content</th>
-                    <th class="text-center" style="width:8%">Include</th>
+                    <th style="width:200px">Resource key</th>
+                    <th style="width:200px">New content</th>
+                    <th class="text-center" style="width:200px">Include</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,16 +42,6 @@
                         <input type="hidden" asp-for="@Model.Items[i].ResourceKey" />
                         <input type="hidden" asp-for="@Model.Items[i].FriendlyKey" />
                         <div class="fw-semibold">@Model.Items[i].FriendlyKey</div>
-                    </td>
-                    <td class="text-muted">
-                        @if (!string.IsNullOrWhiteSpace(Model.Items[i].DefaultContent))
-                        {
-                            @Model.Items[i].DefaultContent
-                        }
-                        else
-                        {
-                            @Html.Raw("<span class=\"text-muted\">—</span>")
-                        }
                     </td>
                     <td>
                         <textarea class="form-control content-box"
