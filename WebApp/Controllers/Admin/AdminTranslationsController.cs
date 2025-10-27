@@ -1,5 +1,6 @@
 using App.Domain.Enum;
 using App.EF;
+using App.Repository.DTO.UITranslations;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models;
@@ -29,25 +30,20 @@ public class AdminTranslationsController : Controller
         var defaultLanguage = await _bll
             .LanguageService
             .GetDefaultLanguageIdAsync();
+        if (languageId == null)
+        {
+            languageId = defaultLanguage;
+        }
         
+        var request = new FilteredTranslationsRequestDto(
+            languageId.Value,
+            version,
+            state
+        );
         
-        var liveTranslations = await _bll
+        var filteredTranslations = await _bll
             .UITranslationService
-            .GetLiveTranslationsAsync(languageId);
-
-        if (version.HasValue)
-        {
-            liveTranslations = liveTranslations
-                .Where(r => r.VersionNumber == version.Value)
-                .ToList();
-        }
-        
-        if (state.HasValue)
-        {
-            liveTranslations = liveTranslations
-                .Where(r => r.TranslationState == state.Value)
-                .ToList();
-        }
+            .GetFilteredUITranslationsAsync(request);
         
         var languageOptions = allLanguages
             .OrderBy(l => l.Name)
@@ -64,7 +60,7 @@ public class AdminTranslationsController : Controller
         {
             SelectedLanguageId = languageId,
             LanguageOptions = languageOptions,
-            Rows = liveTranslations.Select(r => new AdminTranslationsIndexRowVm
+            Rows = filteredTranslations.Select(r => new AdminTranslationsIndexRowVm
             {
                 TranslationVersionId = r.TranslationVersionId,
                 LanguageTag = r.LanguageTag,

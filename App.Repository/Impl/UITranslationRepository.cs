@@ -1,5 +1,6 @@
 using App.EF;
 using App.Repository.DTO;
+using App.Repository.DTO.UITranslations;
 using App.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -102,6 +103,64 @@ public class UITranslationRepository : IUITranslationRepository
             select new { rk.ResourceKey, v.Content };
 
         return await query.ToDictionaryAsync(x => x.ResourceKey, x => x.Content);
+    }
+
+    public async Task<IReadOnlyList<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(FilteredTranslationsRequestDto request)
+    {
+        var translations = await _db.UITranslationVersions
+            .Where(x => x.LanguageId == request.LanguageId)
+            .Select(x => new
+            {
+                x.LanguageId,
+                x.Language.LanguageTag,
+                x.ResourceKeyId,
+                x.UIResourceKeys.ResourceKey,
+                x.Id,
+                x.VersionNumber,
+                x.Content,
+                x.TranslationState
+            })
+            .ToListAsync();
+
+        if (translations.Count == 0)
+        {
+            return [];
+        }
+
+        if (request.VersionNumber.HasValue)
+        {
+            translations = translations
+                .Where(x => x.VersionNumber == request.VersionNumber.Value)
+                .ToList();
+        }
+        
+        if (request.State.HasValue)
+        {
+            translations = translations
+                .Where(x => x.TranslationState == request.State.Value)
+                .ToList();
+        }
+
+        var result = new List<FilteredUITranslationsDto>();
+        
+        foreach (var x in translations)
+        {
+            var friendly = ConvertToUserFriendlyString(x.ResourceKey ?? string.Empty);
+
+            result.Add(new FilteredUITranslationsDto(
+                x.LanguageId,
+                x.LanguageTag ?? string.Empty,
+                x.ResourceKeyId,
+                x.ResourceKey ?? string.Empty,
+                friendly,
+                x.Id,
+                x.VersionNumber,
+                x.Content ?? string.Empty,
+                x.TranslationState
+            ));
+        }
+
+        return result;
     }
 
     private static string ConvertToUserFriendlyString(string key)

@@ -13,7 +13,7 @@
         <select name="languageId" class="form-select">
             @foreach (var lang in Model.LanguageOptions)
             {
-                <option value="@lang.Id" elected="@(Model.SelectedLanguageId.HasValue && Model.SelectedLanguageId.Value == lang.Id
+                <option value="@lang.Id" selected="@(Model.SelectedLanguageId.HasValue && Model.SelectedLanguageId.Value == lang.Id
                                                       ? "selected"
                                                       : null)">
                     @lang.Display

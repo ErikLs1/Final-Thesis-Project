@@ -1,5 +1,6 @@
 using App.Repository.DalUow;
 using App.Repository.DTO;
+using App.Repository.DTO.UITranslations;
 using App.Service.Interface;
 
 namespace App.Service.Impl;
@@ -26,5 +27,10 @@ public class UITranslationService : IUITranslationService
     public async Task<Dictionary<string, string>> GetLiveTranslationsByLanguageTagAsync(string languageTag)
     {
         return await _uow.UITranslationRepository.GetLiveTranslationsByLanguageTagAsync(languageTag);
+    }
+
+    public async Task<IReadOnlyList<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(FilteredTranslationsRequestDto request)
+    {
+        return await _uow.UITranslationRepository.GetFilteredUITranslationsAsync(request);
     }
 }
