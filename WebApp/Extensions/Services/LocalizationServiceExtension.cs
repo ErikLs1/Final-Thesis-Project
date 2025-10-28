@@ -13,7 +13,7 @@ public static class LocalizationServiceExtension
         IConfiguration configuration)
     {
         // get localization options
-        services.Configure<LocalizationOptions>(
+        services.Configure<AppLocalizationOptions>(
             configuration.GetSection("Localization")
         );
         
@@ -31,7 +31,7 @@ public static class LocalizationServiceExtension
             return new ConfigureOptions<RequestLocalizationOptions>(options =>
             {
                 var localizationOptions = x
-                    .GetRequiredService<IOptions<LocalizationOptions>>()
+                    .GetRequiredService<IOptions<AppLocalizationOptions>>()
                     .Value;
 
                 var defaultCulture = string.IsNullOrWhiteSpace(localizationOptions.DefaultCulture)
