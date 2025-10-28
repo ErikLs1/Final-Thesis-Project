@@ -1,4 +1,4 @@
-namespace App.Repository.Impl.ResxImport;
+namespace WebApp.Extensions.Configuration;
 
 public class ResxImportOptions
 {

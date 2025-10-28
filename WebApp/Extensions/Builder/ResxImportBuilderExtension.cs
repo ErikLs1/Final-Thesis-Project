@@ -1,9 +1,10 @@
 using App.Repository.Impl.ResxImport;
 using Microsoft.Extensions.Options;
+using WebApp.Extensions.Configuration;
 
-namespace WebApp.Extensions;
+namespace WebApp.Extensions.Builder;
 
-public static class ResxImportExtension
+public static class ResxImportBuilderExtension
 {
     public static async Task RunResxImportAsync(this WebApplication app)
     {
