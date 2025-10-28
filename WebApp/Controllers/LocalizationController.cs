@@ -17,7 +17,6 @@ public class LocalizationController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult SetLanguage(string culture, string returnUrl = "/")
     {
-        // allow only configured cultures
         var allowed = _options.SupportedUICultures?.Any(c =>
             string.Equals(c.Name, culture, StringComparison.OrdinalIgnoreCase)) == true;
 

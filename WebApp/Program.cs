@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using WebApp.Extensions;
 using WebApp.Helpers;
 using WebApp.Redis.Client;
 using WebApp.Redis.Client.Impl;
@@ -46,17 +47,19 @@ else
     );
 }
 
+// UOW, BLL, ETC.
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IAppUow, AppUow>();
 builder.Services.AddScoped<ResxImportRepository>();
 builder.Services.AddScoped<IAppBll, AppBll>();
 
-// Redis Database Connection - https://redis.io/docs/latest/develop/clients/dotnet/connect/
+// REDIS- https://redis.io/docs/latest/develop/clients/dotnet/connect/
 builder.Services.AddSingleton<IRedisClient, RedisClient>();
 builder.Services.AddScoped<IRedisTranslationService, RedisTranslationService>();
 builder.Services.AddScoped<IUITranslationsProvider, UITranslationsProvider>();
 builder.Services.AddHttpContextAccessor();
 
+// IDENTITY
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(o => o.SignIn.RequireConfirmedAccount = false)
     .AddDefaultUI()
     .AddEntityFrameworkStores<AppDbContext>()
@@ -73,6 +76,7 @@ builder.Services.AddRazorPages();
 
 // TODO: REFACTOR - LOCALIZATION CONFIG
 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization/make-content-localizable?view=aspnetcore-9.0
+// LOCALIZATION CONFIG
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services
     .AddMvc()
@@ -105,19 +109,16 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 
-// RESX Import. TODO: REFACTOR - RESX IMPORT PIPELINE
-var importOnStartup = builder.Configuration.GetValue<bool>("Resx:ImportOnStartup");
-var resxFolder = builder.Configuration.GetValue<string>("Resx:Folder");
+// RESX IMPORT CONFIG
+builder.Services.Configure<ResxImportOptions>(
+    builder.Configuration.GetSection("Resx")
+);
+builder.Services.AddScoped<ResxImportRepository>();
 
 var app = builder.Build();
 
-if (importOnStartup && !string.IsNullOrWhiteSpace(resxFolder))
-{
-    using var scope = app.Services.CreateScope();
-    var importer = scope.ServiceProvider.GetRequiredService<ResxImportRepository>();
-    await importer.ImportFirstTranslationVersionAsync(resxFolder);
-    await importer.InialUITranslationsImportAsync("resx-import");
-}
+// RESX IMPORT PIPELINE
+await app.RunResxImportAsync();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

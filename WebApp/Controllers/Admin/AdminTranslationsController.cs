@@ -3,7 +3,6 @@ using App.EF;
 using App.Repository.DTO.UITranslations;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.Models;
 using WebApp.Models.Admin.Translations;
 using WebApp.Models.Shared;
 
