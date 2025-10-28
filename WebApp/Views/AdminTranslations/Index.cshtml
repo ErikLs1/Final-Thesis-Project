@@ -6,6 +6,14 @@
 }
 
 <h2 class="mb-3">@ViewData["Title"]</h2>
+<h2 class="mb-3 d-flex justify-content-between align-items-center">
+    @* Single moderation button *@
+    <a class="btn btn-primary btn-sm"
+       asp-action="Publish"
+       asp-route-languageId="@Model.SelectedLanguageId">
+        Change Translation 
+    </a>
+</h2>
 
 <form method="get" class="row g-2 align-items-end mb-4">
     <div class="col-md-4">
@@ -62,7 +70,6 @@
             <th>Content</th>
             <th class="text-end" style="width:8%">Version</th>
             <th style="width:12%">State</th>
-            <th class="text-end" style="width:10%"></th>
         </tr>
     </thead>
     <tbody>
@@ -87,13 +94,6 @@
                 <td class="text-end">@r.VersionNumber</td>
                 <td>
                     @Html.Raw(StateBadge(r.TranslationState))
-                </td>
-                <td class="text-end">
-                    <a asp-action="ChangeState"
-                       asp-route-versionId="@r.TranslationVersionId"
-                       class="btn btn-sm btn-outline-primary">
-                        Change state
-                    </a>
                 </td>
             </tr>
         }

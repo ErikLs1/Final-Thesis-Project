@@ -70,6 +70,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+
+// TODO: REFACTOR - LOCALIZATION CONFIG
 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization/make-content-localizable?view=aspnetcore-9.0
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services
@@ -103,7 +105,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 
-// RESX Import. TODO: Change Import logic later
+// RESX Import. TODO: REFACTOR - RESX IMPORT PIPELINE
 var importOnStartup = builder.Configuration.GetValue<bool>("Resx:ImportOnStartup");
 var resxFolder = builder.Configuration.GetValue<string>("Resx:Folder");
 
@@ -147,7 +149,7 @@ app.MapControllerRoute(
 app.MapRazorPages()
     .WithStaticAssets();
 
-// TODO: CHNAGE LATER. [TEST IMPL]
+// TODO: REFACTOR - HARDCODED USERS
 using (var scope = app.Services.CreateScope())
 {
     var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();

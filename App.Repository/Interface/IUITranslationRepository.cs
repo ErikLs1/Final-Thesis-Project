@@ -9,4 +9,5 @@ public interface IUITranslationRepository
     Task<int> UpdateTranslationStateAsync(UpdateTranslationStateRequestDto request);
     Task<Dictionary<string, string>> GetLiveTranslationsByLanguageTagAsync(string languageTag);
     Task<IReadOnlyList<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(FilteredTranslationsRequestDto request);
+    Task<int> PublishTranslationVersionAsync(PublishTranslationVersionRequestDto request);
 }

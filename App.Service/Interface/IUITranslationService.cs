@@ -11,4 +11,5 @@ public interface IUITranslationService
     Task<IReadOnlyList<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(
         FilteredTranslationsRequestDto request
     );
+    Task<int> PublishTranslationTranslationsAsync(IReadOnlyList<PublishTranslationVersionRequestDto> requests);
 }

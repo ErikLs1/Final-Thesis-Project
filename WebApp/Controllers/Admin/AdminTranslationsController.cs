@@ -76,46 +76,78 @@ public class AdminTranslationsController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> ChangeState(Guid versionId)
+    public async Task<IActionResult> Publish(Guid? languageId)
     {
-        var all = await _bll.UITranslationService.GetLiveTranslationsAsync(null);
-        var row = all.FirstOrDefault(x => x.TranslationVersionId == versionId);
-        if (row == null) return NotFound();
+        var allLanguages = await _bll.LanguageService.GetAllLanguages();
+        var defaultLanguageId = await _bll.LanguageService.GetDefaultLanguageIdAsync();
 
-        var vm = new ChangeStateVm
+        if (languageId == null)
         {
-            TranslationVersionId = row.TranslationVersionId,
-            LanguageTag = row.LanguageTag,
-            ResourceKey = row.ResourceKey,
-            FriendlyKey = row.FriendlyKey,
-            VersionNumber = row.VersionNumber,
-            CurrentState = row.TranslationState,
-            Content = row.Content
+            languageId = defaultLanguageId;
+        }
+
+        var langInfo = allLanguages.FirstOrDefault(l => l.Id == languageId.Value)
+                       ?? allLanguages.First(); 
+        var langId = langInfo.Id;
+        var langTag = langInfo.Tag;
+
+
+        var filterReq = new FilteredTranslationsRequestDto(
+            langId,
+            VersionNumber: null,
+            State: null
+        );
+
+        var allVersions = await _bll
+            .UITranslationService
+            .GetFilteredUITranslationsAsync(filterReq);
+        
+        var vm = new AdminPublishTranslationsVm
+        {
+            SelectedLanguageId = langId,
+            SelectedLanguageTag = langTag,
+            Rows = allVersions
+                .Select(v => new AdminPublishTranslationVersionVm
+                {
+                    TranslationVersionId = v.TranslationVersionId,
+                    FriendlyKey = v.FriendlyKey,
+                    Content = v.Content,
+                    VersionNumber = v.VersionNumber,
+                    LanguageTag = v.LanguageTag,
+                    CurrentState = v.TranslationState.ToString(),
+                    Selected = false
+                })
+                .ToList()
         };
 
         return View(vm);
     }
-    
+
     [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ChangeState(ChangeStateVm vm)
+    public async Task<IActionResult> Publish(AdminPublishTranslationsVm vm)
     {
-        if (!ModelState.IsValid)
-            return View(vm);
+        var chosenVersionIds = vm.Rows
+            .Where(r => r.Selected)
+            .Select(r => r.TranslationVersionId)
+            .Distinct()
+            .ToList();
 
-        var req = new App.Repository.DTO.UpdateTranslationStateRequestDto(
-            vm.TranslationVersionId,
-            vm.NewState,
-            User?.Identity?.Name ?? "system"
-        );
-
-        var changed = await _bll.UITranslationService.UpdateTranslationStateAsync(req);
-        if (changed == 0)
+        if (chosenVersionIds.Count == 0)
         {
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Publish), new { languageId = vm.SelectedLanguageId });
         }
 
-        TempData["Success"] = $"State updated to {vm.NewState}.";
-        return RedirectToAction(nameof(Index));
+        var activatedBy = User?.Identity?.Name ?? "system";
+
+        var publishRequests = chosenVersionIds
+            .Select(id => new PublishTranslationVersionRequestDto(
+                id,
+                activatedBy
+            ))
+            .ToList();
+
+        await _bll.UITranslationService.PublishTranslationTranslationsAsync(publishRequests);
+        
+        return RedirectToAction(nameof(Index), new { languageId = vm.SelectedLanguageId });
     }
 }

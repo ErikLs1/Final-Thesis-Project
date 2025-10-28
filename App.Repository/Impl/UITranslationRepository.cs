@@ -1,3 +1,5 @@
+using App.Domain.Enum;
+using App.Domain.UITranslationEntities;
 using App.EF;
 using App.Repository.DTO;
 using App.Repository.DTO.UITranslations;
@@ -145,22 +147,77 @@ public class UITranslationRepository : IUITranslationRepository
         
         foreach (var x in translations)
         {
-            var friendly = ConvertToUserFriendlyString(x.ResourceKey ?? string.Empty);
+            var friendly = ConvertToUserFriendlyString(x.ResourceKey);
 
             result.Add(new FilteredUITranslationsDto(
                 x.LanguageId,
-                x.LanguageTag ?? string.Empty,
+                x.LanguageTag,
                 x.ResourceKeyId,
-                x.ResourceKey ?? string.Empty,
+                x.ResourceKey,
                 friendly,
                 x.Id,
                 x.VersionNumber,
-                x.Content ?? string.Empty,
+                x.Content,
                 x.TranslationState
             ));
         }
 
         return result;
+    }
+
+    public async Task<int> PublishTranslationVersionAsync(PublishTranslationVersionRequestDto request)
+    {
+        var newTranslationVersion = await _db.UITranslationVersions
+            .FirstOrDefaultAsync(x => x.Id == request.TranslationVersionId);
+
+        if (newTranslationVersion == null)
+        {
+            return 0;
+        }
+        
+        // Currently published translations
+        var publishedTranslations = await _db.UITranslations
+            .FirstOrDefaultAsync(x =>
+                x.LanguageId == newTranslationVersion.LanguageId &&
+                x.ResourceKeyId == newTranslationVersion.ResourceKeyId);
+
+        UITranslationVersions? current = null; 
+
+        if (publishedTranslations != null && publishedTranslations.TranslationVersionId != newTranslationVersion.Id)
+        {
+            current = await _db.UITranslationVersions
+                .FirstOrDefaultAsync(x => x.Id == publishedTranslations.TranslationVersionId);
+
+            var audit = new UITranslationAuditLog
+            {
+                LanguageId = publishedTranslations.LanguageId,
+                ResourceKeyId = publishedTranslations.ResourceKeyId,
+                TranslationVersionId = publishedTranslations.TranslationVersionId,
+                ActivatedAt = publishedTranslations.PublishedAt, // Todo redactor (delete this from uitranslation table)
+                ActivatedBy = publishedTranslations.PublishedBy,
+                DeactivatedAt = DateTime.UtcNow,
+                DeactivatedBy = request.ActivatedBy
+            };
+
+            await _db.UITranslationAuditLogs.AddAsync(audit);
+
+            if (current != null)
+            {
+                current.TranslationState = TranslationState.Inactive;
+            }
+        }
+
+
+        newTranslationVersion.TranslationState = TranslationState.Published;
+        
+        if (publishedTranslations != null)
+        {
+            publishedTranslations.TranslationVersionId = newTranslationVersion.Id;
+            publishedTranslations.PublishedAt = DateTime.UtcNow;
+            publishedTranslations.PublishedBy = request.ActivatedBy;
+        }
+        
+        return await _db.SaveChangesAsync();
     }
 
     private static string ConvertToUserFriendlyString(string key)

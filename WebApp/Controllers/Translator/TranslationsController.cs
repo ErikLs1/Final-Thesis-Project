@@ -1,4 +1,3 @@
-using App.EF;
 using App.Repository.DTO;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
@@ -14,12 +13,10 @@ namespace WebApp.Controllers.Translator;
 public class TranslationsController : Controller
 {
     private readonly IAppBll _bll;
-    private readonly AppDbContext _db;
 
-    public TranslationsController(IAppBll bll, AppDbContext db)
+    public TranslationsController(IAppBll bll)
     {
         _bll = bll;
-        _db = db;
     }
 
     // PAGE - ALL TRANSLATION VERSIONS
