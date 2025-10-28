@@ -73,17 +73,14 @@ public class ResxImportRepository : IResxImportRepository
         }
         else
         {
-            // Check if language tag from file supported by db
             var tag = NormalizeTag(culture);
             if (!langByTag.TryGetValue(tag, out languageId)) return;
         }
 
         var fileEntries = ReadResxEntries(file);
         
-        // Return if nothing to import
         if (fileEntries.Count == 0) return;
 
-        // Ensure keys exists
         var keys = fileEntries.Keys.ToList();
         var keyMap = await _db.UIResourceKeys
             .Where(r => keys.Contains(r.ResourceKey))
@@ -100,7 +97,6 @@ public class ResxImportRepository : IResxImportRepository
                 .ToDictionaryAsync(r => r.ResourceKey, r => r.Id);
         }
         
-        // Find which language and resource key already have the key
         var resourceKeysIds = keyMap.Values.ToList();
         var existingPairs = await _db.UITranslationVersions
             .Where(v => v.LanguageId == languageId && resourceKeysIds.Contains(v.ResourceKeyId))
@@ -110,10 +106,8 @@ public class ResxImportRepository : IResxImportRepository
         
         var missingPairIds = resourceKeysIds.Except(existingPairs).ToHashSet();
         
-        // Return if non of .resx keys are missing in db
         if (missingPairIds.Count == 0) return;
         
-        // Insert Versions
         var versionsToInsert = new List<UITranslationVersions>();
         
         foreach (var (key, content) in fileEntries)
@@ -139,7 +133,6 @@ public class ResxImportRepository : IResxImportRepository
 
     public async Task<int> InialUITranslationsImportAsync(string publishedBy)
     {
-        // 1) Published v1 candidates
         var v1PerPair = await _db.UITranslationVersions
             .Where(v => v.VersionNumber == 1 && v.TranslationState == TranslationState.Published)
             .GroupBy(v => new { v.LanguageId, v.ResourceKeyId })
@@ -150,7 +143,6 @@ public class ResxImportRepository : IResxImportRepository
 
         if (v1PerPair.Count == 0) return 0;
 
-        // 2) Load existing live pairs to avoid inserting duplicates
         var existingPairs = await _db.UITranslations
             .Select(t => new { t.LanguageId, t.ResourceKeyId })
             .ToListAsync();
@@ -158,14 +150,13 @@ public class ResxImportRepository : IResxImportRepository
         var existingSet = new HashSet<(Guid Lang, Guid Key)>(
             existingPairs.Select(p => (p.LanguageId, p.ResourceKeyId)));
 
-        // 3) Insert only missing (LanguageId, ResourceKeyId) pairs
         var now = DateTime.UtcNow;
         var toInsert = new List<UITranslations>();
 
         foreach (var v in v1PerPair)
         {
             var pair = (v.LanguageId, v.ResourceKeyId);
-            if (!existingSet.Add(pair)) continue; // already present -> skip
+            if (!existingSet.Add(pair)) continue; 
 
             toInsert.Add(new UITranslations
             {

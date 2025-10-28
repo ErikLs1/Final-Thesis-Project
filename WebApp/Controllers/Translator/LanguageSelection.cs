@@ -7,11 +7,11 @@ using WebApp.Models.Translator.Languages;
 namespace WebApp.Controllers.Translator;
 
 [Authorize]
-public class TranslatorTranslationController : Controller
+public class LanguageSelection : Controller
 {
     private readonly IAppBll _bll;
 
-    public TranslatorTranslationController(IAppBll bll)
+    public LanguageSelection(IAppBll bll)
     {
         _bll = bll;
     }

@@ -96,15 +96,19 @@ public class UITranslationRepository : IUITranslationRepository
             .Where(l => l.LanguageTag == languageTag)
             .Select(l => l.Id)
             .SingleAsync();
-        
-        var query =
-            from t in _db.UITranslations.AsNoTracking()
-            where t.LanguageId == langId
-            join rk in _db.UIResourceKeys.AsNoTracking() on t.ResourceKeyId equals rk.Id
-            join v  in _db.UITranslationVersions.AsNoTracking() on t.TranslationVersionId equals v.Id
-            select new { rk.ResourceKey, v.Content };
 
-        return await query.ToDictionaryAsync(x => x.ResourceKey, x => x.Content);
+        var liveTranslations = await _db.UITranslations
+            .Where(x => x.LanguageId == langId)
+            .Select(x => new
+            {
+                x.UIResourceKeys.ResourceKey,
+                x.UITranslationVersions.Content
+            }).ToDictionaryAsync(
+                x => x.ResourceKey,
+                x => x.Content
+            );
+
+        return liveTranslations;
     }
 
     public async Task<IReadOnlyList<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(FilteredTranslationsRequestDto request)
