@@ -14,7 +14,7 @@ namespace App.Data.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace App.Data.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("App.Data.Resources.Resources", typeof(Resources).Assembly);
@@ -36,7 +36,7 @@ namespace App.Data.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -45,117 +45,129 @@ namespace App.Data.Resources {
             }
         }
         
-        internal static string Navigation_Home {
+        public static string Navigation_Home {
             get {
                 return ResourceManager.GetString("Navigation_Home", resourceCulture);
             }
         }
         
-        internal static string Navigation_Dashboard {
+        public static string Navigation_Dashboard {
             get {
                 return ResourceManager.GetString("Navigation_Dashboard", resourceCulture);
             }
         }
         
-        internal static string Navigation_Order {
+        public static string Navigation_Order {
             get {
                 return ResourceManager.GetString("Navigation_Order", resourceCulture);
             }
         }
         
-        internal static string Navigation_Product {
+        public static string Navigation_Product {
             get {
                 return ResourceManager.GetString("Navigation_Product", resourceCulture);
             }
         }
         
-        internal static string Navigation_Category_Monitor {
+        public static string Navigation_Category_Monitor {
             get {
                 return ResourceManager.GetString("Navigation_Category_Monitor", resourceCulture);
             }
         }
         
-        internal static string Navigation_Category_Laptop {
+        public static string Navigation_Category_Laptop {
             get {
                 return ResourceManager.GetString("Navigation_Category_Laptop", resourceCulture);
             }
         }
         
-        internal static string Navigation_Category_Keyboard {
+        public static string Navigation_Category_Keyboard {
             get {
                 return ResourceManager.GetString("Navigation_Category_Keyboard", resourceCulture);
             }
         }
         
-        internal static string Navigation_Category_Mouse {
+        public static string Navigation_Category_Mouse {
             get {
                 return ResourceManager.GetString("Navigation_Category_Mouse", resourceCulture);
             }
         }
         
-        internal static string Navigation_Category_Headphones {
+        public static string Navigation_Category_Headphones {
             get {
                 return ResourceManager.GetString("Navigation_Category_Headphones", resourceCulture);
             }
         }
         
-        internal static string Navigation_About_Us {
+        public static string Navigation_About_Us {
             get {
                 return ResourceManager.GetString("Navigation_About_Us", resourceCulture);
             }
         }
         
-        internal static string Navigation_Contact {
+        public static string Navigation_Contact {
             get {
                 return ResourceManager.GetString("Navigation_Contact", resourceCulture);
             }
         }
         
-        internal static string Navigation_Register {
+        public static string Navigation_Register {
             get {
                 return ResourceManager.GetString("Navigation_Register", resourceCulture);
             }
         }
         
-        internal static string Navigation_Login {
+        public static string Navigation_Login {
             get {
                 return ResourceManager.GetString("Navigation_Login", resourceCulture);
             }
         }
         
-        internal static string Navigation_Logout {
+        public static string Navigation_Logout {
             get {
                 return ResourceManager.GetString("Navigation_Logout", resourceCulture);
             }
         }
         
-        internal static string Heading_Categories {
+        public static string Heading_Categories {
             get {
                 return ResourceManager.GetString("Heading_Categories", resourceCulture);
             }
         }
         
-        internal static string Heading_Products {
+        public static string Heading_Products {
             get {
                 return ResourceManager.GetString("Heading_Products", resourceCulture);
             }
         }
         
-        internal static string Heading_Shop {
+        public static string Heading_Shop {
             get {
                 return ResourceManager.GetString("Heading_Shop", resourceCulture);
             }
         }
         
-        internal static string Button_Product_Add_To_Cart {
+        public static string Button_Product_Add_To_Cart {
             get {
                 return ResourceManager.GetString("Button_Product_Add_To_Cart", resourceCulture);
             }
         }
         
-        internal static string Button_Product_Details {
+        public static string Button_Product_Details {
             get {
                 return ResourceManager.GetString("Button_Product_Details", resourceCulture);
+            }
+        }
+        
+        public static string Test {
+            get {
+                return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+        
+        public static string test2 {
+            get {
+                return ResourceManager.GetString("test2", resourceCulture);
             }
         }
     }

@@ -7,116 +7,29 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Resources\Heading\Heading.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Heading.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Heading\Heading.en-US.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Heading.en-US.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Heading\Heading.et-EE.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Heading.et-EE.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Heading\Heading.ru.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Heading.ru.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Label\Label.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Label.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Label\Label.en-US.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Label.en-US.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Label\Label.et-EE.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Label.et-EE.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Resources\Label\Label.ru.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Label.ru.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Update="Resources\Resources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Resources.en-US.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.en-US.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Resources.et-EE.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.et-EE.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <EmbeddedResource Update="Resources\Resources.ru.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
+        <Generator>PublicResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.ru.Designer.cs</LastGenOutput>
       </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Resources\Heading\Heading.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Heading.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Heading\Heading.en-US.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Heading.en-US.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Heading\Heading.et-EE.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Heading.et-EE.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Heading\Heading.ru.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Heading.ru.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Label\Label.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Label.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Label\Label.en-US.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Label.en-US.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Label\Label.et-EE.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Label.et-EE.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Label\Label.ru.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Label.ru.resx</DependentUpon>
-      </Compile>
       <Compile Update="Resources\Resources.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Resources.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Resources.en-US.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.en-US.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Resources.et-EE.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.et-EE.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Resources\Resources.ru.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.ru.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

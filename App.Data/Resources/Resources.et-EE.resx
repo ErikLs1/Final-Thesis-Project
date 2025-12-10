@@ -75,4 +75,10 @@
     <data name="Button_Product_Details" xml:space="preserve">
         <value>Detailid</value>
     </data>
+    <data name="Test" xml:space="preserve">
+        <value>dsd</value>
+    </data>
+    <data name="test2" xml:space="preserve">
+        <value>asdsa</value>
+    </data>
 </root>

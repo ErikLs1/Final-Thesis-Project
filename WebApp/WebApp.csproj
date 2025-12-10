@@ -14,15 +14,21 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="9.0.0" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.1" />
         <PackageReference Include="NRedisStack" Version="1.1.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\App.Common\App.Common.csproj" />
       <ProjectReference Include="..\App.Data\App.Data.csproj" />
       <ProjectReference Include="..\App.EF\App.EF.csproj" />
       <ProjectReference Include="..\App.Repository\App.Repository.csproj" />
       <ProjectReference Include="..\App.Service\App.Service.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Extensions\Translations\" />
     </ItemGroup>
 
 </Project>

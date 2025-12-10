@@ -14,6 +14,7 @@ using WebApp.Redis.Client;
 using WebApp.Redis.Client.Impl;
 using WebApp.Redis.Services;
 using WebApp.Redis.Services.Impl;
+using WebApp.Vol2;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -116,6 +117,15 @@ app.MapControllerRoute(
 
 app.MapRazorPages()
     .WithStaticAssets();
+
+using (var scope = app.Services.CreateScope())
+{
+    var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
+    var logger = loggerFactory.CreateLogger("AllResourcesScanner");
+
+    ResourcesScanner.AllAssemblyResources(logger);
+}
+
 
 // TODO: REFACTOR - HARDCODED USERS
 using (var scope = app.Services.CreateScope())

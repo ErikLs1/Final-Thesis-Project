@@ -32,8 +32,7 @@ public class RedisTranslationService : IRedisTranslationService
         {
             await db.HashSetAsync(redisHashKey, redisTranslations);
         }
-
-        // Fallback 
+        
         return dbTranslations;
     }
 }

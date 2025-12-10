@@ -23,10 +23,10 @@
 
             <div class="collapse navbar-collapse" id="topNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">@Translation["Navigation_Home"]</a></li>
-                    <li class="nav-item"><a class="nav-link">@Translation["Navigation_Product"]</a></li>
-                    <li class="nav-item"><a class="nav-link">@Translation["Navigation_About_Us"]</a></li>
-                    <li class="nav-item"><a class="nav-link">@Translation["Navigation_Contact"]</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">@Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Home))</a></li>
+                    <li class="nav-item"><a class="nav-link">@Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Product))</a></li>
+                    <li class="nav-item"><a class="nav-link">@Translation.Get(nameof(App.Data.Resources.Resources.Navigation_About_Us))</a></li>
+                    <li class="nav-item"><a class="nav-link">@Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Contact))</a></li>
                 </ul>
                 
                 <partial name="_LanguageSelection" />

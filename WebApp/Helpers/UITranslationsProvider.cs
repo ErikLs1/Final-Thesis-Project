@@ -1,6 +1,8 @@
 using System.Globalization;
+using System.Resources;
 using Microsoft.AspNetCore.Localization;
 using WebApp.Redis.Services;
+using WebApp.Vol2.Resx;
 
 namespace WebApp.Helpers;
 
@@ -28,7 +30,30 @@ public class UITranslationsProvider : IUITranslationsProvider
     public string Get(string key)
     {
         EnsureLoaded();
-        return _map!.TryGetValue(key, out var v) ? v : key;
+        
+        // First layer: Redis
+        if (_map!.TryGetValue(key, out var v))
+        {
+            Console.WriteLine("REDIS" + v);
+            return v;
+        }
+        
+        // Second layer: DB
+        // TODO: LATER
+        
+        // Third layer: Resx
+        var culture = new CultureInfo(LanguageTag);
+        foreach (var resourceManager in ResourceManagerRegistry.All)
+        {
+            var value = resourceManager.GetString(key, culture);
+            if (!string.IsNullOrEmpty(value))
+            {
+                Console.WriteLine("RESX" + v);
+                return value;
+            }
+        }
+        
+        return key;
     }
 
     private void EnsureLoaded()
