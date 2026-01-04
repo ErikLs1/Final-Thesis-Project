@@ -15,6 +15,8 @@ using WebApp.Redis.Client.Impl;
 using WebApp.Redis.Services;
 using WebApp.Redis.Services.Impl;
 using WebApp.Vol2;
+using WebApp.Vol2.Importer;
+using WebApp.Vol2.Scanner;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,6 +54,7 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IAppUow, AppUow>();
 builder.Services.AddScoped<ResxImportRepository>();
 builder.Services.AddScoped<IAppBll, AppBll>();
+builder.Services.AddScoped<ResourcesImporter>();
 
 // REDIS- https://redis.io/docs/latest/develop/clients/dotnet/connect/
 builder.Services.AddSingleton<IRedisClient, RedisClient>();
@@ -80,7 +83,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddAppLocalization(builder.Configuration);
 
 // RESX IMPORT CONFIG
-builder.Services.Configure<ResxImportOptions>(builder.Configuration.GetSection("Resx"));
 builder.Services.AddScoped<ResxImportRepository>();
 
 var app = builder.Build();
@@ -140,14 +142,6 @@ app.MapControllerRoute(
 
 app.MapRazorPages()
     .WithStaticAssets();
-
-using (var scope = app.Services.CreateScope())
-{
-    var loggerFactory = scope.ServiceProvider.GetRequiredService<ILoggerFactory>();
-    var logger = loggerFactory.CreateLogger("AllResourcesScanner");
-
-    ResourcesScanner.AllAssemblyResources(logger);
-}
 
 
 // TODO: REFACTOR - HARDCODED USERS

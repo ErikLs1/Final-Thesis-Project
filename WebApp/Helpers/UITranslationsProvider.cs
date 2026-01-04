@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Resources;
 using Microsoft.AspNetCore.Localization;
 using WebApp.Redis.Services;
 using WebApp.Vol2.Resx;

@@ -6,7 +6,11 @@ namespace WebApp.Vol2.Resx;
 
 public class ResourceManagerRegistry
 {
-    public static IReadOnlyList<ResourceManager> All => GetAllResourceManagers();
+    private static readonly Lazy<IReadOnlyList<ResourceManager>> _all =
+        new (GetAllResourceManagers);
+
+    // Cached managers (scans for managers only once and then uses them around the app)
+    public static IReadOnlyList<ResourceManager> All => _all.Value;
     private static IReadOnlyList<ResourceManager> GetAllResourceManagers()
     {
         var result = new List<ResourceManager>();

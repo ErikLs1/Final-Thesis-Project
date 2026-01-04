@@ -12,7 +12,7 @@ public class BaseAssembly
     private static readonly HashSet<string> ResourceAssemblyNames = new(StringComparer.OrdinalIgnoreCase)
     {
         AssemblyUtils.AppDataAssembly,
-        AssemblyUtils.AppCommonAssembly,
+        // AssemblyUtils.AppCommonAssembly,
     };
     
     public static IEnumerable<Assembly> GetAssembliesFromDependencyContext()

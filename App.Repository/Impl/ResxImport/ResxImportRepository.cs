@@ -1,7 +1,3 @@
-using System.Collections;
-using System.ComponentModel.Design;
-using System.Globalization;
-using System.Resources.NetStandard;
 using App.Domain.Enum;
 using App.Domain.UITranslationEntities;
 using App.EF;
@@ -27,62 +23,18 @@ public class ResxImportRepository : IResxImportRepository
    // https://learn.microsoft.com/en-us/dotnet/fundamentals/runtime-libraries/system-resources-resourcereader
     // https://learn.microsoft.com/en-us/dotnet/api/system.resources.resxresourcereader?view=windowsdesktop-9.0
     // https://learn.microsoft.com/en-us/dotnet/api/system.io.directory.enumeratefiles?view=net-9.0
-    
-    
-    public async Task ImportFirstTranslationVersionAsync(string resxFolder)
+
+    public async Task ImportFirstTranslationVersionForLanguageAsync(
+        Guid languageId,
+        IReadOnlyDictionary<string, string> entries,
+        string createdBy = "resx-assemblies-import")
     {
-        // Make sure folder exists
-        if (!Directory.Exists(resxFolder))
-            throw new DirectoryNotFoundException($"Folder not found: {resxFolder}");
-
-        // Find all *.resx files in given folder
-        var resxFiles = Directory.EnumerateFiles(resxFolder, "*.resx", SearchOption.AllDirectories).ToList();
-        if (resxFiles.Count == 0)
-            throw new FileNotFoundException($"No .resx files found in {resxFolder}");
+        if (entries.Count == 0) return;
         
-        // Map language tag and id
-        var languages = await _db.Languages
-            .Select(l => new { l.Id, l.LanguageTag, l.IsDefaultLanguage })
-            .ToListAsync();
+        var keys = entries.Keys.Where(k => !string.IsNullOrWhiteSpace(k)).Distinct().ToList();
+        if (keys.Count == 0) return;
         
-        var langByTag = languages.ToDictionary(x => x.LanguageTag, x => x.Id);
-        var defaultLangId = languages
-            .Where(x => x.IsDefaultLanguage)
-            .Select(x => x.Id)
-            .SingleOrDefault();
-
-        // Parse files
-        var localizedFiles = resxFiles.Where(f => !IsDefaultResx(f)).ToList();
-        var neutralFiles = resxFiles.Where(IsDefaultResx).ToList();
-
-        foreach (var file in localizedFiles)
-            await ImportFileContentAsync(file, langByTag, null);
-        
-        foreach (var file in neutralFiles)
-            await ImportFileContentAsync(file, langByTag, defaultLangId);
-        
-    }
-
-    private async Task ImportFileContentAsync(string file, Dictionary<string, Guid> langByTag, Guid? defaultLangId)
-    {
-        var (culture, isDefault) = GetCultureFromFileName(file);
-
-        Guid languageId;
-        if (isDefault)
-        {
-            languageId = defaultLangId!.Value;
-        }
-        else
-        {
-            var tag = NormalizeTag(culture);
-            if (!langByTag.TryGetValue(tag, out languageId)) return;
-        }
-
-        var fileEntries = ReadResxEntries(file);
-        
-        if (fileEntries.Count == 0) return;
-
-        var keys = fileEntries.Keys.ToList();
+        // 1) Ensure UIResourceKeys exist
         var keyMap = await _db.UIResourceKeys
             .Where(r => keys.Contains(r.ResourceKey))
             .ToDictionaryAsync(r => r.ResourceKey, r => r.Id);
@@ -90,7 +42,8 @@ public class ResxImportRepository : IResxImportRepository
         var missingKeys = keys.Where(k => !keyMap.ContainsKey(k)).ToList();
         if (missingKeys.Count > 0)
         {
-            await _db.UIResourceKeys.AddRangeAsync(missingKeys.Select(k => new UIResourceKeys { ResourceKey = k }));
+            await _db.UIResourceKeys.AddRangeAsync(
+                missingKeys.Select(k => new UIResourceKeys { ResourceKey = k }));
             await _db.SaveChangesAsync();
 
             keyMap = await _db.UIResourceKeys
@@ -98,36 +51,39 @@ public class ResxImportRepository : IResxImportRepository
                 .ToDictionaryAsync(r => r.ResourceKey, r => r.Id);
         }
         
+        // 2) Insert missing (language, key) pairs as version 1
         var resourceKeysIds = keyMap.Values.ToList();
         var existingPairs = await _db.UITranslationVersions
             .Where(v => v.LanguageId == languageId && resourceKeysIds.Contains(v.ResourceKeyId))
             .Select(v => v.ResourceKeyId)
             .Distinct()
             .ToListAsync();
-        
+
         var missingPairIds = resourceKeysIds.Except(existingPairs).ToHashSet();
-        
         if (missingPairIds.Count == 0) return;
-        
-        var versionsToInsert = new List<UITranslationVersions>();
-        
-        foreach (var (key, content) in fileEntries)
+
+        var now = DateTime.UtcNow;
+        var versionsToInsert = new List<UITranslationVersions>(missingPairIds.Count);
+
+        foreach (var (key, content) in entries)
         {
-            var resourceKeyId = keyMap[key];
+            if (!keyMap.TryGetValue(key, out var resourceKeyId)) continue;
             if (!missingPairIds.Contains(resourceKeyId)) continue;
-            
+
             versionsToInsert.Add(new UITranslationVersions
             {
                 LanguageId = languageId,
                 ResourceKeyId = resourceKeyId,
                 VersionNumber = 1,
-                Content = content,
+                Content = content ?? string.Empty,
                 TranslationState = TranslationState.Published,
-                CreatedAt = DateTime.UtcNow,
-                CreatedBy = "resx-import"
+                CreatedAt = now,
+                CreatedBy = createdBy
             });
         }
-        
+
+        if (versionsToInsert.Count == 0) return;
+
         await _db.UITranslationVersions.AddRangeAsync(versionsToInsert);
         await _db.SaveChangesAsync();
     }
@@ -173,50 +129,5 @@ public class ResxImportRepository : IResxImportRepository
 
         await _db.UITranslations.AddRangeAsync(toInsert);
         return await _db.SaveChangesAsync();
-    }
-    
-    // HELPERS
-    private static Dictionary<string, string> ReadResxEntries(string file)
-    {
-        var dict = new Dictionary<string, string>(StringComparer.Ordinal);
-        using var reader = new ResXResourceReader(file) { UseResXDataNodes = true };
-
-        foreach (DictionaryEntry entry in reader)
-        {
-            var key = entry.Key?.ToString();
-            if (string.IsNullOrWhiteSpace(key)) continue;
-
-            var node = (ResXDataNode)entry.Value!;
-            var value = node.GetValue((ITypeResolutionService?)null)?.ToString() ?? string.Empty;
-            dict[key!] = value;
-        }
-        return dict;
-    }
-    private static bool IsDefaultResx(string path)
-    {
-        var name = Path.GetFileNameWithoutExtension(path);
-        var parts = name.Split('.', StringSplitOptions.RemoveEmptyEntries);
-        return parts.Length == 1;
-    }
-
-    private static (string culture, bool isNeutral) GetCultureFromFileName(string path)
-    {
-        var name = Path.GetFileNameWithoutExtension(path);
-        var parts = name.Split('.', StringSplitOptions.RemoveEmptyEntries);
-        if (parts.Length == 1) return ("", true);
-        return (parts[^1], false);
-    }
-
-    private static string NormalizeTag(string tag) // Change later
-    {
-        if (string.IsNullOrWhiteSpace(tag)) return tag;
-        try
-        {
-            return CultureInfo.GetCultureInfo(tag).Name;
-        }
-        catch
-        {
-            return tag;
-        }
     }
 }

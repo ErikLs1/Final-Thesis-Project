@@ -1,7 +1,5 @@
 using App.Repository.Impl.ResxImport;
-using App.Repository.Interface;
-using Microsoft.Extensions.Options;
-using WebApp.Extensions.Configuration;
+using WebApp.Vol2.Importer;
 
 namespace WebApp.Extensions.Builder;
 
@@ -10,26 +8,17 @@ public static class ResxImportBuilderExtension
     public static async Task RunResxImportAsync(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        var importerService = scope.ServiceProvider.GetRequiredService<ResxImportRepository>();
-        
-        var path = app.Configuration["Resx:LocalResourcesPath"];
-        var resxFolder = string.IsNullOrWhiteSpace(path) ? "../App.Data/Resources" : path;
 
-        if (!Path.IsPathRooted(resxFolder))
+        try
         {
-            resxFolder = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, resxFolder));
+            var assemblyImporter = scope.ServiceProvider.GetRequiredService<ResourcesImporter>();
+            await assemblyImporter.ImportFromAssembliesAsync(
+                publishedBy: "resx-startup-import",
+                createdBy: "resx-import");
         }
-        
-        if (!Directory.Exists(resxFolder))
+        catch (Exception e)
         {
-            app.Logger.LogWarning("RESX folder not found. Import skipped: {Path}", resxFolder);
-            return;
+            app.Logger.LogWarning(e, "ASSEMBLY RESX IMPORT FAILED");
         }
-        
-        // Import initial or missing resx keys and first version to UIResourceKeys and UITranslationVersions table
-        await importerService.ImportFirstTranslationVersionAsync(resxFolder);
-        
-        // Insert first ever translation versions to UITanslations table
-        await importerService.InialUITranslationsImportAsync("resx-startup-import");
     }
 }
