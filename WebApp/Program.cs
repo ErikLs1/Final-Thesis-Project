@@ -57,6 +57,7 @@ builder.Services.AddScoped<IAppBll, AppBll>();
 builder.Services.AddSingleton<IRedisClient, RedisClient>();
 builder.Services.AddScoped<IRedisTranslationService, RedisTranslationService>();
 builder.Services.AddScoped<IUITranslationsProvider, UITranslationsProvider>();
+builder.Services.Configure<RedisOptions>(builder.Configuration.GetSection("Redis"));
 builder.Services.AddHttpContextAccessor();
 
 // IDENTITY
@@ -83,6 +84,28 @@ builder.Services.Configure<ResxImportOptions>(builder.Configuration.GetSection("
 builder.Services.AddScoped<ResxImportRepository>();
 
 var app = builder.Build();
+
+await using (var scope = app.Services.CreateAsyncScope())
+{
+    var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("DbInit");
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    const int maxRetries = 15;
+    for (var attempt = 1; attempt <= maxRetries; attempt++)
+    {
+        try
+        {
+            await db.Database.MigrateAsync();
+            break;
+        }
+        catch (Exception ex) when (attempt < maxRetries)
+        {
+            logger.LogWarning(ex, "Migrate failed (attempt {Attempt}/{Max}). Retrying...", attempt, maxRetries);
+            await Task.Delay(TimeSpan.FromSeconds(2));
+        }
+    }
+}
+
 
 // RESX IMPORT PIPELINE
 await app.RunResxImportAsync();

@@ -5,8 +5,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!Solution Item", "!Solution
 		Directory.build.props = Directory.build.props
 		README.md = README.md
 		.gitignore = .gitignore
-		..\IISM\docker-compose.yml = ..\IISM\docker-compose.yml
-		..\IISM\Dockerfile = ..\IISM\Dockerfile
+		Dockerfile = Dockerfile
+		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{7E573F5F-B632-4028-B7F0-FD8A99DC6647}"
@@ -24,6 +24,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Common", "App.Common\App.Common.csproj", "{8AB224EA-E129-4C2E-9E25-0497D305BA33}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.EF", "App.EF\App.EF.csproj", "{554C07CD-A934-4E08-A336-D3DDF21D8FB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{584291E9-8E76-4AA7-B0A8-CCD02F944B32}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

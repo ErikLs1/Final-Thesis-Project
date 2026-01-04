@@ -1,20 +1,21 @@
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
-using IDatabase = Microsoft.EntityFrameworkCore.Storage.IDatabase;
-
 namespace WebApp.Redis.Client.Impl;
 
 public class RedisClient : IRedisClient
 {
     private readonly IConnectionMultiplexer _multiplexer;
 
-    public RedisClient()
+    public RedisClient(IOptions<RedisOptions> options)
     {
-        var configuration = new ConfigurationOptions
-        {
-            EndPoints = { "localhost:6379" },
-            User = "yourUsername",
-            Password = "yourPassword"
-        };
+        var o = options.Value;
+        
+        var configuration = ConfigurationOptions.Parse(o.ConnectionString);
+        configuration.AbortOnConnectFail = false;
+
+        if (!string.IsNullOrWhiteSpace(o.User)) configuration.User = o.User;
+        if (!string.IsNullOrWhiteSpace(o.Password)) configuration.Password = o.Password;
+        
 
         _multiplexer = ConnectionMultiplexer.Connect(configuration);
     }
