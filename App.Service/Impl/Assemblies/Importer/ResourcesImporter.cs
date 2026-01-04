@@ -1,29 +1,29 @@
 using System.Globalization;
 using App.EF;
-using App.Repository.Impl.ResxImport;
+using App.Repository.DalUow;
+using App.Service.Impl.Assemblies.Resx;
+using App.Service.Impl.Assemblies.Scanner;
 using Microsoft.EntityFrameworkCore;
-using WebApp.Vol2.Resx;
-using WebApp.Vol2.Scanner;
+using Microsoft.Extensions.Logging;
 
-namespace WebApp.Vol2.Importer;
+namespace App.Service.Impl.Assemblies.Importer;
 
 public class ResourcesImporter
 {
     private readonly AppDbContext _db;
-    private readonly ResxImportRepository _resxImportRepository;
+    private readonly IAppUow _uow;
     private readonly ILogger<ResourcesImporter> _logger;
     public ResourcesImporter(
         AppDbContext db,
-        ResxImportRepository resxImportRepository, 
+        IAppUow appUow,
         ILogger<ResourcesImporter> logger)
     {
         _db = db;
-        _resxImportRepository = resxImportRepository;
+        _uow = appUow;
         _logger = logger;
     }
 
-    public async Task ImportFromAssembliesAsync(string publishedBy = "resx-startup-import",
-        string createdBy = "resx-import")
+    public async Task ImportFromAssembliesAsync()
     {
         var resourceManagers = ResourceManagerRegistry.All;
         if (resourceManagers.Count == 0)
@@ -47,11 +47,11 @@ public class ResourcesImporter
             return;
         }
         
-        // 1) Neutral -> default language
+        // DEFAULT LANGUAGE IMPORT
         var neutral = ResourcesScanner.AggregateEntries(CultureInfo.InvariantCulture, _logger, tryParents: false);
-        await _resxImportRepository.ImportFirstTranslationVersionForLanguageAsync(defaultLangId, neutral, createdBy);
+        await _uow.ResxImportRepository.ImportFirstTranslationVersionForLanguageAsync(defaultLangId, neutral);
 
-        // 2) Culture-specific -> DB languages
+        // REMAINING CULTURES IMPORT
         foreach (var lang in languages.Where(l => !l.IsDefaultLanguage))
         {
             if (string.IsNullOrWhiteSpace(lang.LanguageTag)) continue;
@@ -67,12 +67,8 @@ public class ResourcesImporter
             var dict = ResourcesScanner.AggregateEntries(culture, _logger, tryParents: false);
             if (dict.Count == 0) continue;
 
-            await _resxImportRepository.ImportFirstTranslationVersionForLanguageAsync(lang.Id, dict, createdBy);
+            await _uow.ResxImportRepository.ImportFirstTranslationVersionForLanguageAsync(lang.Id, dict);
         }
-
-        // Keep this until you fold the "live pointer creation" into the per-language import method
-        var inserted = await _resxImportRepository.InialUITranslationsImportAsync(publishedBy);
-        _logger.LogInformation("ASSEMBLY IMPORT COMPLETED. UITranslations inserted: {Count}", inserted);
         
         var keyCount = await _db.UIResourceKeys.CountAsync();
         var verCount = await _db.UITranslationVersions.CountAsync();

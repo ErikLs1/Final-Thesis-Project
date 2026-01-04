@@ -3,20 +3,17 @@ using App.EF;
 using App.Repository.DalUow;
 using App.Repository.Impl.ResxImport;
 using App.Service.BllUow;
+using App.Service.Impl.Assemblies.Importer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using WebApp.Extensions.Builder;
-using WebApp.Extensions.Configuration;
 using WebApp.Extensions.Services;
 using WebApp.Helpers;
 using WebApp.Redis.Client;
 using WebApp.Redis.Client.Impl;
 using WebApp.Redis.Services;
 using WebApp.Redis.Services.Impl;
-using WebApp.Vol2;
-using WebApp.Vol2.Importer;
-using WebApp.Vol2.Scanner;
 
 
 var builder = WebApplication.CreateBuilder(args);

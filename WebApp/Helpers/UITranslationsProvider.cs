@@ -1,7 +1,7 @@
 using System.Globalization;
+using App.Service.Impl.Assemblies.Resx;
 using Microsoft.AspNetCore.Localization;
 using WebApp.Redis.Services;
-using WebApp.Vol2.Resx;
 
 namespace WebApp.Helpers;
 

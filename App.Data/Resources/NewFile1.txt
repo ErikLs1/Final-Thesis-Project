@@ -1,6 +1,0 @@
- [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-1) find all classes with attribute -  
-2) list all translation keys
-3) Custom resource manage
-4) Replace in runtime startup resource manager in designer classes
-

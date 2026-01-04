@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
 using System.Resources;
-using WebApp.Vol2.Base;
+using App.Service.Impl.Assemblies.Base;
 
-namespace WebApp.Vol2.Resx;
+namespace App.Service.Impl.Assemblies.Resx;
 
 public class ResourceManagerRegistry
 {

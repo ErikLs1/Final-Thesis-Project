@@ -2,6 +2,7 @@ using App.EF;
 using App.Repository.Impl;
 using App.Repository.Impl.ResxImport;
 using App.Repository.Interface;
+using App.Repository.Interface.ResxImport;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace App.Repository.DalUow;

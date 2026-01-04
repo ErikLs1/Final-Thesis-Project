@@ -1,10 +1,10 @@
 using System.Globalization;
 using System.Reflection;
 using System.Resources;
+using App.Service.Impl.Assemblies.Utils;
 using Microsoft.Extensions.DependencyModel;
-using WebApp.Vol2.Utils;
 
-namespace WebApp.Vol2.Base;
+namespace App.Service.Impl.Assemblies.Base;
 
 public class BaseAssembly
 {

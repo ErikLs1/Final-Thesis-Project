@@ -1,4 +1,4 @@
-namespace WebApp.Vol2.Utils;
+namespace App.Service.Impl.Assemblies.Utils;
 
 public class AssemblyUtils
 {

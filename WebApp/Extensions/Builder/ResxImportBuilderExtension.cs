@@ -1,5 +1,5 @@
 using App.Repository.Impl.ResxImport;
-using WebApp.Vol2.Importer;
+using App.Service.Impl.Assemblies.Importer;
 
 namespace WebApp.Extensions.Builder;
 
@@ -12,9 +12,7 @@ public static class ResxImportBuilderExtension
         try
         {
             var assemblyImporter = scope.ServiceProvider.GetRequiredService<ResourcesImporter>();
-            await assemblyImporter.ImportFromAssembliesAsync(
-                publishedBy: "resx-startup-import",
-                createdBy: "resx-import");
+            await assemblyImporter.ImportFromAssembliesAsync();
         }
         catch (Exception e)
         {
