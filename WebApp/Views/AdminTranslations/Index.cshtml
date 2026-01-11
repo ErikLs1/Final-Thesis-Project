@@ -106,7 +106,7 @@
     {
         var (cls, txt) = state switch
         {
-            TranslationState.Published      => ("bg-secondary", "Published"),
+            TranslationState.Published      => ("bg-success", "Published"),
             TranslationState.WaitingReview  => ("bg-warning text-dark", "Waiting review"),
             TranslationState.Approved       => ("bg-success", "Approved"),
             TranslationState.Rejected       => ("bg-danger", "Rejected"),

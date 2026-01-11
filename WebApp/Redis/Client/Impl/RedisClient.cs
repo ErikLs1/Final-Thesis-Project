@@ -20,7 +20,7 @@ public class RedisClient : IRedisClient
         _multiplexer = ConnectionMultiplexer.Connect(configuration);
     }
 
-    public StackExchange.Redis.IDatabase GetDb()
+    public IDatabase GetDb()
     {
         return _multiplexer.GetDatabase();
     }

@@ -20,19 +20,28 @@ public class RedisTranslationService : IRedisTranslationService
         var db = _redis.GetDb();
         var redisHashKey = $"ui:translations:{languageTag}";
         
-        // Get db ui translations
-        var dbTranslations = await _bll.UITranslationService.GetLiveTranslationsByLanguageTagAsync(languageTag);
-        
-        // Save translation to redis (Key -> Translation_key, Value -> Translation_string)
-        var redisTranslations = dbTranslations
-            .Select(x => new HashEntry(x.Key, x.Value))
-            .ToArray();
-
-        if (redisTranslations.Length > 0)
+        // 1 - Try to get values from Redis
+        var cachedTranslations = await db.HashGetAllAsync(redisHashKey);
+        if (cachedTranslations.Length > 0)
         {
-            await db.HashSetAsync(redisHashKey, redisTranslations);
+            return cachedTranslations.ToDictionary(
+                x => x.Name.ToString(),
+                x => x.Value.ToString()
+            );
         }
         
+        // 2 - If no values in redis take them from db
+        var dbTranslations = await _bll.UITranslationService
+            .GetLiveTranslationsByLanguageTagAsync(languageTag);
+        
+        // 3 - Put found translations to redis
+        if (dbTranslations.Count > 0)
+        {
+            var entries = dbTranslations.Select(kv => new HashEntry(kv.Key, kv.Value)).ToArray();
+            await db.HashSetAsync(redisHashKey, entries);
+            await db.KeyExpireAsync(redisHashKey, TimeSpan.FromMinutes(30));
+        }
+
         return dbTranslations;
     }
 }

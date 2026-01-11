@@ -12,6 +12,7 @@ public static class ResourcesScanner
     // https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencymodel.dependencycontext?view=net-9.0-pp
     // https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencymodel.runtimelibrary?view=net-9.0-pp
     
+    // Finds all eisting managers of specific culture (ex EN) -> ReadEntries() gets all the translations of passed manager and culture -> AggregateEntries() collects all managers translations and returns them
     public static IReadOnlyDictionary<string, string> AggregateEntries(
         CultureInfo culture,
         ILogger? logger = null,
