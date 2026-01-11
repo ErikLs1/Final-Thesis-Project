@@ -5,18 +5,23 @@ using App.Service.BllUow;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models.Admin.Translations;
 using WebApp.Models.Shared;
+using WebApp.Redis.Services;
 
 namespace WebApp.Controllers.Admin;
 
 public class AdminTranslationsController : Controller
 {
     private readonly IAppBll _bll;
+    private readonly IRedisTranslationService _redisTranslationService;
 
-    public AdminTranslationsController(IAppBll bll, AppDbContext db)
+    public AdminTranslationsController(
+        IAppBll bll,
+        IRedisTranslationService redisTranslationService)
     {
         _bll = bll;
+        _redisTranslationService = redisTranslationService;
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> Index(Guid? languageId, int? version, TranslationState? state)
     {
@@ -24,7 +29,7 @@ public class AdminTranslationsController : Controller
         var allLanguages = await _bll
             .LanguageService
             .GetAllLanguages();
-        
+
         // Get default language
         var defaultLanguage = await _bll
             .LanguageService
@@ -33,17 +38,17 @@ public class AdminTranslationsController : Controller
         {
             languageId = defaultLanguage;
         }
-        
+
         var request = new FilteredTranslationsRequestDto(
             languageId.Value,
             version,
             state
         );
-        
+
         var filteredTranslations = await _bll
             .UITranslationService
             .GetFilteredUITranslationsAsync(request);
-        
+
         var languageOptions = allLanguages
             .OrderBy(l => l.Name)
             .Select(l => new LanguageOptionVm
@@ -54,7 +59,7 @@ public class AdminTranslationsController : Controller
                 LanguageTag = l.Tag,
             })
             .ToList();
-        
+
         var vm = new AdminTranslationsIndexVm
         {
             SelectedLanguageId = languageId,
@@ -73,7 +78,7 @@ public class AdminTranslationsController : Controller
 
         return View(vm);
     }
-    
+
     [HttpGet]
     public async Task<IActionResult> Publish(Guid? languageId)
     {
@@ -86,7 +91,7 @@ public class AdminTranslationsController : Controller
         }
 
         var langInfo = allLanguages.FirstOrDefault(l => l.Id == languageId.Value)
-                       ?? allLanguages.First(); 
+                       ?? allLanguages.First();
         var langId = langInfo.Id;
         var langTag = langInfo.Tag;
 
@@ -100,7 +105,7 @@ public class AdminTranslationsController : Controller
         var allVersions = await _bll
             .UITranslationService
             .GetFilteredUITranslationsAsync(filterReq);
-        
+
         var vm = new AdminPublishTranslationsVm
         {
             SelectedLanguageId = langId,
@@ -146,7 +151,15 @@ public class AdminTranslationsController : Controller
             .ToList();
 
         await _bll.UITranslationService.PublishTranslationTranslationsAsync(publishRequests);
-        
+
+        // REFRESH REDIS
+        var langTag = vm.SelectedLanguageTag;
+
+        if (!string.IsNullOrWhiteSpace(langTag))
+        {
+            await _redisTranslationService.RefreshTranslationAsync(langTag);
+        }
+
         return RedirectToAction(nameof(Index), new { languageId = vm.SelectedLanguageId });
     }
 }

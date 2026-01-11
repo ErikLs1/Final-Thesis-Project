@@ -109,6 +109,9 @@ await using (var scope = app.Services.CreateAsyncScope())
 // RESX IMPORT PIPELINE
 await app.RunResxImportAsync();
 
+// WARM UP REDIS CACHE
+await app.WarmupTranslationsCacheAsync();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
