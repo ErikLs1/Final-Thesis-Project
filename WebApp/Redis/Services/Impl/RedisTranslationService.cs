@@ -8,6 +8,9 @@ public class RedisTranslationService : IRedisTranslationService
 {
     private readonly IRedisClient _redis;
     private readonly IAppBll _bll;
+    
+    private static readonly TimeSpan CacheTtl = TimeSpan.FromMinutes(30);
+    private static string GetKey(string languageTag) => $"ui:translations:{languageTag}";
 
     public RedisTranslationService(IRedisClient redis, IAppBll bll)
     {
@@ -18,7 +21,7 @@ public class RedisTranslationService : IRedisTranslationService
     public async Task<Dictionary<string, string>> GetTranslationsAsync(string languageTag)
     {
         var db = _redis.GetDb();
-        var redisHashKey = $"ui:translations:{languageTag}";
+        var redisHashKey = GetKey(languageTag);
         
         // 1 - Try to get values from Redis
         var cachedTranslations = await db.HashGetAllAsync(redisHashKey);
@@ -40,6 +43,33 @@ public class RedisTranslationService : IRedisTranslationService
             var entries = dbTranslations.Select(kv => new HashEntry(kv.Key, kv.Value)).ToArray();
             await db.HashSetAsync(redisHashKey, entries);
             await db.KeyExpireAsync(redisHashKey, TimeSpan.FromMinutes(30));
+        }
+
+        return dbTranslations;
+    }
+
+    public async Task InvalidateTranslationsAsync(string languageTag)
+    {
+        var db = _redis.GetDb();
+        await db.KeyDeleteAsync(GetKey(languageTag));
+    }
+
+    public async Task<Dictionary<string, string>> RefreshTranslationAsync(string languageTag)
+    {
+        var db = _redis.GetDb();
+        var key = GetKey(languageTag);
+        
+        // Load fresh live translations from DB
+        var dbTranslations = await _bll.UITranslationService.GetLiveTranslationsByLanguageTagAsync(languageTag);
+
+        if (dbTranslations.Count > 0)
+        {
+            var entries = dbTranslations
+                .Select(kv => new HashEntry(kv.Key, kv.Value))
+                .ToArray();
+
+            await db.HashSetAsync(key, entries);
+            await db.KeyExpireAsync(key, CacheTtl);
         }
 
         return dbTranslations;
