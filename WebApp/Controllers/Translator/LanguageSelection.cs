@@ -20,7 +20,9 @@ public class LanguageSelection : Controller
     [HttpGet]
     public async Task<IActionResult> MyLanguages()
     {
-        var userId = User.GetUserId();
+        if (!User.GetUserId(out var userId))
+            return Forbid();
+        
         var allLanguages = await _bll.LanguageService.GetAllLanguages();
         var userLanguages = await _bll.UserLanguageService.GetUserLanguageIdsAsync(userId);
         var selected = allLanguages
@@ -46,7 +48,9 @@ public class LanguageSelection : Controller
     [HttpGet]
     public async Task<IActionResult> Languages()
     {
-        var userId = User.GetUserId();
+        if (!User.GetUserId(out var userId))
+            return Forbid();
+        
         var allLanguages = await _bll.LanguageService.GetAllLanguages();
         var userLanguages = await _bll.UserLanguageService.GetUserLanguageIdsAsync(userId);
 
@@ -65,9 +69,12 @@ public class LanguageSelection : Controller
     
     // SELECTION PAGE
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Languages(TranslatorLanguagesSelectionVm vm)
     {
-        var userId = User.GetUserId();
+        if (!User.GetUserId(out var userId))
+            return Forbid();
+        
         var selectedLanguages = vm.Languages
             .Where(x => x.Selected)
             .Select(x => x.Id);

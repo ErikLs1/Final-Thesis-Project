@@ -4,10 +4,17 @@ namespace WebApp.Helpers;
 
 public static class IdentityExtensions
 {
-    public static Guid GetUserId(this ClaimsPrincipal claimsPrincipal)
+    public static bool GetUserId(this ClaimsPrincipal? claimsPrincipal, out Guid userId)
     {
-        var userIdStr = claimsPrincipal.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        var userId = Guid.Parse(userIdStr);
-        return userId;
+        userId = default;
+
+        var raw = claimsPrincipal?.FindFirstValue(ClaimTypes.NameIdentifier);
+        return Guid.TryParse(raw, out userId);
+    }
+
+    public static Guid GetRequiredUserId(this ClaimsPrincipal? claimsPrincipal)
+    {
+        if (claimsPrincipal.GetUserId(out var id)) return id;
+        throw new UnauthorizedAccessException("Missing claim.");
     }
 }

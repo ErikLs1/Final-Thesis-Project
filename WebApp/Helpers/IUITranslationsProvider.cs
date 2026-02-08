@@ -7,17 +7,5 @@ public interface IUITranslationsProvider
     /// The BCP-47 language tag of the resource.
     /// </summary>
     string LanguageTag { get; }
-    
-    /// <summary>
-    /// The key of the string resource
-    /// </summary>
-    /// <param name="key"></param>
-    string this[string key] { get; } // @Translation["Translation_string_code"]
-    
-    /// <summary>
-    /// Gets specific key translation resource
-    /// </summary>
-    /// <param name="key"></param>
-    /// <returns></returns>
-    string Get(string key);
+    Task<string> GetAsync(string key);
 }

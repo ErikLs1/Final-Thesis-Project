@@ -8,37 +8,43 @@ namespace WebApp.Helpers;
 public class UITranslationsProvider : IUITranslationsProvider 
 {
     private readonly IRedisTranslationService _redisTranslation;
-    private readonly IHttpContextAccessor _http;
-
+    private readonly CultureInfo _culture;
+    
+    private Task<Dictionary<string, string>>? _loadTask;
     private Dictionary<string, string>? _map;
+    
     public string LanguageTag { get; }
 
-    public UITranslationsProvider(IRedisTranslationService redisTranslation, IHttpContextAccessor http)
+    public UITranslationsProvider(IRedisTranslationService redisTranslation, string languageTag)
     {
         _redisTranslation = redisTranslation;
-        _http = http;
-
-        LanguageTag =
-            _http.HttpContext?.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture.Name
-            ?? CultureInfo.CurrentUICulture.Name
-            ?? "en";
+        LanguageTag = languageTag;
+        _culture = CultureInfo.GetCultureInfo(languageTag);
     }
 
-    public string this[string key] => Get(key);
-
-    public string Get(string key)
+    private Task<Dictionary<string, string>> EnsureLoadedAsync()
     {
-        EnsureLoaded();
+        // if loaded return
+        if (_map != null) return Task.FromResult(_map);
+        
+        _loadTask ??= LoadAsync();
+        return _loadTask;
+        
+        async Task<Dictionary<string, string>> LoadAsync()
+        {
+            var map = await _redisTranslation.GetTranslationsAsync(LanguageTag);
+            _map = map;
+            return map;
+        }
+    }
+
+    public async Task<string> GetAsync(string key)
+    {
+        var map = await EnsureLoadedAsync();
         
         // First layer: Redis
-        if (_map!.TryGetValue(key, out var v))
-        {
-            Console.WriteLine("REDIS" + v);
+        if (map.TryGetValue(key, out var v) && !string.IsNullOrEmpty(v))
             return v;
-        }
-        
-        // Second layer: DB
-        // TODO: LATER
         
         // Third layer: Resx
         var culture = new CultureInfo(LanguageTag);
@@ -47,21 +53,10 @@ public class UITranslationsProvider : IUITranslationsProvider
             var value = resourceManager.GetString(key, culture);
             if (!string.IsNullOrEmpty(value))
             {
-                Console.WriteLine("RESX" + v);
                 return value;
             }
         }
         
         return key;
-    }
-
-    private void EnsureLoaded()
-    {
-        if (_map != null) return;
-        
-        _map = _redisTranslation
-            .GetTranslationsAsync(LanguageTag)
-            .GetAwaiter()
-            .GetResult();
     }
 }

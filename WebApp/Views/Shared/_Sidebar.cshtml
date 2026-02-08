@@ -4,7 +4,7 @@
      style="width:100%; height: calc(100vh - 56px); top: 56px;">
     <a asp-controller="Home" asp-action="Index" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
         <i class="bi bi-bag me-2" style="font-size:1.8rem;"></i>
-        <span class="fs-4">@Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Home))</span>
+        <span class="fs-4">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Home)))</span>
     </a>
 
     <hr class="border-secondary" />
@@ -12,22 +12,22 @@
     <ul class="nav nav-pills flex-column mb-3">
         <li class="nav-item">
             <a class="nav-link text-white" asp-controller="Home" asp-action="Index">
-                <i class="bi bi-house-door me-2"></i> @Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Home))
+                <i class="bi bi-house-door me-2"></i> @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Home)))
             </a>
         </li>
         <li>
             <a class="nav-link text-white">
-                <i class="bi bi-speedometer2 me-2"></i> @Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Dashboard))
+                <i class="bi bi-speedometer2 me-2"></i> @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Dashboard)))
             </a>
         </li>
         <li>
             <a class="nav-link text-white">
-                <i class="bi bi-table me-2"></i> @Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Order))
+                <i class="bi bi-table me-2"></i> @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Order)))
             </a>
         </li>
         <li>
             <a class="nav-link text-white">
-                <i class="bi bi-grid me-2"></i> @Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Product))
+                <i class="bi bi-grid me-2"></i> @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Product)))
             </a>
         </li>
     </ul>
@@ -35,13 +35,13 @@
     <hr class="border-secondary" />
 
     <!-- Categories -->
-    <div class="text-uppercase text-secondary small mb-2">@Translation.Get(nameof(App.Data.Resources.Resources.Heading_Categories))</div>
+    <div class="text-uppercase text-secondary small mb-2">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Heading_Categories)))</div>
     <ul class="nav nav-pills flex-column mb-3">
-        <li><a class="nav-link text-white" asp-route-slug="monitors"><i class="bi bi-display me-2"></i> @Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Category_Monitor))</a></li>
-        <li><a class="nav-link text-white" asp-route-slug="laptops"><i class="bi bi-laptop me-2"></i> @Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Category_Laptop))</a></li>
-        <li><a class="nav-link text-white" asp-route-slug="keyboards"><i class="bi bi-keyboard me-2"></i> @Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Category_Keyboard))</a></li>
-        <li><a class="nav-link text-white" asp-route-slug="mice"><i class="bi bi-mouse me-2"></i> @Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Category_Mouse))</a></li>
-        <li><a class="nav-link text-white" asp-route-slug="audio"><i class="bi bi-headphones me-2"></i> @Translation.Get(nameof(App.Data.Resources.Resources.Navigation_Category_Headphones))</a></li>
+        <li><a class="nav-link text-white" asp-route-slug="monitors"><i class="bi bi-display me-2"></i> @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Category_Monitor)))</a></li>
+        <li><a class="nav-link text-white" asp-route-slug="laptops"><i class="bi bi-laptop me-2"></i> @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Category_Laptop)))</a></li>
+        <li><a class="nav-link text-white" asp-route-slug="keyboards"><i class="bi bi-keyboard me-2"></i> @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Category_Keyboard)))</a></li>
+        <li><a class="nav-link text-white" asp-route-slug="mice"><i class="bi bi-mouse me-2"></i> @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Category_Mouse)))</a></li>
+        <li><a class="nav-link text-white" asp-route-slug="audio"><i class="bi bi-headphones me-2"></i> @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Category_Headphones)))</a></li>
     </ul>
 
     <!-- Role-specific area -->

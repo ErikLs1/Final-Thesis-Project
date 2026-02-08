@@ -1,3 +1,4 @@
+using System.Globalization;
 using App.Domain.Identity;
 using App.EF;
 using App.Repository.DalUow;
@@ -56,7 +57,12 @@ builder.Services.AddScoped<ResourcesImporter>();
 // REDIS- https://redis.io/docs/latest/develop/clients/dotnet/connect/
 builder.Services.AddSingleton<IRedisClient, RedisClient>();
 builder.Services.AddScoped<IRedisTranslationService, RedisTranslationService>();
-builder.Services.AddScoped<IUITranslationsProvider, UITranslationsProvider>();
+builder.Services.AddScoped<IUITranslationsProvider>(sp =>
+{
+    var redis = sp.GetRequiredService<IRedisTranslationService>();
+    var langTag = CultureInfo.CurrentUICulture.Name;
+    return new UITranslationsProvider(redis, langTag);
+});
 builder.Services.Configure<RedisOptions>(builder.Configuration.GetSection("Redis"));
 builder.Services.AddHttpContextAccessor();
 

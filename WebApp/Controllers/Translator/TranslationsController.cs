@@ -23,7 +23,8 @@ public class TranslationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(Guid? languageId, int? version)
     {
-        var userId = User.GetUserId();
+        if (!User.GetUserId(out var userId))
+            return Forbid();
         
         // Get user known languages
         var userLanguages = await _bll
@@ -71,7 +72,8 @@ public class TranslationsController : Controller
     [HttpGet]
     public async Task<IActionResult> CreateVersions(Guid? languageId)
     {
-        var userId = User.GetUserId();
+        if (!User.GetUserId(out var userId))
+            return Forbid();
         
         // Get user known languages
         var userLanguages = await _bll
@@ -110,10 +112,12 @@ public class TranslationsController : Controller
     
     // PAGE - CREATE NEW TRANSLATION VERSION
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateVersions(CreateVersionsVm vm)
     {
         
-        var userId = User.GetUserId();
+        if (!User.GetUserId(out var userId))
+            return Forbid();
         
         // Get user known languages
         var userLanguages = await _bll

@@ -2,6 +2,7 @@ using App.Domain.Enum;
 using App.EF;
 using App.Repository.DTO.UITranslations;
 using App.Service.BllUow;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Models.Admin.Translations;
 using WebApp.Models.Shared;
@@ -23,6 +24,7 @@ public class AdminTranslationsController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Index(Guid? languageId, int? version, TranslationState? state)
     {
         // Get all languages
@@ -80,6 +82,7 @@ public class AdminTranslationsController : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Publish(Guid? languageId)
     {
         var allLanguages = await _bll.LanguageService.GetAllLanguages();
@@ -128,6 +131,8 @@ public class AdminTranslationsController : Controller
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Publish(AdminPublishTranslationsVm vm)
     {
         var chosenVersionIds = vm.Rows
