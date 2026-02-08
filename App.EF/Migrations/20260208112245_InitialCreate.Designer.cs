@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260103191444_SeedLanguages")]
-    partial class SeedLanguages
+    [Migration("20260208112245_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -261,6 +261,11 @@ namespace App.EF.Migrations
                         .HasColumnType("uuid")
                         .HasDefaultValueSql("gen_random_uuid()");
 
+                    b.Property<string>("FriendlyKey")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
                     b.Property<string>("ResourceKey")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -355,7 +360,8 @@ namespace App.EF.Migrations
 
                     b.HasIndex("ResourceKeyId");
 
-                    b.HasIndex("LanguageId", "ResourceKeyId", "VersionNumber");
+                    b.HasIndex("LanguageId", "ResourceKeyId", "VersionNumber")
+                        .IsUnique();
 
                     b.ToTable("ui_translation_versions", (string)null);
                 });

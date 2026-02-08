@@ -5,6 +5,8 @@ using App.Repository.DTO;
 using App.Repository.DTO.UITranslations;
 using App.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Extensions.Pager;
+using WebApp.Extensions.Pager.models;
 
 namespace App.Repository.Impl;
 
@@ -19,63 +21,25 @@ public class UITranslationRepository : IUITranslationRepository
 
     public async Task<IReadOnlyList<LiveTranslationDto>> GetLiveTranslationsAsync(Guid? languageId)
     {
-        var live = await _db.UITranslations
+
+        var result = _db.UITranslations
+            .AsNoTracking()
             .Where(t => !languageId.HasValue || t.LanguageId == languageId.Value)
-            .Select(t => new { t.LanguageId, t.ResourceKeyId, t.TranslationVersionId, t.PublishedAt, t.PublishedBy })
-            .ToListAsync();
+            .OrderBy(t => t.Language.LanguageTag)
+            .ThenBy(t => t.UIResourceKeys.FriendlyKey)
+            .Select(t => new LiveTranslationDto(
+                t.LanguageId,
+                t.Language.LanguageTag,
+                t.ResourceKeyId,
+                t.UIResourceKeys.ResourceKey,
+                t.UIResourceKeys.FriendlyKey,
+                t.TranslationVersionId,
+                t.UITranslationVersions.VersionNumber,
+                t.UITranslationVersions.Content,
+                t.UITranslationVersions.TranslationState
+            ));
 
-        if (live.Count == 0) return Array.Empty<LiveTranslationDto>();
-
-        var langIds = live.Select(x => x.LanguageId)
-            .Distinct()
-            .ToList();
-        
-        var keyIds = live.Select(x => x.ResourceKeyId)
-            .Distinct()
-            .ToList();
-        
-        var versionIds = live.Select(x => x.TranslationVersionId)
-            .Distinct()
-            .ToList();
-        
-        var langMap = await _db.Languages
-            .Where(l => langIds.Contains(l.Id))
-            .ToDictionaryAsync(l => l.Id, l => l.LanguageTag);
-
-        var keyMap = await _db.UIResourceKeys
-            .Where(rk => keyIds.Contains(rk.Id))
-            .ToDictionaryAsync(rk => rk.Id, rk => rk.ResourceKey);
-
-        var verMap = await _db.UITranslationVersions
-            .Where(v => versionIds.Contains(v.Id))
-            .ToDictionaryAsync(v => v.Id, v => new { v.VersionNumber, v.Content, v.TranslationState });
-        
-        var rows = live
-            .Select(x =>
-            {
-                var langTag = langMap.TryGetValue(x.LanguageId, out var lt) ? lt : "";
-                var keyStr  = keyMap.TryGetValue(x.ResourceKeyId, out var ks) ? ks : "";
-                var frKey   = ConvertToUserFriendlyString(keyStr);
-
-                verMap.TryGetValue(x.TranslationVersionId, out var vinfo);
-
-                return new LiveTranslationDto(
-                    x.LanguageId,
-                    langTag,
-                    x.ResourceKeyId,
-                    keyStr,
-                    frKey,
-                    x.TranslationVersionId,
-                    vinfo?.VersionNumber ?? 0,
-                    vinfo?.Content ?? "",
-                    vinfo?.TranslationState ?? default
-                );
-            })
-            .OrderBy(r => r.LanguageTag)
-            .ThenBy(r => r.FriendlyKey)
-            .ToList();
-
-        return rows;
+        return await result.ToListAsync();
     }
 
     public async Task<int> UpdateTranslationStateAsync(UpdateTranslationStateRequestDto request)
@@ -111,62 +75,34 @@ public class UITranslationRepository : IUITranslationRepository
         return liveTranslations;
     }
 
-    public async Task<IReadOnlyList<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(FilteredTranslationsRequestDto request)
+    public async Task<PagedResult<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(FilteredTranslationsRequestDto request, PagedRequest paging)
     {
-        var translations = await _db.UITranslationVersions
-            .Where(x => x.LanguageId == request.LanguageId)
-            .Select(x => new
-            {
+        paging = paging.Normalize();
+
+        var query = _db.UITranslationVersions.AsNoTracking()
+            .Where(x => x.LanguageId == request.LanguageId);
+
+        if (request.VersionNumber.HasValue)
+            query = query.Where(x => x.VersionNumber == request.VersionNumber.Value);
+
+        if (request.State.HasValue)
+            query = query.Where(x => x.TranslationState == request.State.Value);
+
+        var dataQuery = query
+            .OrderBy(x => x.UIResourceKeys.ResourceKey)
+            .Select(x => new FilteredUITranslationsDto(
                 x.LanguageId,
                 x.Language.LanguageTag,
                 x.ResourceKeyId,
                 x.UIResourceKeys.ResourceKey,
-                x.Id,
-                x.VersionNumber,
-                x.Content,
-                x.TranslationState
-            })
-            .ToListAsync();
-
-        if (translations.Count == 0)
-        {
-            return [];
-        }
-
-        if (request.VersionNumber.HasValue)
-        {
-            translations = translations
-                .Where(x => x.VersionNumber == request.VersionNumber.Value)
-                .ToList();
-        }
-        
-        if (request.State.HasValue)
-        {
-            translations = translations
-                .Where(x => x.TranslationState == request.State.Value)
-                .ToList();
-        }
-
-        var result = new List<FilteredUITranslationsDto>();
-        
-        foreach (var x in translations)
-        {
-            var friendly = ConvertToUserFriendlyString(x.ResourceKey);
-
-            result.Add(new FilteredUITranslationsDto(
-                x.LanguageId,
-                x.LanguageTag,
-                x.ResourceKeyId,
-                x.ResourceKey,
-                friendly,
+                x.UIResourceKeys.FriendlyKey,
                 x.Id,
                 x.VersionNumber,
                 x.Content,
                 x.TranslationState
             ));
-        }
 
-        return result;
+        return await dataQuery.ToPagedResultAsync(paging);
     }
 
     public async Task<int> PublishTranslationVersionAsync(PublishTranslationVersionRequestDto request)
@@ -222,10 +158,5 @@ public class UITranslationRepository : IUITranslationRepository
         }
         
         return await _db.SaveChangesAsync();
-    }
-
-    private static string ConvertToUserFriendlyString(string key)
-    {
-        return string.Join(" ", key.Split('_', StringSplitOptions.RemoveEmptyEntries));
     }
 }

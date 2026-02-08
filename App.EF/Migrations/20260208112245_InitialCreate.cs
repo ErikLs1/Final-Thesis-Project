@@ -83,7 +83,8 @@ namespace App.EF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    ResourceKey = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
+                    ResourceKey = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    FriendlyKey = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -476,7 +477,8 @@ namespace App.EF.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_ui_translation_versions_LanguageId_ResourceKeyId_VersionNum~",
                 table: "ui_translation_versions",
-                columns: new[] { "LanguageId", "ResourceKeyId", "VersionNumber" });
+                columns: new[] { "LanguageId", "ResourceKeyId", "VersionNumber" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ui_translation_versions_ResourceKeyId",

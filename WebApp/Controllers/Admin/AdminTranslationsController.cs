@@ -4,6 +4,8 @@ using App.Repository.DTO.UITranslations;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Extensions.Pager.models;
+using WebApp.Helpers;
 using WebApp.Models.Admin.Translations;
 using WebApp.Models.Shared;
 using WebApp.Redis.Services;
@@ -23,23 +25,36 @@ public class AdminTranslationsController : Controller
         _redisTranslationService = redisTranslationService;
     }
 
-    [HttpGet]
+    /*[HttpGet]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> Index(Guid? languageId, int? version, TranslationState? state)
+    public async Task<IActionResult> Index(
+        Guid? languageId, 
+        int? version,
+        TranslationState? state,
+        int page = 1,
+        int pageSize = 10)
     {
-        // Get all languages
-        var allLanguages = await _bll
-            .LanguageService
-            .GetAllLanguages();
+        
+        if (!User.GetUserId(out var userId))
+            return Forbid();
 
-        // Get default language
-        var defaultLanguage = await _bll
-            .LanguageService
-            .GetDefaultLanguageIdAsync();
-        if (languageId == null)
+        // Get user known languages
+        var userLanguages = await _bll
+            .UserLanguageService
+            .GetUserKnownLanguagesAsync(userId);
+        
+        // Fallback to default lang
+        languageId ??= await _bll.LanguageService.GetDefaultLanguageIdAsync();
+
+        var paging = new PagedRequest
         {
-            languageId = defaultLanguage;
-        }
+            Page = page,
+            PageSize = pageSize
+        };
+
+        var paged = await _bll
+            .UITranslationsVersionsService
+            .GetFilteredTranslationsAsync(languageId.Value, version, state, paging);
 
         var request = new FilteredTranslationsRequestDto(
             languageId.Value,
@@ -128,7 +143,7 @@ public class AdminTranslationsController : Controller
         };
 
         return View(vm);
-    }
+    }*/
 
     [HttpPost]
     [Authorize(Roles = "Admin")]

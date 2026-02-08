@@ -1,7 +1,10 @@
+using App.Domain.Enum;
 using App.Repository.DTO;
+using App.Repository.DTO.UITranslations;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Extensions.Pager.models;
 using WebApp.Helpers;
 using WebApp.Models.Shared;
 using WebApp.Models.Translator.Translations;
@@ -18,50 +21,50 @@ public class TranslationsController : Controller
     {
         _bll = bll;
     }
-
-    // PAGE - ALL TRANSLATION VERSIONS
+    
     [HttpGet]
-    public async Task<IActionResult> Index(Guid? languageId, int? version)
+    public async Task<IActionResult> Index(Guid? languageId,
+        int? version,
+        TranslationState? state,
+        int page = 1,
+        int pageSize = 10)
     {
         if (!User.GetUserId(out var userId))
             return Forbid();
         
-        // Get user known languages
-        var userLanguages = await _bll
-            .UserLanguageService
-            .GetUserKnownLanguagesAsync(userId);
+        languageId ??= await _bll.LanguageService.GetDefaultLanguageIdAsync();
 
-        // Fallback if language not provided
-        if (languageId == null)
-        {
-            languageId = await _bll.LanguageService.GetDefaultLanguageIdAsync();
-        }
-        
-        // Get translations
-        var translations = await _bll
-            .UITranslationsVersionsService
-            .GetFilteredTranslationsAsync(languageId, version);
-        
-        // Build vm
+        var paging = new PagedRequest { Page = page, PageSize = pageSize };
+
+        var request = new FilteredTranslationsRequestDto(
+            languageId.Value,
+            version,
+            state
+        );
+
+        var paged = await _bll
+            .UITranslationService
+            .GetFilteredUITranslationsAsync(request, paging);
+
         var vm = new TranslationsIndexVm
         {
             SelectedLanguageId = languageId,
             SelectedVersion = version,
-            LanguageOptions = userLanguages
-                .Select(l => new LanguageOptionVm
-                {
-                    Id = l.Id,
-                    Display = l.DisplayValue
-                })
-                .ToList(),
-            Rows = translations.Select(d => new TranslatorTranslationsRowVm
+            SelectedState = state,
+
+            Page = paged.Page,
+            PageSize = paged.PageSize,
+            TotalCount = paged.TotalCount,
+
+            Rows = paged.Items.Select(d => new TranslatorTranslationsRowVm
             {
                 ResourceKeyId = d.ResourceKeyId,
                 ResourceKey = d.ResourceKey,
                 FriendlyKey = d.FriendlyKey,
                 Content = d.Content,
                 VersionNumber = d.VersionNumber,
-                LanguageTag = d.LanguageTag
+                LanguageTag = d.LanguageTag,
+                TranslationState = d.TranslationState,
             }).ToList()
         };
 

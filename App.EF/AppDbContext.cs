@@ -35,7 +35,7 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             {
                 case EntityState.Added:
                     entry.Entity.CreatedAt = DateTime.UtcNow;
-                    entry.Entity.CreatedBy = "Some User";
+                    entry.Entity.CreatedBy = "Some User"; // todo: put user name here.
                     entry.Entity.UpdatedAt = null;
                     entry.Entity.UpdatedBy = null;
                     break;
@@ -170,6 +170,10 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             e.Property(p => p.ResourceKey)
                 .HasMaxLength(255)
                 .IsRequired();
+            
+            e.Property(p => p.FriendlyKey)
+                .HasMaxLength(255)
+                .IsRequired();
         });
         
         
@@ -178,7 +182,8 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
         {
             e.ToTable("ui_translation_versions");
 
-            e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId, p.VersionNumber });
+            e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId, p.VersionNumber })
+                .IsUnique();
             
             e.Property(p => p.Id)
                 .HasDefaultValueSql("gen_random_uuid()")
@@ -220,6 +225,7 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             e.ToTable("ui_translations");
             
             e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId }).IsUnique();
+            e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId, p.TranslationVersionId });
             
             e.Property(p => p.Id)
                 .HasDefaultValueSql("gen_random_uuid()")

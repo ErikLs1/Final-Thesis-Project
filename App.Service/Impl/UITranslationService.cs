@@ -2,6 +2,7 @@ using App.Repository.DalUow;
 using App.Repository.DTO;
 using App.Repository.DTO.UITranslations;
 using App.Service.Interface;
+using WebApp.Extensions.Pager.models;
 
 namespace App.Service.Impl;
 
@@ -29,9 +30,11 @@ public class UITranslationService : IUITranslationService
         return await _uow.UITranslationRepository.GetLiveTranslationsByLanguageTagAsync(languageTag);
     }
 
-    public async Task<IReadOnlyList<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(FilteredTranslationsRequestDto request)
+    public Task<PagedResult<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(
+        FilteredTranslationsRequestDto request,
+        PagedRequest paging)
     {
-        return await _uow.UITranslationRepository.GetFilteredUITranslationsAsync(request);
+        return _uow.UITranslationRepository.GetFilteredUITranslationsAsync(request, paging);
     }
 
     public async Task<int> PublishTranslationTranslationsAsync(IReadOnlyList<PublishTranslationVersionRequestDto> requests)

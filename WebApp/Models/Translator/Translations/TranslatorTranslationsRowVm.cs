@@ -1,3 +1,5 @@
+using App.Domain.Enum;
+
 namespace WebApp.Models.Translator.Translations;
 
 public class TranslatorTranslationsRowVm
@@ -8,4 +10,5 @@ public class TranslatorTranslationsRowVm
     public string? Content { get; set; }
     public int? VersionNumber { get; set; }
     public string LanguageTag { get; set; } = default!;
+    public TranslationState? TranslationState { get; set; }
 }

@@ -38,7 +38,11 @@ public class ResxImportRepository : IResxImportRepository
         var missingKeys = keys.Where(k => !existingKeys.ContainsKey(k)).ToList();
         if (missingKeys.Count > 0)
         {
-            var newKeys = missingKeys.Select(k => new UIResourceKeys { ResourceKey = k }).ToList();
+            var newKeys = missingKeys.Select(k => new UIResourceKeys
+            {
+                ResourceKey = k,
+                FriendlyKey = ConvertToUserFriendlyString(k)
+            }).ToList();
             await _db.UIResourceKeys.AddRangeAsync(newKeys);
             await _db.SaveChangesAsync();
 
@@ -135,5 +139,11 @@ public class ResxImportRepository : IResxImportRepository
 
         await _db.UITranslations.AddRangeAsync(toInsert);
         return await _db.SaveChangesAsync();
+    }
+    
+    
+    private static string ConvertToUserFriendlyString(string key)
+    {
+        return string.Join(" ", key.Split('_', StringSplitOptions.RemoveEmptyEntries));
     }
 }
