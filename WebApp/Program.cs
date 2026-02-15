@@ -11,6 +11,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using WebApp.Extensions.Builder;
 using WebApp.Extensions.Services;
 using WebApp.Helpers;
+using WebApp.Helpers.Translations.Imp;
+using WebApp.Helpers.Translations.Interfaces;
 using WebApp.Redis.Client;
 using WebApp.Redis.Client.Impl;
 using WebApp.Redis.Services;
@@ -54,12 +56,17 @@ builder.Services.AddScoped<ResxImportRepository>();
 builder.Services.AddScoped<IAppBll, AppBll>();
 builder.Services.AddScoped<ResourcesImporter>();
 
+builder.Services.AddMemoryCache();
+builder.Services.AddScoped<ITranslationSource, TranslationSource>();
+builder.Services.AddSingleton<ITranslationDistributedCache, TranslationDistributedCache>();
+builder.Services.AddSingleton<ITranslationCache, TranslationCache>();
+
 // REDIS- https://redis.io/docs/latest/develop/clients/dotnet/connect/
 builder.Services.AddSingleton<IRedisClient, RedisClient>();
 builder.Services.AddScoped<IRedisTranslationService, RedisTranslationService>();
 builder.Services.AddScoped<IUITranslationsProvider>(sp =>
 {
-    var redis = sp.GetRequiredService<IRedisTranslationService>();
+    var redis = sp.GetRequiredService<ITranslationCache>();
     var langTag = CultureInfo.CurrentUICulture.Name;
     return new UITranslationsProvider(redis, langTag);
 });

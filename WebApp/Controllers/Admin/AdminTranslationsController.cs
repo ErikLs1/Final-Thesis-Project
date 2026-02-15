@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Extensions.Pager.models;
 using WebApp.Helpers;
+using WebApp.Helpers.Translations.Interfaces;
 using WebApp.Models.Admin.Translations;
 using WebApp.Models.Shared;
 using WebApp.Redis.Services;
@@ -16,13 +17,16 @@ public class AdminTranslationsController : Controller
 {
     private readonly IAppBll _bll;
     private readonly IRedisTranslationService _redisTranslationService;
+    private readonly ITranslationCache _cache;
 
     public AdminTranslationsController(
         IAppBll bll,
-        IRedisTranslationService redisTranslationService)
+        IRedisTranslationService redisTranslationService,
+        ITranslationCache cache)
     {
         _bll = bll;
         _redisTranslationService = redisTranslationService;
+        _cache = cache;
     }
 
     /*[HttpGet]
@@ -177,7 +181,8 @@ public class AdminTranslationsController : Controller
 
         if (!string.IsNullOrWhiteSpace(langTag))
         {
-            await _redisTranslationService.RefreshTranslationAsync(langTag);
+            await _cache.InvalidateAsync(langTag);
+            await _cache.GetLanguageMapAsync(langTag);
         }
 
         return RedirectToAction(nameof(Index), new { languageId = vm.SelectedLanguageId });

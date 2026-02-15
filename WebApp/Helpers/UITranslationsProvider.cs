@@ -1,38 +1,39 @@
 using System.Globalization;
 using App.Service.Impl.Assemblies.Resx;
 using Microsoft.AspNetCore.Localization;
+using WebApp.Helpers.Translations.Interfaces;
 using WebApp.Redis.Services;
 
 namespace WebApp.Helpers;
 
 public class UITranslationsProvider : IUITranslationsProvider 
 {
-    private readonly IRedisTranslationService _redisTranslation;
+    private readonly ITranslationCache _cache;
     private readonly CultureInfo _culture;
     
-    private Task<Dictionary<string, string>>? _loadTask;
-    private Dictionary<string, string>? _map;
+    private Task<IReadOnlyDictionary<string, string>>? _loadTask;
+    private IReadOnlyDictionary<string, string>? _map;
     
     public string LanguageTag { get; }
 
-    public UITranslationsProvider(IRedisTranslationService redisTranslation, string languageTag)
+    public UITranslationsProvider(ITranslationCache cache, string languageTag)
     {
-        _redisTranslation = redisTranslation;
+        _cache = cache;
         LanguageTag = languageTag;
         _culture = CultureInfo.GetCultureInfo(languageTag);
     }
 
-    private Task<Dictionary<string, string>> EnsureLoadedAsync()
+    private Task<IReadOnlyDictionary<string, string>> EnsureLoadedAsync()
     {
         // if loaded return
         if (_map != null) return Task.FromResult(_map);
-        
+
         _loadTask ??= LoadAsync();
         return _loadTask;
-        
-        async Task<Dictionary<string, string>> LoadAsync()
+
+        async Task<IReadOnlyDictionary<string, string>> LoadAsync()
         {
-            var map = await _redisTranslation.GetTranslationsAsync(LanguageTag);
+            var map = await _cache.GetLanguageMapAsync(LanguageTag);
             _map = map;
             return map;
         }
