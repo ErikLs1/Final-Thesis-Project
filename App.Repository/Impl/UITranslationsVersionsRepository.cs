@@ -4,80 +4,146 @@ using App.EF;
 using App.Repository.DTO;
 using App.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using WebApp.Extensions.Pager;
+using WebApp.Extensions.Pager.models;
 
 namespace App.Repository.Impl;
 
 public class UITranslationsVersionsRepository : IUITranslationsVersionsRepository
 {
     private readonly AppDbContext _db;
+
+    private sealed record KeyRow(Guid Id, string ResourceKey, string FriendlyKey);
     
     public UITranslationsVersionsRepository(AppDbContext repositoryDbContext)
     {
         _db = repositoryDbContext;
     }
 
-    public async Task<IReadOnlyList<TranslationVersionRowDto>> GetDefaultLanguageTranslationsAsync(Guid? languageId)
+    public async Task<PagedResult<TranslationVersionRowDto>> GetDefaultLanguageTranslationsAsync(
+        Guid? languageId, 
+        PagedRequest paging,
+        string? keySearch = null)
     {
+        paging = paging.Normalize();
+
         var languageTag = await _db.Languages
+            .AsNoTracking()
             .Where(l => l.Id == languageId)
             .Select(l => l.LanguageTag)
             .SingleAsync();
-        
-        // Get all ResourceKeys
-        var keys = await _db.UIResourceKeys
-            .Select(rk => new { rk.Id, rk.ResourceKey })
-            .OrderBy(rk => rk.ResourceKey)
-            .ToListAsync();
-        
-        // Get latest version per key
-        var latestRows = await _db.UITranslationVersions
-            .Where(v => v.LanguageId == languageId)
+
+        IQueryable<UIResourceKeys> keysQuery = _db.UIResourceKeys.AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(keySearch))
+        {
+            keysQuery = keysQuery.Where(k =>
+                k.ResourceKey.Contains(keySearch) ||
+                k.FriendlyKey.Contains(keySearch));
+        }
+
+        var pagedKeys = await keysQuery
+            .OrderBy(k => k.ResourceKey)
+            .Select(k => new KeyRow(k.Id, k.ResourceKey, k.FriendlyKey))
+            .ToPagedResultAsync(paging);
+
+        if (pagedKeys.Items.Count == 0)
+        {
+            return new PagedResult<TranslationVersionRowDto>
+            {
+                Items = Array.Empty<TranslationVersionRowDto>(),
+                TotalCount = pagedKeys.TotalCount,
+                Page = pagedKeys.Page,
+                PageSize = pagedKeys.PageSize
+            };
+        }
+
+        var pageKeyIds = pagedKeys.Items.Select(k => k.Id).ToArray();
+
+        var latest = await _db.UITranslationVersions
+            .AsNoTracking()
+            .Where(v => v.LanguageId == languageId && pageKeyIds.Contains(v.ResourceKeyId))
             .GroupBy(v => v.ResourceKeyId)
             .Select(g => g
                 .OrderByDescending(v => v.VersionNumber)
                 .ThenByDescending(v => v.CreatedAt)
                 .First())
             .ToDictionaryAsync(v => v.ResourceKeyId);
-        
-        var rows = keys.Select(k =>
+
+        var rows = pagedKeys.Items.Select(k =>
         {
-            latestRows.TryGetValue(k.Id, out var v);
+            latest.TryGetValue(k.Id, out var v);
             return new TranslationVersionRowDto(
                 k.Id,
                 k.ResourceKey,
-                ConvertToFriendlyString(k.ResourceKey),
+                k.FriendlyKey,
                 v?.Content,
                 languageId,
                 languageTag,
                 v?.VersionNumber
             );
         }).ToList();
+        
 
-        return rows;
+        return new PagedResult<TranslationVersionRowDto>
+        {
+            Items = rows,
+            TotalCount = pagedKeys.TotalCount,
+            Page = pagedKeys.Page,
+            PageSize = pagedKeys.PageSize
+        };
     }
 
-    public async Task<IReadOnlyList<TranslationVersionRowDto>> GetTranslationVersionAsync(Guid? languageId, int? version)
+    public async Task<PagedResult<TranslationVersionRowDto>> GetTranslationVersionAsync(
+        Guid? languageId, 
+        int? version,
+        PagedRequest paging, 
+        string? keySearch = null)
     {
+        paging = paging.Normalize();
+
         var langTag = await _db.Languages
+            .AsNoTracking()
             .Where(l => l.Id == languageId)
             .Select(l => l.LanguageTag)
             .SingleAsync();
 
-        // 1) Get All Keys
-        var keys = await _db.UIResourceKeys
-            .Select(rk => new { rk.Id, rk.ResourceKey })
-            .OrderBy(rk => rk.ResourceKey)
-            .ToListAsync();
+        IQueryable<UIResourceKeys> keysQuery = _db.UIResourceKeys.AsNoTracking();
 
-        // 2) pick versions into a dictionary<ResourceKeyId, VersionRow>
+        if (!string.IsNullOrWhiteSpace(keySearch))
+        {
+            keysQuery = keysQuery.Where(k =>
+                k.ResourceKey.Contains(keySearch) ||
+                k.FriendlyKey.Contains(keySearch));
+        }
+
+        var pagedKeys = await keysQuery
+            .OrderBy(k => k.ResourceKey)
+            .Select(k => new KeyRow(k.Id, k.ResourceKey, k.FriendlyKey))
+            .ToPagedResultAsync(paging);
+
+        if (pagedKeys.Items.Count == 0)
+        {
+            return new PagedResult<TranslationVersionRowDto>
+            {
+                Items = Array.Empty<TranslationVersionRowDto>(),
+                TotalCount = pagedKeys.TotalCount,
+                Page = pagedKeys.Page,
+                PageSize = pagedKeys.PageSize
+            };
+        }
+
+        var pageKeyIds = pagedKeys.Items.Select(k => k.Id).ToArray();
+
+        var versionsQuery = _db.UITranslationVersions
+            .AsNoTracking()
+            .Where(v => v.LanguageId == languageId && pageKeyIds.Contains(v.ResourceKeyId));
+
         Dictionary<Guid, UITranslationVersions> byKey;
-        
-        
+
         if (version is null)
         {
-            // latest per key
-            byKey = await _db.UITranslationVersions
-                .Where(v => v.LanguageId == languageId)
+            byKey = await versionsQuery
                 .GroupBy(v => v.ResourceKeyId)
                 .Select(g => g
                     .OrderByDescending(v => v.VersionNumber)
@@ -87,20 +153,19 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
         }
         else
         {
-            // specific version
-            byKey = await _db.UITranslationVersions
-                .Where(v => v.LanguageId == languageId && v.VersionNumber == version.Value)
+            byKey = await versionsQuery
+                .Where(v => v.VersionNumber == version.Value)
                 .ToDictionaryAsync(v => v.ResourceKeyId);
         }
 
-        // 3) project in-memory
-        var rows = keys.Select(k =>
+        var rows = pagedKeys.Items.Select(k =>
         {
             byKey.TryGetValue(k.Id, out var v);
+
             return new TranslationVersionRowDto(
                 k.Id,
                 k.ResourceKey,
-                ConvertToFriendlyString(k.ResourceKey),
+                k.FriendlyKey,
                 v?.Content,
                 languageId,
                 langTag,
@@ -108,7 +173,13 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
             );
         }).ToList();
 
-        return rows;
+        return new PagedResult<TranslationVersionRowDto>
+        {
+            Items = rows,
+            TotalCount = pagedKeys.TotalCount,
+            Page = pagedKeys.Page,
+            PageSize = pagedKeys.PageSize
+        };
     }
 
     public async Task<int> CreateNewVersionAsync(CreateVersionRequestDto request)

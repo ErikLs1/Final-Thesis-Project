@@ -32,6 +32,7 @@ public class TranslationsController : Controller
         if (!User.GetUserId(out var userId))
             return Forbid();
         
+        var userLanguages = await _bll.UserLanguageService.GetUserKnownLanguagesAsync(userId);
         languageId ??= await _bll.LanguageService.GetDefaultLanguageIdAsync();
 
         var paging = new PagedRequest { Page = page, PageSize = pageSize };
@@ -55,6 +56,12 @@ public class TranslationsController : Controller
             Page = paged.Page,
             PageSize = paged.PageSize,
             TotalCount = paged.TotalCount,
+            
+            LanguageOptions = userLanguages.Select(l => new LanguageOptionVm
+            {
+                Id = l.Id,
+                Display = l.DisplayValue
+            }).ToList(),
 
             Rows = paged.Items.Select(d => new TranslatorTranslationsRowVm
             {
@@ -73,43 +80,51 @@ public class TranslationsController : Controller
     
     // PAGE - CREATE NEW TRANSLATION VERSION
     [HttpGet]
-    public async Task<IActionResult> CreateVersions(Guid? languageId)
+    public async Task<IActionResult> CreateVersions(
+        Guid? languageId,
+        string? q,
+        int page = 1,
+        int pageSize = 25)
     {
         if (!User.GetUserId(out var userId))
             return Forbid();
-        
-        // Get user known languages
-        var userLanguages = await _bll
-            .UserLanguageService
-            .GetUserKnownLanguagesAsync(userId);
-        
-        // Fallback if language not provided
-        if (languageId == null)
-        {
-            languageId = await _bll.LanguageService.GetDefaultLanguageIdAsync();
-        }
-    
-        var translationVersions = await _bll.UITranslationsVersionsService.GetDefaultLanguageTranslationsAsync();
-    
+
+        var userLanguages = await _bll.UserLanguageService.GetUserKnownLanguagesAsync(userId);
+
+        languageId ??= await _bll.LanguageService.GetDefaultLanguageIdAsync();
+
+        var paging = new PagedRequest { Page = page, PageSize = pageSize };
+
+        // IMPORTANT: this should return a PagedResult<TranslationVersionRowDto>
+        var paged = await _bll.UITranslationsVersionsService
+            .GetDefaultLanguageTranslationsAsync(paging, q);
+
         var vm = new CreateVersionsVm
         {
             LanguageId = languageId.Value,
+
+            Search = q,
+            Page = paged.Page,
+            PageSize = paged.PageSize,
+            TotalCount = paged.TotalCount,
+
             LanguageOptions = userLanguages.Select(l => new LanguageOptionVm
             {
                 Id = l.Id,
                 Display = l.DisplayValue
             }).ToList(),
-            Items = translationVersions.Select(r => new TranslatorCreateNewVersionItemVm
+
+            Items = paged.Items.Select(r => new TranslatorCreateNewVersionItemVm
             {
                 ResourceKeyId = r.ResourceKeyId,
                 ResourceKey = r.ResourceKey,
                 FriendlyKey = r.FriendlyKey,
                 DefaultContent = r.Content,
                 Include = false,
-                Content = null  
+                Content = null
             }).ToList()
         };
-    
+
         return View(vm);
     }
     
