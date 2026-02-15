@@ -1,4 +1,4 @@
-namespace WebApp.Extensions.Pager.models;
+namespace App.Repository.Pager;
 
 public class PagedRequest
 {

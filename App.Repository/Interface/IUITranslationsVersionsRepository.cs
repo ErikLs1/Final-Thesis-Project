@@ -1,5 +1,5 @@
 using App.Repository.DTO;
-using WebApp.Extensions.Pager.models;
+using App.Repository.Pager;
 
 namespace App.Repository.Interface;
 

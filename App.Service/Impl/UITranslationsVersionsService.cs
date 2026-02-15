@@ -1,7 +1,7 @@
 using App.Repository.DalUow;
 using App.Repository.DTO;
+using App.Repository.Pager;
 using App.Service.Interface;
-using WebApp.Extensions.Pager.models;
 
 namespace App.Service.Impl;
 

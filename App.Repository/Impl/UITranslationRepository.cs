@@ -4,9 +4,8 @@ using App.EF;
 using App.Repository.DTO;
 using App.Repository.DTO.UITranslations;
 using App.Repository.Interface;
+using App.Repository.Pager;
 using Microsoft.EntityFrameworkCore;
-using WebApp.Extensions.Pager;
-using WebApp.Extensions.Pager.models;
 
 namespace App.Repository.Impl;
 

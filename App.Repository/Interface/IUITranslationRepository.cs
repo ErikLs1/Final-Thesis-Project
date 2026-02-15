@@ -1,6 +1,6 @@
 using App.Repository.DTO;
 using App.Repository.DTO.UITranslations;
-using WebApp.Extensions.Pager.models;
+using App.Repository.Pager;
 
 namespace App.Repository.Interface;
 

@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using WebApp.Extensions.Pager.models;
 
-namespace WebApp.Extensions.Pager;
+namespace App.Repository.Pager;
 
 public static class PagerExtension
 {

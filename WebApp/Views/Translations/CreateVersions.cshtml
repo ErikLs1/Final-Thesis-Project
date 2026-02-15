@@ -8,7 +8,6 @@
 
 <h2 class="mb-3">@ViewData["Title"]</h2>
 
-<!-- TOP FILTERS (GET) -->
 <div class="d-flex justify-content-between align-items-center mb-3">
     <form method="get" class="d-flex align-items-center gap-2">
         <input type="hidden" name="languageId" value="@Model.LanguageId" />
@@ -21,7 +20,6 @@
     </form>
 </div>
 
-<!-- POST FORM -->
 <form asp-action="CreateVersions" method="post">
     @Html.AntiForgeryToken()
 
@@ -92,7 +90,6 @@
     </div>
 </form>
 
-<!-- BOTTOM PAGER (GET) - same pattern as Index -->
 <div class="d-flex justify-content-between align-items-center mt-3">
 
     <form method="get" class="d-flex align-items-center gap-2">

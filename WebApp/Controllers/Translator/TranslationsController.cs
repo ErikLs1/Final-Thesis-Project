@@ -1,10 +1,10 @@
 using App.Domain.Enum;
 using App.Repository.DTO;
 using App.Repository.DTO.UITranslations;
+using App.Repository.Pager;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.Extensions.Pager.models;
 using WebApp.Helpers;
 using WebApp.Models.Shared;
 using WebApp.Models.Translator.Translations;
