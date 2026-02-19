@@ -45,6 +45,7 @@ public class TranslationCache : ITranslationCache
         if (redisCache != null)
         {
             SetMemory(memKey, redisCache);
+            return redisCache;
         }
         
         // Cache miss - singe flight

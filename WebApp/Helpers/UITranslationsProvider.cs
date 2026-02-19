@@ -1,8 +1,6 @@
 using System.Globalization;
 using App.Service.Impl.Assemblies.Resx;
-using Microsoft.AspNetCore.Localization;
 using WebApp.Helpers.Translations.Interfaces;
-using WebApp.Redis.Services;
 
 namespace WebApp.Helpers;
 

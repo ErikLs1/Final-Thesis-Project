@@ -19,6 +19,7 @@ public sealed class TranslationDistributedCache : ITranslationDistributedCache
     }
 
     private string Key(string languageTag) => $"{_options.RedisKeyPrefix}:{languageTag}";
+    private const string EmptyMarker = "__empty__";
     
     public async Task<Dictionary<string, string>?> TryGetAsync(string languageTag)
     {
@@ -33,7 +34,10 @@ public sealed class TranslationDistributedCache : ITranslationDistributedCache
 
         foreach (var e in entries)
         {
-            map[e.Name!] = e.Value!;
+            var name = e.Name.ToString();
+            if (name == EmptyMarker) continue;
+
+            map[name] = e.Value.ToString();
         }
 
         return map;
@@ -46,7 +50,8 @@ public sealed class TranslationDistributedCache : ITranslationDistributedCache
 
         if (map.Count == 0)
         {
-            await db.StringSetAsync(key, "", ttl);
+            await db.HashSetAsync(key, new[] { new HashEntry(EmptyMarker, "1") });
+            await db.KeyExpireAsync(key, ttl);
             return;
         }
 
