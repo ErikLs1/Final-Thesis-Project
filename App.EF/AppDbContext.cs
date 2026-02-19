@@ -1,5 +1,4 @@
 using App.Domain;
-using App.Domain.AB;
 using App.Domain.Common;
 using App.Domain.Identity;
 using App.Domain.UITranslationEntities;
@@ -11,13 +10,10 @@ namespace App.EF;
 
 public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
-    public DbSet<Category> Categories { get; set; } = null!;
-    public DbSet<Product> Products { get; set; } = null!;
     public DbSet<Languages> Languages { get; set; } = null!;
     public DbSet<UserLanguages> UserLanguages { get; set; } = null!;
     
     // UI TRANSLATIONS
-    public DbSet<UIExperiment> UIExperiments { get; set; } = null!;
     public DbSet<UIResourceKeys> UIResourceKeys { get; set; } = null!;
     public DbSet<UITranslationAuditLog> UITranslationAuditLogs { get; set; } = null!;
     public DbSet<UITranslations> UITranslations { get; set; } = null!;
@@ -54,62 +50,6 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     protected override void OnModelCreating(ModelBuilder b)
     {
         base.OnModelCreating(b);
-        
-        // CATEGORY
-        b.Entity<Category>(e =>
-        {
-            e.ToTable("category");
-
-            e.Property(p => p.Id)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .ValueGeneratedOnAdd();
-
-            e.Property(p => p.Name)
-                .HasMaxLength(255)
-                .IsRequired();
-
-            e.Property(p => p.Description)
-                .HasMaxLength(512);
-
-            e.HasIndex(p => p.Name)
-                .IsUnique();
-        });
-
-        // PRODUCT
-        b.Entity<Product>(e =>
-        {
-            e.ToTable("products");
-
-            e.Property(p => p.Id)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .ValueGeneratedOnAdd();
-
-            e.Property(p => p.Name)
-                .HasMaxLength(255)
-                .IsRequired();
-            
-            e.Property(p => p.Description)
-                .HasMaxLength(1024)
-                .IsRequired();
-
-            e.Property(p => p.Price)
-                .HasColumnType("double precision");
-            
-            e.Property(p => p.Quantity)
-                .HasDefaultValue(0);
-            
-            e.Property(p => p.CreatedBy)
-                .HasMaxLength(100)
-                .IsRequired();
-            
-            e.Property(p => p.UpdatedBy)
-                .HasMaxLength(100);
-            
-            e.HasOne(p => p.Category)
-                .WithMany(u => u.Products)
-                .HasForeignKey(r => r.CategoryId)
-                .OnDelete(DeleteBehavior.Restrict);
-        });
 
         // LANGUAGES
         b.Entity<Languages>(e =>
@@ -291,42 +231,6 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             e.HasOne(p => p.UITranslationVersions)
                 .WithMany(v => v.UITranslationAuditLogs)
                 .HasForeignKey(p => p.TranslationVersionId)
-                .OnDelete(DeleteBehavior.Restrict);
-        });
-        
-        // UI_EXPERIMENTS
-        b.Entity<UIExperiment>(e =>
-        {
-            e.ToTable("ui_experiments");
-            
-            e.HasIndex(p => new { p.LanguageId, p.ResourceKeyId }).IsUnique();
-            
-            e.Property(p => p.Id)
-                .HasDefaultValueSql("gen_random_uuid()")
-                .ValueGeneratedOnAdd();
-            
-            e.Property(p => p.ExperimentName)
-                .HasMaxLength(255)
-                .IsRequired();
-            
-            e.Property(p => p.Option)
-                .HasMaxLength(255)
-                .IsRequired();
-            
-            e.HasOne(p => p.Language)
-                .WithMany(l => l.UIExperiments)
-                .HasForeignKey(p => p.LanguageId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            e.HasOne(p => p.UIResourceKeys)
-                .WithMany(rk => rk.UIExperiments)
-                .HasForeignKey(p => p.ResourceKeyId)
-                .OnDelete(DeleteBehavior.Cascade);
-            
-            e.HasOne(p => p.UITranslationVersions)
-                .WithMany()
-                .HasForeignKey(p => new { p.LanguageId, p.ResourceKeyId, p.TranslationVersionId })
-                .HasPrincipalKey(v => new { v.LanguageId, v.ResourceKeyId, v.Id })
                 .OnDelete(DeleteBehavior.Restrict);
         });
     }

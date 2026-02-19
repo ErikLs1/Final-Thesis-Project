@@ -1,4 +1,3 @@
-using App.Domain.AB;
 using App.Domain.Identity;
 using App.Domain.UITranslationEntities;
 
@@ -14,6 +13,5 @@ public class Languages
     public ICollection<UserLanguages> UserLanguages { get; set; }= new List<UserLanguages>();
     public ICollection<UITranslationAuditLog> UITranslationAuditLogs { get; set; }= new List<UITranslationAuditLog>();
     public ICollection<UITranslationVersions> UITranslationVersions { get; set; }= new List<UITranslationVersions>();
-    public ICollection<UIExperiment> UIExperiments { get; set; }= new List<UIExperiment>();
     public ICollection<UITranslations> UITranslations { get; set; } = new List<UITranslations>();
 }
