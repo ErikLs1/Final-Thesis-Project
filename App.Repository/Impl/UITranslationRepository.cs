@@ -55,12 +55,15 @@ public class UITranslationRepository : IUITranslationRepository
 
     public async Task<Dictionary<string, string>> GetLiveTranslationsByLanguageTagAsync(string languageTag)
     {
+        if (string.IsNullOrWhiteSpace(languageTag))
+            return new Dictionary<string, string>();
+        
         var langId = await _db.Languages
             .Where(l => l.LanguageTag == languageTag)
             .Select(l => l.Id)
             .SingleAsync();
 
-        var liveTranslations = await _db.UITranslations
+        return await _db.UITranslations
             .Where(x => x.LanguageId == langId)
             .Select(x => new
             {
@@ -70,8 +73,6 @@ public class UITranslationRepository : IUITranslationRepository
                 x => x.ResourceKey,
                 x => x.Content
             );
-
-        return liveTranslations;
     }
 
     public async Task<PagedResult<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(FilteredTranslationsRequestDto request, PagedRequest paging)

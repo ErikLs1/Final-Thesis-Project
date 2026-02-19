@@ -25,6 +25,9 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
         string? keySearch = null)
     {
         paging = paging.Normalize();
+        
+        if (languageId is null || languageId == Guid.Empty)
+            return EmptyPaged<TranslationVersionRowDto>(paging);
 
         var languageTag = await _db.Languages
             .AsNoTracking()
@@ -100,6 +103,9 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
         string? keySearch = null)
     {
         paging = paging.Normalize();
+        
+        if (languageId is null || languageId == Guid.Empty)
+            return EmptyPaged<TranslationVersionRowDto>(paging);
 
         var langTag = await _db.Languages
             .AsNoTracking()
@@ -217,8 +223,11 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
         return await _db.SaveChangesAsync();
     }
 
-    private static string ConvertToFriendlyString(string resourceKey)
+    private static PagedResult<T> EmptyPaged<T>(PagedRequest paging) => new()
     {
-        return string.Join(" ", resourceKey.Split('_', StringSplitOptions.RemoveEmptyEntries));
-    }
+        Items = Array.Empty<T>(),
+        TotalCount = 0,
+        Page = paging.Page,
+        PageSize = paging.PageSize
+    };
 }

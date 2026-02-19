@@ -9,16 +9,24 @@ public class LocalizationController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult SetLanguage(string culture, string returnUrl = "/")
     {
+        var cookieValue = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture));
+        
         Response.Cookies.Append(
             CookieRequestCultureProvider.DefaultCookieName,
-            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
-            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), IsEssential = true });
+            cookieValue,
+            new CookieOptions
+            { 
+                Expires = DateTimeOffset.UtcNow.AddYears(1), 
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Lax,
+                Path = "/"
+            });
         
         // Prevent open redirect / bad returnUrl
         if (string.IsNullOrWhiteSpace(returnUrl) || !Url.IsLocalUrl(returnUrl))
-        {
             returnUrl = "/";
-        }
+        
 
         return LocalRedirect(returnUrl);
     }
