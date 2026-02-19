@@ -5,7 +5,7 @@
 namespace App.EF.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedLanguages : Migration
+    public partial class LanguageImport : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace App.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260208112245_InitialCreate")]
+    [Migration("20260219182716_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,69 +24,6 @@ namespace App.EF.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("App.Domain.AB.UIExperiment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
-
-                    b.Property<string>("ExperimentName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<Guid>("LanguageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Option")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<Guid>("ResourceKeyId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("TranslationVersionId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResourceKeyId");
-
-                    b.HasIndex("LanguageId", "ResourceKeyId")
-                        .IsUnique();
-
-                    b.HasIndex("LanguageId", "ResourceKeyId", "TranslationVersionId");
-
-                    b.ToTable("ui_experiments", (string)null);
-                });
-
-            modelBuilder.Entity("App.Domain.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("category", (string)null);
-                });
 
             modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
                 {
@@ -202,56 +139,6 @@ namespace App.EF.Migrations
                         .IsUnique();
 
                     b.ToTable("languages", (string)null);
-                });
-
-            modelBuilder.Entity("App.Domain.Product", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasDefaultValueSql("gen_random_uuid()");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(1024)
-                        .HasColumnType("character varying(1024)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
-
-                    b.Property<int>("Quantity")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("products", (string)null);
                 });
 
             modelBuilder.Entity("App.Domain.UITranslationEntities.UIResourceKeys", b =>
@@ -532,34 +419,6 @@ namespace App.EF.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("App.Domain.AB.UIExperiment", b =>
-                {
-                    b.HasOne("App.Domain.Languages", "Language")
-                        .WithMany("UIExperiments")
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("App.Domain.UITranslationEntities.UIResourceKeys", "UIResourceKeys")
-                        .WithMany("UIExperiments")
-                        .HasForeignKey("ResourceKeyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("App.Domain.UITranslationEntities.UITranslationVersions", "UITranslationVersions")
-                        .WithMany()
-                        .HasForeignKey("LanguageId", "ResourceKeyId", "TranslationVersionId")
-                        .HasPrincipalKey("LanguageId", "ResourceKeyId", "Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Language");
-
-                    b.Navigation("UIResourceKeys");
-
-                    b.Navigation("UITranslationVersions");
-                });
-
             modelBuilder.Entity("App.Domain.Identity.UserLanguages", b =>
                 {
                     b.HasOne("App.Domain.Languages", "Language")
@@ -577,17 +436,6 @@ namespace App.EF.Migrations
                     b.Navigation("Language");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("App.Domain.Product", b =>
-                {
-                    b.HasOne("App.Domain.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("App.Domain.UITranslationEntities.UITranslationAuditLog", b =>
@@ -715,11 +563,6 @@ namespace App.EF.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("App.Domain.Category", b =>
-                {
-                    b.Navigation("Products");
-                });
-
             modelBuilder.Entity("App.Domain.Identity.AppUser", b =>
                 {
                     b.Navigation("UserLanguages");
@@ -727,8 +570,6 @@ namespace App.EF.Migrations
 
             modelBuilder.Entity("App.Domain.Languages", b =>
                 {
-                    b.Navigation("UIExperiments");
-
                     b.Navigation("UITranslationAuditLogs");
 
                     b.Navigation("UITranslationVersions");
@@ -740,8 +581,6 @@ namespace App.EF.Migrations
 
             modelBuilder.Entity("App.Domain.UITranslationEntities.UIResourceKeys", b =>
                 {
-                    b.Navigation("UIExperiments");
-
                     b.Navigation("UITranslationAuditLogs");
 
                     b.Navigation("UITranslationVersions");

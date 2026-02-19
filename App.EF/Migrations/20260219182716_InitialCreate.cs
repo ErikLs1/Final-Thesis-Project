@@ -52,19 +52,6 @@ namespace App.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "category",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_category", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "languages",
                 columns: table => new
                 {
@@ -198,32 +185,6 @@ namespace App.EF.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "products",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    Description = table.Column<string>(type: "character varying(1024)", maxLength: 1024, nullable: false),
-                    Price = table.Column<double>(type: "double precision", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false, defaultValue: 0),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_products_category_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "user_languages",
                 columns: table => new
                 {
@@ -277,40 +238,6 @@ namespace App.EF.Migrations
                         principalTable: "ui_resource_keys",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ui_experiments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
-                    LanguageId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ResourceKeyId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TranslationVersionId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExperimentName = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    Option = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ui_experiments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ui_experiments_languages_LanguageId",
-                        column: x => x.LanguageId,
-                        principalTable: "languages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ui_experiments_ui_resource_keys_ResourceKeyId",
-                        column: x => x.ResourceKeyId,
-                        principalTable: "ui_resource_keys",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ui_experiments_ui_translation_versions_LanguageId_ResourceK~",
-                        columns: x => new { x.LanguageId, x.ResourceKeyId, x.TranslationVersionId },
-                        principalTable: "ui_translation_versions",
-                        principalColumns: new[] { "LanguageId", "ResourceKeyId", "Id" },
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -421,37 +348,10 @@ namespace App.EF.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_category_Name",
-                table: "category",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_languages_LanguageTag",
                 table: "languages",
                 column: "LanguageTag",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_products_CategoryId",
-                table: "products",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ui_experiments_LanguageId_ResourceKeyId",
-                table: "ui_experiments",
-                columns: new[] { "LanguageId", "ResourceKeyId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ui_experiments_LanguageId_ResourceKeyId_TranslationVersionId",
-                table: "ui_experiments",
-                columns: new[] { "LanguageId", "ResourceKeyId", "TranslationVersionId" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ui_experiments_ResourceKeyId",
-                table: "ui_experiments",
-                column: "ResourceKeyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ui_resource_keys_ResourceKey",
@@ -537,12 +437,6 @@ namespace App.EF.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "products");
-
-            migrationBuilder.DropTable(
-                name: "ui_experiments");
-
-            migrationBuilder.DropTable(
                 name: "ui_translation_audit_log");
 
             migrationBuilder.DropTable(
@@ -553,9 +447,6 @@ namespace App.EF.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "category");
 
             migrationBuilder.DropTable(
                 name: "ui_translation_versions");
