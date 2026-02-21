@@ -1,4 +1,5 @@
 @model WebApp.Models.Translator.Translations.TranslationsIndexVm
+@using App.Domain.Enum
 @{
     ViewData["Title"] = "Translations";
     var langTag = Model.Rows.FirstOrDefault()?.LanguageTag ?? "";
@@ -50,7 +51,21 @@
                        placeholder="Any" />
             </div>
 
-            <div class="col-12 col-md-4 col-lg-3 d-grid d-md-flex gap-2">
+            <div class="col-12 col-md-4 col-lg-3">
+                <label class="form-label mb-1">State</label>
+                <select name="state" class="form-select">
+                    <option value="">All states</option>
+                    @foreach (TranslationState st in Enum.GetValues(typeof(TranslationState)))
+                    {
+                        <option value="@st"
+                                selected="@(Model.SelectedState.HasValue && Model.SelectedState.Value == st ? "selected" : null)">
+                            @st
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 col-lg-3 d-grid d-md-flex gap-2 justify-content-lg-end">
                 <button type="submit" class="btn btn-outline-secondary">
                     <i class="bi bi-funnel me-2"></i>Filter
                 </button>
@@ -70,9 +85,11 @@
             <table class="table align-middle mb-0 translations-table">
                 <thead>
                 <tr>
-                    <th style="width: 36%">Resource key</th>
+                    <th style="width: 30%">Resource key</th>
                     <th>Content @if (!string.IsNullOrWhiteSpace(langTag)) { <span class="text-muted">(@langTag)</span> }</th>
                     <th class="text-end" style="width: 12%">Version</th>
+                    <th style="width: 150px">State</th>
+                    <th class="text-end" style="width: 160px">Action</th>
                 </tr>
                 </thead>
 
@@ -80,7 +97,7 @@
                 @if (Model.Rows.Count == 0)
                 {
                     <tr>
-                        <td colspan="3">
+                        <td colspan="5">
                             <div class="empty-state py-4">
                                 <div class="empty-icon" aria-hidden="true"><i class="bi bi-translate"></i></div>
                                 <div>
@@ -131,6 +148,20 @@
                                     </span>
                                 }
                             </td>
+                            <td>
+                                @Html.Raw(StateBadge(r.TranslationState))
+                            </td>
+                            <td class="text-end">
+                                @if (r.TranslationState == TranslationState.Rejected)
+                                {
+                                    <a class="btn btn-sm btn-outline-primary"
+                                       asp-action="CreateVersions"
+                                       asp-route-languageId="@Model.SelectedLanguageId"
+                                       asp-route-q="@r.ResourceKey">
+                                        <i class="bi bi-pencil-square me-1"></i>Revise
+                                    </a>
+                                }
+                            </td>
                         </tr>
                     }
                 }
@@ -146,6 +177,7 @@
             <form method="get" class="d-flex align-items-center gap-2">
                 <input type="hidden" name="languageId" value="@Model.SelectedLanguageId" />
                 <input type="hidden" name="version" value="@Model.SelectedVersion" />
+                <input type="hidden" name="state" value="@Model.SelectedState" />
                 <input type="hidden" name="page" value="1" />
 
                 <span class="text-muted small">Rows</span>
@@ -170,6 +202,7 @@
                            asp-action="Index"
                            asp-route-languageId="@Model.SelectedLanguageId"
                            asp-route-version="@Model.SelectedVersion"
+                           asp-route-state="@Model.SelectedState"
                            asp-route-page="@(Model.Page - 1)"
                            asp-route-pageSize="@Model.PageSize">
                             Prev
@@ -193,6 +226,7 @@
                            asp-action="Index"
                            asp-route-languageId="@Model.SelectedLanguageId"
                            asp-route-version="@Model.SelectedVersion"
+                           asp-route-state="@Model.SelectedState"
                            asp-route-page="@(Model.Page + 1)"
                            asp-route-pageSize="@Model.PageSize">
                             Next
@@ -204,3 +238,26 @@
         </div>
     </div>
 </div>
+
+@functions{
+    private static string StateBadge(TranslationState? state)
+    {
+        if (state is null)
+        {
+            return "<span class=\"badge text-bg-light\">Unknown</span>";
+        }
+
+        var (cls, txt, icon) = state.Value switch
+        {
+            TranslationState.Published => ("text-bg-success", "Published", "check-circle"),
+            TranslationState.WaitingReview => ("text-bg-warning", "Waiting review", "hourglass-split"),
+            TranslationState.Approved => ("text-bg-success", "Approved", "check2"),
+            TranslationState.Rejected => ("text-bg-danger", "Rejected", "x-circle"),
+            TranslationState.Depricated => ("text-bg-secondary", "Archived", "archive"),
+            _ => ("text-bg-light", state.Value.ToString(), "info-circle")
+        };
+
+        var extra = state == TranslationState.WaitingReview ? " text-dark" : "";
+        return $"<span class=\"badge {cls}{extra}\"><i class=\"bi bi-{icon} me-1\"></i>{txt}</span>";
+    }
+}

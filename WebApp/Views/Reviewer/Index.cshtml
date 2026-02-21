@@ -1,0 +1,196 @@
+@model WebApp.Models.Reviewer.ReviewerQueueVm
+
+@{
+    ViewData["Title"] = "Review queue";
+}
+
+<div class="page-head mb-3">
+    <div>
+        <h2 class="page-title mb-1">@ViewData["Title"]</h2>
+        <div class="page-subtitle text-muted">
+            Review pending translations and approve or reject each item.
+        </div>
+    </div>
+</div>
+
+<div class="card app-card">
+    <div class="card-body p-3 p-lg-4">
+        <form method="get" class="row g-2 align-items-end mb-3">
+            <input type="hidden" name="page" value="1" />
+            <input type="hidden" name="pageSize" value="@Model.PageSize" />
+
+            <div class="col-12 col-md-6 col-lg-4">
+                <label class="form-label mb-1">Language</label>
+                <select name="languageId" class="form-select">
+                    @foreach (var lang in Model.LanguageOptions)
+                    {
+                        <option value="@lang.Id" selected="@(lang.Id == Model.SelectedLanguageId ? "selected" : null)">
+                            @lang.Display
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 col-md-3 col-lg-2">
+                <label class="form-label mb-1">Version</label>
+                <input type="number"
+                       class="form-control"
+                       name="version"
+                       min="1"
+                       value="@(Model.SelectedVersion?.ToString() ?? "")"
+                       placeholder="Any" />
+            </div>
+
+            <div class="col-12 col-md-3 col-lg-6 d-grid d-sm-flex gap-2 justify-content-lg-end">
+                <button type="submit" class="btn btn-outline-secondary">
+                    <i class="bi bi-funnel me-2"></i>Filter
+                </button>
+                <a class="btn btn-outline-secondary"
+                   asp-action="Index"
+                   asp-route-languageId="@Model.SelectedLanguageId">
+                    <i class="bi bi-x-circle me-2"></i>Reset
+                </a>
+            </div>
+        </form>
+
+        <div class="table-responsive app-table-wrap">
+            <table class="table app-table align-middle mb-0">
+                <thead>
+                <tr>
+                    <th style="width: 110px;">Lang</th>
+                    <th style="width: 340px;">Resource key</th>
+                    <th>Content</th>
+                    <th class="text-end" style="width: 90px;">Ver</th>
+                    <th class="text-end" style="width: 220px;">Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @if (Model.Rows.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5">
+                            <div class="empty-state py-4">
+                                <div class="empty-icon" aria-hidden="true">
+                                    <i class="bi bi-check2-circle"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">Queue is empty</div>
+                                    <div class="text-muted small">No translations are waiting for review.</div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var r in Model.Rows)
+                    {
+                        <tr>
+                            <td>
+                                <span class="badge text-bg-light border font-monospace">@r.LanguageTag</span>
+                            </td>
+                            <td>
+                                <div class="fw-semibold text-truncate" title="@r.FriendlyKey">@r.FriendlyKey</div>
+                                <div class="text-muted small text-truncate" title="@r.ResourceKey">@r.ResourceKey</div>
+                            </td>
+                            <td class="content-cell">
+                                @if (string.IsNullOrWhiteSpace(r.Content))
+                                {
+                                    <span class="text-muted">—</span>
+                                }
+                                else
+                                {
+                                    <div class="content-preview" title="@r.Content">@r.Content</div>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <span class="badge text-bg-light border font-monospace">@r.VersionNumber</span>
+                            </td>
+                            <td class="text-end">
+                                <div class="d-inline-flex gap-2">
+                                    <form method="post" asp-action="Decide">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="translationVersionId" value="@r.TranslationVersionId" />
+                                        <input type="hidden" name="selectedLanguageId" value="@Model.SelectedLanguageId" />
+                                        <input type="hidden" name="selectedVersion" value="@Model.SelectedVersion" />
+                                        <input type="hidden" name="page" value="@Model.Page" />
+                                        <input type="hidden" name="pageSize" value="@Model.PageSize" />
+                                        <input type="hidden" name="decision" value="Approved" />
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            <i class="bi bi-check2 me-1"></i>Approve
+                                        </button>
+                                    </form>
+                                    <form method="post" asp-action="Decide">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="translationVersionId" value="@r.TranslationVersionId" />
+                                        <input type="hidden" name="selectedLanguageId" value="@Model.SelectedLanguageId" />
+                                        <input type="hidden" name="selectedVersion" value="@Model.SelectedVersion" />
+                                        <input type="hidden" name="page" value="@Model.Page" />
+                                        <input type="hidden" name="pageSize" value="@Model.PageSize" />
+                                        <input type="hidden" name="decision" value="Rejected" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-x-lg me-1"></i>Reject
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-footer bg-transparent border-0 px-3 px-lg-4 pb-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <form method="get" class="d-flex align-items-center gap-2">
+                <input type="hidden" name="languageId" value="@Model.SelectedLanguageId" />
+                <input type="hidden" name="version" value="@Model.SelectedVersion" />
+                <input type="hidden" name="page" value="1" />
+
+                <span class="text-muted small">Rows</span>
+                <select name="pageSize" class="form-select form-select-sm" style="width: 90px;" onchange="this.form.submit()">
+                    @{
+                        var sizes = new[] { 10, 25, 50, 100 };
+                        foreach (var s in sizes)
+                        {
+                            <option value="@s" selected="@(Model.PageSize == s)">@s</option>
+                        }
+                    }
+                </select>
+            </form>
+
+            <nav aria-label="Pagination">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-languageId="@Model.SelectedLanguageId"
+                           asp-route-version="@Model.SelectedVersion"
+                           asp-route-page="@(Model.Page - 1)"
+                           asp-route-pageSize="@Model.PageSize">Prev</a>
+                    </li>
+
+                    <li class="page-item disabled d-none d-sm-inline">
+                        <span class="page-link">Page @Model.Page of @Model.TotalPages (@Model.TotalCount total)</span>
+                    </li>
+
+                    <li class="page-item disabled d-inline d-sm-none">
+                        <span class="page-link">@Model.Page/@Model.TotalPages</span>
+                    </li>
+
+                    <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-action="Index"
+                           asp-route-languageId="@Model.SelectedLanguageId"
+                           asp-route-version="@Model.SelectedVersion"
+                           asp-route-page="@(Model.Page + 1)"
+                           asp-route-pageSize="@Model.PageSize">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
