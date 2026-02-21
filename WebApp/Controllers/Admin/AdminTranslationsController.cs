@@ -102,11 +102,11 @@ public class AdminTranslationsController : Controller
 
          var paging = new PagedRequest { Page = page, PageSize = pageSize };
 
-         // product choice: show only Approved to publish (reduces noise)
+         // Show newly submitted translations so admin can publish them.
          var request = new FilteredTranslationsRequestDto(
              selectedLangId,
              VersionNumber: null,
-             State: TranslationState.Approved
+             State: TranslationState.WaitingReview
          );
 
          var paged = await _bll.UITranslationService.GetFilteredUITranslationsAsync(request, paging);

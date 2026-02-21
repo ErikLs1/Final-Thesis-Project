@@ -90,14 +90,18 @@ public class TranslationsController : Controller
             return Forbid();
 
         var userLanguages = await _bll.UserLanguageService.GetUserKnownLanguagesAsync(userId);
+        var defaultLanguageId = await _bll.LanguageService.GetDefaultLanguageIdAsync();
+        var userLanguageIds = userLanguages.Select(l => l.Id).ToHashSet();
 
-        languageId ??= await _bll.LanguageService.GetDefaultLanguageIdAsync();
+        if (!languageId.HasValue || !userLanguageIds.Contains(languageId.Value))
+        {
+            languageId = userLanguages.FirstOrDefault()?.Id ?? defaultLanguageId;
+        }
 
         var paging = new PagedRequest { Page = page, PageSize = pageSize };
 
-        // IMPORTANT: this should return a PagedResult<TranslationVersionRowDto>
         var paged = await _bll.UITranslationsVersionsService
-            .GetDefaultLanguageTranslationsAsync(paging, q);
+            .GetFilteredTranslationsAsync(languageId.Value, version: null, paging, q);
 
         var vm = new CreateVersionsVm
         {
@@ -141,6 +145,10 @@ public class TranslationsController : Controller
         var userLanguages = await _bll
             .UserLanguageService
             .GetUserKnownLanguagesAsync(userId);
+        var userLanguageIds = userLanguages.Select(l => l.Id).ToHashSet();
+
+        if (!userLanguageIds.Contains(vm.LanguageId))
+            return Forbid();
         
         if (!ModelState.IsValid)
         {
