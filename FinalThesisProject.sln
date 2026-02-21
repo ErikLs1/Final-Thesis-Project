@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!Solution Item", "!Solution
 		Dockerfile = Dockerfile
 		docker-compose.yml = docker-compose.yml
 		.env = .env
+		.gitlab-ci.yml = .gitlab-ci.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{7E573F5F-B632-4028-B7F0-FD8A99DC6647}"
@@ -28,9 +29,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.EF", "App.EF\App.EF.csproj", "{554C07CD-A934-4E08-A336-D3DDF21D8FB6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{69750DF5-63B8-4524-8BFB-7E97E0FC9E36}"
-	ProjectSection(SolutionItems) = preProject
-		tests\.gitlab-ci.yml = tests\.gitlab-ci.yml
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.UnitTests", "tests\App.UnitTests\App.UnitTests.csproj", "{85B09283-A6DC-443B-AD62-AAA468785011}"
 EndProject
