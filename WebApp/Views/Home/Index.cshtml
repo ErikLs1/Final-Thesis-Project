@@ -3,55 +3,186 @@
 }
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="mb-0">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Heading_Products)))</h2>
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+        <div>
+            <h2 class="mb-1">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Heading_Products)))</h2>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button class="btn btn-outline-secondary btn-sm" type="button" disabled>
+                <i class="bi bi-funnel me-2"></i>Filter
+            </button>
+            <button class="btn btn-outline-secondary btn-sm" type="button" disabled>
+                <i class="bi bi-sort-down me-2"></i>Sort
+            </button>
+        </div>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
 
+        <!-- Card 1 -->
         <div class="col">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title mb-1">Laptop Pro X</h5>
-                    <div class="fw-bold h5 mb-3">€1,499.00</div>
-                    <div class="mb-2" aria-label="rating">★★★★★</div>
-                    <p class="card-text">Perfect for creators and students who need performance in a compact body.</p>
+            <article class="product-card card h-100 border-0 shadow-sm">
+                <div class="product-media">
+                    <span class="badge text-bg-primary product-badge">New</span>
+                    <div class="product-img-placeholder" aria-hidden="true">
+                        <i class="bi bi-laptop"></i>
+                    </div>
                 </div>
-                <div class="card-footer bg-transparent border-0 d-grid gap-2">
-                    <a class="btn btn-primary">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Add_To_Cart)))</a>
-                    <a class="btn btn-outline-secondary">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Details)))</a>
+
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                        <h5 class="card-title mb-1">Laptop Pro X</h5>
+                        <button class="btn btn-sm btn-outline-secondary product-fav" type="button" aria-label="Save">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between mt-2">
+                        <div class="product-price">€1,499.00</div>
+                        <div class="product-rating" aria-label="rating 5 out of 5">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <span class="text-muted small ms-2">(128)</span>
+                        </div>
+                    </div>
+
+                    <p class="card-text text-muted mt-2 mb-0">
+                        Perfect for creators and students who need performance in a compact body.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <span class="chip">M2 class</span>
+                        <span class="chip">16GB RAM</span>
+                        <span class="chip">512GB SSD</span>
+                    </div>
                 </div>
-            </div>
+
+                <div class="card-footer bg-transparent border-0 p-3 pt-0">
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-primary">
+                            <i class="bi bi-cart-plus me-2"></i>
+                            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Add_To_Cart)))
+                        </a>
+                        <a class="btn btn-outline-secondary">
+                            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Details)))
+                        </a>
+                    </div>
+                </div>
+            </article>
         </div>
 
+        <!-- Card 2 -->
         <div class="col">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title mb-1">Wireless Headphones</h5>
-                    <div class="fw-bold h5 mb-3">€199.00</div>
-                    <div class="mb-2" aria-label="rating">★★★★☆</div>
-                    <p class="card-text">Immersive sound with active noise cancelling and all-day comfort.</p>
+            <article class="product-card card h-100 border-0 shadow-sm">
+                <div class="product-media">
+                    <span class="badge text-bg-success product-badge">Best value</span>
+                    <div class="product-img-placeholder" aria-hidden="true">
+                        <i class="bi bi-headphones"></i>
+                    </div>
                 </div>
-                <div class="card-footer bg-transparent border-0 d-grid gap-2">
-                    <a class="btn btn-primary">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Add_To_Cart)))</a>
-                    <a class="btn btn-outline-secondary">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Details)))</a>
+
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                        <h5 class="card-title mb-1">Wireless Headphones</h5>
+                        <button class="btn btn-sm btn-outline-secondary product-fav" type="button" aria-label="Save">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between mt-2">
+                        <div class="product-price">€199.00</div>
+                        <div class="product-rating" aria-label="rating 4 out of 5">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <span class="text-muted small ms-2">(2,041)</span>
+                        </div>
+                    </div>
+
+                    <p class="card-text text-muted mt-2 mb-0">
+                        Immersive sound with active noise cancelling and all-day comfort.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <span class="chip">ANC</span>
+                        <span class="chip">30h battery</span>
+                        <span class="chip">Bluetooth 5.3</span>
+                    </div>
                 </div>
-            </div>
+
+                <div class="card-footer bg-transparent border-0 p-3 pt-0">
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-primary">
+                            <i class="bi bi-cart-plus me-2"></i>
+                            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Add_To_Cart)))
+                        </a>
+                        <a class="btn btn-outline-secondary">
+                            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Details)))
+                        </a>
+                    </div>
+                </div>
+            </article>
         </div>
 
+        <!-- Card 3 -->
         <div class="col">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title mb-1">4K Monitor 27"</h5>
-                    <div class="fw-bold h5 mb-3">€329.00</div>
-                    <div class="mb-2" aria-label="rating">★★★★☆</div>
-                    <p class="card-text">Crisp visuals and smooth motion — perfect for work and play.</p>
+            <article class="product-card card h-100 border-0 shadow-sm">
+                <div class="product-media">
+                    <span class="badge text-bg-warning product-badge">Hot</span>
+                    <div class="product-img-placeholder" aria-hidden="true">
+                        <i class="bi bi-display"></i>
+                    </div>
                 </div>
-                <div class="card-footer bg-transparent border-0 d-grid gap-2">
-                    <a class="btn btn-primary">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Add_To_Cart)))</a>
-                    <a class="btn btn-outline-secondary">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Details)))</a>
+
+                <div class="card-body p-3">
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                        <h5 class="card-title mb-1">4K Monitor 27"</h5>
+                        <button class="btn btn-sm btn-outline-secondary product-fav" type="button" aria-label="Save">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-between mt-2">
+                        <div class="product-price">€329.00</div>
+                        <div class="product-rating" aria-label="rating 4 out of 5">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star"></i>
+                            <span class="text-muted small ms-2">(612)</span>
+                        </div>
+                    </div>
+
+                    <p class="card-text text-muted mt-2 mb-0">
+                        Crisp visuals and smooth motion — perfect for work and play.
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <span class="chip">IPS</span>
+                        <span class="chip">144Hz</span>
+                        <span class="chip">USB-C</span>
+                    </div>
                 </div>
-            </div>
+
+                <div class="card-footer bg-transparent border-0 p-3 pt-0">
+                    <div class="d-grid gap-2">
+                        <a class="btn btn-primary">
+                            <i class="bi bi-cart-plus me-2"></i>
+                            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Add_To_Cart)))
+                        </a>
+                        <a class="btn btn-outline-secondary">
+                            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Button_Product_Details)))
+                        </a>
+                    </div>
+                </div>
+            </article>
         </div>
 
     </div>

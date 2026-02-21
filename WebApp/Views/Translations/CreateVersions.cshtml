@@ -2,139 +2,289 @@
 
 @{
     ViewData["Title"] = "Create new translation versions";
-    var currentLang = Model.LanguageOptions
-        .FirstOrDefault(l => l.Id == Model.LanguageId)?.Display;
+    var currentLang = Model.LanguageOptions.FirstOrDefault(l => l.Id == Model.LanguageId)?.Display ?? "—";
 }
 
-<h2 class="mb-3">@ViewData["Title"]</h2>
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <form method="get" class="d-flex align-items-center gap-2">
-        <input type="hidden" name="languageId" value="@Model.LanguageId" />
-        <input type="hidden" name="page" value="1" /> @* reset on new filter *@
-        <input type="hidden" name="pageSize" value="@Model.PageSize" />
-
-        <input type="text" class="form-control" name="q" value="@Model.Search" placeholder="Search keys" />
-
-        <button type="submit" class="btn btn-outline-secondary">Search</button>
-    </form>
-</div>
-
-<form asp-action="CreateVersions" method="post">
-    @Html.AntiForgeryToken()
-
-    <input type="hidden" asp-for="LanguageId" />
-    <input type="hidden" asp-for="Search" />
-    <input type="hidden" asp-for="Page" />
-    <input type="hidden" asp-for="PageSize" />
-
-    <div class="mb-3">
-        Currently you create translations for
-        <span class="badge bg-primary" style="font-size: 0.95rem;">@(currentLang ?? "—")</span>
+<div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-3">
+    <div>
+        <h2 class="mb-1">@ViewData["Title"]</h2>
+        <div class="text-muted small">
+            Creating translations for
+            <span class="badge text-bg-light border ms-1">@currentLang</span>
+            <span class="ms-2">@Model.TotalCount total</span>
+        </div>
     </div>
 
-    <table class="table table-sm align-middle">
-        <thead>
-        <tr>
-            <th style="width: 1%"></th>
-            <th style="width:40%">Key</th>
-            <th>Default content</th>
-            <th>Your new content</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        @if (Model.Items.Count == 0)
-        {
-            <tr>
-                <td colspan="4" class="text-muted">No items.</td>
-            </tr>
-        }
-        else
-        {
-            @for (var i = 0; i < Model.Items.Count; i++)
-            {
-                <tr>
-                    <input type="hidden" asp-for="Items[i].ResourceKeyId" />
-                    <input type="hidden" asp-for="Items[i].ResourceKey" />
-                    <input type="hidden" asp-for="Items[i].FriendlyKey" />
-                    <input type="hidden" asp-for="Items[i].DefaultContent" />
-
-                    <td>
-                        <input class="form-check-input" type="checkbox" asp-for="Items[i].Include" />
-                    </td>
-
-                    <td>
-                        <div class="fw-semibold">@Model.Items[i].FriendlyKey</div>
-                        <div class="text-muted small">@Model.Items[i].ResourceKey</div>
-                    </td>
-
-                    <td class="text-muted">
-                        @(string.IsNullOrWhiteSpace(Model.Items[i].DefaultContent) ? "—" : Model.Items[i].DefaultContent)
-                    </td>
-
-                    <td>
-                        <input class="form-control form-control-sm"
-                               asp-for="Items[i].Content"
-                               placeholder="Type translation..." />
-                    </td>
-                </tr>
-            }
-        }
-        </tbody>
-    </table>
-
-    <div class="mt-3 d-flex gap-2">
-        <button type="submit" class="btn btn-primary">Create versions</button>
-        <a asp-action="Index" asp-route-languageId="@Model.LanguageId" class="btn btn-outline-secondary">Cancel</a>
-    </div>
-</form>
-
-<div class="d-flex justify-content-between align-items-center mt-3">
-
-    <form method="get" class="d-flex align-items-center gap-2">
-        <input type="hidden" name="languageId" value="@Model.LanguageId" />
-        <input type="hidden" name="q" value="@Model.Search" />
-        <input type="hidden" name="page" value="1" /> @* reset to first page when changing size *@
-
-        <label for="pageSizeBottom" class="mb-0">Rows:</label>
-        <select id="pageSizeBottom" name="pageSize" class="form-select form-select-sm" onchange="this.form.submit()">
-            @{
-                var sizes = new[] { 10, 25, 50, 100 };
-                foreach (var s in sizes)
-                {
-                    <option value="@s" selected="@(Model.PageSize == s)">@s</option>
-                }
-            }
-        </select>
-    </form>
-
-    <nav>
-        <ul class="pagination pagination-sm mb-0">
-            <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
-                <a class="page-link"
-                   asp-action="CreateVersions"
-                   asp-route-languageId="@Model.LanguageId"
-                   asp-route-q="@Model.Search"
-                   asp-route-page="@(Model.Page - 1)"
-                   asp-route-pageSize="@Model.PageSize">Prev</a>
-            </li>
-
-            <li class="page-item disabled">
-                <span class="page-link">
-                    Page @Model.Page of @Model.TotalPages (@Model.TotalCount total)
-                </span>
-            </li>
-
-            <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
-                <a class="page-link"
-                   asp-action="CreateVersions"
-                   asp-route-languageId="@Model.LanguageId"
-                   asp-route-q="@Model.Search"
-                   asp-route-page="@(Model.Page + 1)"
-                   asp-route-pageSize="@Model.PageSize">Next</a>
-            </li>
-        </ul>
-    </nav>
-
+    <a asp-action="Index" asp-route-languageId="@Model.LanguageId" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-2"></i>Back
+    </a>
 </div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-3 p-lg-4">
+
+        <!-- Search / tools row -->
+        <form method="get" class="row g-2 align-items-end mb-3">
+            <input type="hidden" name="languageId" value="@Model.LanguageId" />
+            <input type="hidden" name="page" value="1" />
+            <input type="hidden" name="pageSize" value="@Model.PageSize" />
+
+            <div class="col-12 col-lg-6">
+                <label class="form-label mb-1" for="searchKeys">Search keys</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input id="searchKeys"
+                           type="text"
+                           class="form-control"
+                           name="q"
+                           value="@Model.Search"
+                           placeholder="Type a key name… (e.g., Navigation_Home)"
+                           autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6 d-flex flex-wrap justify-content-lg-end gap-2">
+                <button type="submit" class="btn btn-outline-secondary">
+                    <i class="bi bi-funnel me-2"></i>Search
+                </button>
+
+                <a class="btn btn-outline-secondary"
+                   asp-action="CreateVersions"
+                   asp-route-languageId="@Model.LanguageId"
+                   asp-route-page="1"
+                   asp-route-pageSize="@Model.PageSize">
+                    <i class="bi bi-x-circle me-2"></i>Reset
+                </a>
+
+                <button type="button" class="btn btn-outline-secondary" id="selectAllBtn">
+                    <i class="bi bi-check2-square me-2"></i>Select all
+                </button>
+                <button type="button" class="btn btn-outline-secondary" id="clearBtn">
+                    <i class="bi bi-square me-2"></i>Clear
+                </button>
+
+                <div class="ms-lg-2 text-muted small d-flex align-items-center">
+                    <span class="badge text-bg-light border">
+                        <span id="selectedCount">0</span> selected
+                    </span>
+                </div>
+            </div>
+        </form>
+
+        <form asp-action="CreateVersions" method="post" id="createVersionsForm">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="LanguageId" />
+            <input type="hidden" asp-for="Search" />
+            <input type="hidden" asp-for="Page" />
+            <input type="hidden" asp-for="PageSize" />
+
+            <div class="translations-table-wrap">
+                <table class="table align-middle mb-0 translations-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 56px">
+                            <span class="text-muted small">Pick</span>
+                        </th>
+                        <th style="width: 34%">Key</th>
+                        <th style="width: 33%">Default content</th>
+                        <th>Your new content</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @if (Model.Items.Count == 0)
+                    {
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state py-4">
+                                    <div class="empty-icon" aria-hidden="true"><i class="bi bi-search"></i></div>
+                                    <div>
+                                        <div class="fw-semibold">No items found</div>
+                                        <div class="text-muted small">Try a different search query.</div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @for (var i = 0; i < Model.Items.Count; i++)
+                        {
+                            <tr class="selectable-row">
+                                <input type="hidden" asp-for="Items[i].ResourceKeyId" />
+                                <input type="hidden" asp-for="Items[i].ResourceKey" />
+                                <input type="hidden" asp-for="Items[i].FriendlyKey" />
+                                <input type="hidden" asp-for="Items[i].DefaultContent" />
+
+                                <td class="text-center">
+                                    <input class="form-check-input row-check"
+                                           type="checkbox"
+                                           asp-for="Items[i].Include" />
+                                </td>
+
+                                <td>
+                                    <div class="fw-semibold text-truncate" title="@Model.Items[i].FriendlyKey">
+                                        @Model.Items[i].FriendlyKey
+                                    </div>
+                                    <div class="text-muted small text-truncate" title="@Model.Items[i].ResourceKey">
+                                        @Model.Items[i].ResourceKey
+                                    </div>
+                                </td>
+
+                                <td class="text-muted">
+                                    <div class="content-preview" title="@Model.Items[i].DefaultContent">
+                                        @(string.IsNullOrWhiteSpace(Model.Items[i].DefaultContent) ? "—" : Model.Items[i].DefaultContent)
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <input class="form-control form-control-sm content-input"
+                                           asp-for="Items[i].Content"
+                                           placeholder="Type translation…"
+                                           maxlength="1024" />
+                                    <div class="form-text d-none d-lg-block">Tip: check the row to include it.</div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mt-3">
+                <div class="text-muted small">
+                    Only checked rows will be created as new versions.
+                </div>
+
+                <div class="d-grid d-sm-flex gap-2">
+                    <a asp-action="Index" asp-route-languageId="@Model.LanguageId" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-upload me-2"></i>Create versions
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Pagination footer -->
+    <div class="card-footer bg-transparent border-0 px-3 px-lg-4 pb-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+
+            <form method="get" class="d-flex align-items-center gap-2">
+                <input type="hidden" name="languageId" value="@Model.LanguageId" />
+                <input type="hidden" name="q" value="@Model.Search" />
+                <input type="hidden" name="page" value="1" />
+
+                <span class="text-muted small">Rows</span>
+                <select id="pageSizeBottom" name="pageSize"
+                        class="form-select form-select-sm"
+                        style="width: 90px;"
+                        onchange="this.form.submit()">
+                    @{
+                        var sizes = new[] { 10, 25, 50, 100 };
+                        foreach (var s in sizes)
+                        {
+                            <option value="@s" selected="@(Model.PageSize == s)">@s</option>
+                        }
+                    }
+                </select>
+            </form>
+
+            <nav aria-label="Pagination">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-action="CreateVersions"
+                           asp-route-languageId="@Model.LanguageId"
+                           asp-route-q="@Model.Search"
+                           asp-route-page="@(Model.Page - 1)"
+                           asp-route-pageSize="@Model.PageSize">Prev</a>
+                    </li>
+
+                    <li class="page-item disabled d-none d-sm-inline">
+                        <span class="page-link">
+                            Page @Model.Page of @Model.TotalPages (@Model.TotalCount total)
+                        </span>
+                    </li>
+
+                    <li class="page-item disabled d-inline d-sm-none">
+                        <span class="page-link">
+                            @Model.Page/@Model.TotalPages
+                        </span>
+                    </li>
+
+                    <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-action="CreateVersions"
+                           asp-route-languageId="@Model.LanguageId"
+                           asp-route-q="@Model.Search"
+                           asp-route-page="@(Model.Page + 1)"
+                           asp-route-pageSize="@Model.PageSize">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    const form = document.getElementById('createVersionsForm');
+    const rows = Array.from(document.querySelectorAll('.selectable-row'));
+    const checks = Array.from(document.querySelectorAll('.row-check'));
+    const selectedCount = document.getElementById('selectedCount');
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    const clearBtn = document.getElementById('clearBtn');
+
+    function update() {
+        let count = 0;
+        rows.forEach((row, idx) => {
+            const cb = checks[idx];
+            if (!cb) return;
+
+            row.classList.toggle('is-selected', cb.checked);
+            if (cb.checked) count++;
+
+            // optional: focus input when checked
+            const input = row.querySelector('.content-input');
+            if (cb.checked && input && !input.value) {
+                // don't steal focus if user is typing elsewhere
+            }
+        });
+        selectedCount.textContent = String(count);
+    }
+
+    checks.forEach(cb => cb.addEventListener('change', update));
+
+    // Click row to toggle (but don't toggle when clicking input)
+    rows.forEach((row, idx) => {
+        row.addEventListener('click', (e) => {
+            const target = e.target;
+            if (target.closest('input, textarea, select, button, a, label')) return;
+
+            const cb = checks[idx];
+            if (!cb) return;
+            cb.checked = !cb.checked;
+            cb.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+    });
+
+    selectAllBtn?.addEventListener('click', () => {
+        checks.forEach(cb => cb.checked = true);
+        update();
+    });
+
+    clearBtn?.addEventListener('click', () => {
+        checks.forEach(cb => cb.checked = false);
+        update();
+    });
+
+    update();
+})();
+</script>
+}

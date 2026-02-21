@@ -1,45 +1,82 @@
 @model WebApp.Models.Translator.Languages.TranslatorMyLanguagesVm
 @{
     ViewData["Title"] = "My languages";
+    var count = Model.Selected?.Count ?? 0;
 }
 
-<h2 class="mb-3">@ViewData["Title"]</h2>
+<div class="page-head mb-3">
+    <div>
+        <h2 class="page-title mb-1">@ViewData["Title"]</h2>
+        <div class="page-subtitle">
+            @if (Model.HasAny) { <span>@count selected</span> } else { <span>No languages selected</span> }
+        </div>
+    </div>
+
+    <div class="page-actions">
+        <a asp-controller="LanguageSelection"
+           asp-action="Languages"
+           class="btn @(Model.HasAny ? "btn-outline-primary" : "btn-primary")">
+            <i class="bi bi-sliders me-2"></i>
+            @(Model.HasAny ? "Edit languages" : "Select languages")
+        </a>
+    </div>
+</div>
 
 @if (!Model.HasAny)
 {
-    <div class="alert alert-info">
-        You haven't selected any languages yet. Please select the languages you know.
+    <div class="card app-card">
+        <div class="card-body p-4">
+            <div class="empty-state">
+                <div class="empty-icon" aria-hidden="true"><i class="bi bi-globe2"></i></div>
+                <div>
+                    <h5 class="mb-1">Pick the languages you know</h5>
+                    <p class="text-muted mb-3">
+                        This helps tailor the translator tools and improves your workflow.
+                    </p>
+                    <a asp-controller="LanguageSelection" asp-action="Languages" class="btn btn-primary">
+                        <i class="bi bi-plus-lg me-2"></i>Select languages
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <a asp-controller="LanguageSelection" asp-action="Languages" class="btn btn-primary">
-        Select languages
-    </a>
 }
 else
 {
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <a asp-controller="LanguageSelection" asp-action="Languages" class="btn btn-outline-primary btn-sm">
-            Edit
-        </a>
-    </div>
+    <div class="card app-card">
+        <div class="card-header app-card-header">
+            <div class="fw-semibold">Your languages</div>
+            <span class="badge text-bg-light border">@count total</span>
+        </div>
 
-    <div class="table-responsive">
-        <table class="table table-sm align-middle">
-            <thead>
-            <tr>
-                <th style="width: 40%">Language</th>
-                <th style="width: 20%">Tag</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var lang in Model.Selected)
-            {
+        <div class="table-responsive app-table-wrap">
+            <table class="table app-table mb-0 align-middle">
+                <thead>
                 <tr>
-                    <td>@lang.Name</td>
-                    <td><code>@lang.Tag</code></td>
+                    <th class="ps-3" style="width: 65%">Language</th>
+                    <th style="width: 35%">Tag</th>
                 </tr>
-            }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                @foreach (var lang in Model.Selected!)
+                {
+                    <tr>
+                        <td class="ps-3">
+                            <div class="fw-semibold">@lang.Name</div>
+                        </td>
+                        <td>
+                            <span class="badge text-bg-light border font-monospace">@lang.Tag</span>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer bg-transparent border-0 d-flex justify-content-end p-3">
+            <a asp-controller="LanguageSelection" asp-action="Languages" class="btn btn-outline-primary">
+                <i class="bi bi-pencil-square me-2"></i>Edit
+            </a>
+        </div>
     </div>
 }

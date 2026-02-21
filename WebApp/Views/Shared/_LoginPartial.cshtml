@@ -3,25 +3,74 @@
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
+@{
+    var isSignedIn = SignInManager.IsSignedIn(User);
+    var userName = User.Identity?.Name ?? "Account";
+}
+
+<div class="topbar-control">
+    @if (isSignedIn)
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity?.Name</a>
-        </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Logout)))</button>
-            </form>
-        </li>
+        <div class="dropdown">
+            <button class="btn topbar-btn dropdown-toggle"
+                    type="button"
+                    id="accountDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                <span class="avatar-dot me-2" aria-hidden="true">
+                    <i class="bi bi-person"></i>
+                </span>
+                <span class="d-none d-lg-inline text-truncate" style="max-width: 180px;">@userName</span>
+                <span class="d-inline d-lg-none">Me</span>
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end topbar-menu" aria-labelledby="accountDropdown">
+                <li class="dropdown-header">Account</li>
+
+                <li>
+                    <a class="dropdown-item d-flex align-items-center gap-2"
+                       asp-area="Identity"
+                       asp-page="/Account/Manage/Index">
+                        <i class="bi bi-gear"></i>
+                        <span>Manage profile</span>
+                    </a>
+                </li>
+
+                <li><hr class="dropdown-divider" /></li>
+
+                <li>
+                    <form class="m-0"
+                          asp-area="Identity"
+                          asp-page="/Account/Logout"
+                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-danger">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Logout)))</span>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     }
     else
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Register)))</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Login)))</a>
-        </li>
+        <div class="d-flex align-items-center gap-2">
+            <a class="btn topbar-btn"
+               asp-area="Identity"
+               asp-page="/Account/Login">
+                <i class="bi bi-box-arrow-in-right me-2"></i>
+                <span class="d-none d-lg-inline">@(
+                    await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Login))
+                )</span>
+                <span class="d-inline d-lg-none">Login</span>
+            </a>
+
+            <a class="btn topbar-btn-outline d-none d-md-inline-flex"
+               asp-area="Identity"
+               asp-page="/Account/Register">
+                <i class="bi bi-person-plus me-2"></i>
+                @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Register)))
+            </a>
+        </div>
     }
-</ul>
+</div>

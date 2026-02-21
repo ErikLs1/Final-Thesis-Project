@@ -4,124 +4,216 @@
     ViewData["Title"] = "Publish translations";
 }
 
-<div class="container-fluid px-4 py-3">
-    <div class="d-flex justify-content-between align-items-center mb-2">
-        <h2 class="mb-0">@ViewData["Title"]</h2>
+<div class="page-head mb-3">
+    <div>
+        <h2 class="page-title mb-1">@ViewData["Title"]</h2>
+        <div class="page-subtitle">
+            Publish updates for <span class="badge text-bg-light border font-monospace">@Model.SelectedLanguageTag</span>
+        </div>
+    </div>
 
+    <div class="page-actions d-flex gap-2">
         <a asp-action="Index"
            asp-route-languageId="@Model.SelectedLanguageId"
-           class="btn btn-outline-secondary btn-sm">
-            Back to list
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Back to list
         </a>
     </div>
+</div>
 
-    <div class="mb-3">
-        <span class="text-muted">Language:</span>
-        <span class="badge text-bg-primary">@Model.SelectedLanguageTag</span>
-    </div>
+<form asp-action="Publish" method="post" id="publishForm">
+    @Html.AntiForgeryToken()
 
-    <form asp-action="Publish" method="post">
-        <input type="hidden" asp-for="SelectedLanguageId" />
-        <input type="hidden" asp-for="SelectedLanguageTag" />
+    <input type="hidden" asp-for="SelectedLanguageId" />
+    <input type="hidden" asp-for="SelectedLanguageTag" />
 
-        <div class="translations-page">
-            <div class="card border-0 shadow-sm">
+    <div class="card app-card">
+        <div class="card-body p-3 p-lg-4">
 
-                <div class="table-responsive rounded-bottom">
-                    <table class="table table-hover align-middle mb-0 translations-table">
-                        <thead class="table-light">
+            <!-- Toolbar -->
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted small">Language</span>
+                    <span class="badge text-bg-light border font-monospace">@Model.SelectedLanguageTag</span>
+
+                    <span class="badge text-bg-light border ms-2">
+                        <span id="selectedCount">0</span> selected
+                    </span>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="selectAllBtn">
+                        <i class="bi bi-check2-square me-2"></i>Select all
+                    </button>
+
+                    <button type="button" class="btn btn-outline-secondary btn-sm" id="clearBtn">
+                        <i class="bi bi-square me-2"></i>Clear
+                    </button>
+
+                    <button type="submit" class="btn btn-primary btn-sm" id="publishBtn" disabled>
+                        <i class="bi bi-upload me-2"></i>Publish selected
+                    </button>
+
+                    <a asp-action="Index"
+                       asp-route-languageId="@Model.SelectedLanguageId"
+                       class="btn btn-outline-secondary btn-sm">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive app-table-wrap">
+                <table class="table app-table align-middle mb-0 publish-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 340px;">Resource key</th>
+                        <th>Content</th>
+                        <th class="text-end" style="width: 90px;">Ver</th>
+                        <th style="width: 170px;">State</th>
+                        <th class="text-center" style="width: 96px;">Publish</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    @if (Model.Rows.Count == 0)
+                    {
                         <tr>
-                            <th style="width: 340px;">Resource key</th>
-                            <th>Content</th>
-                            <th class="text-end" style="width: 90px;">Ver</th>
-                            <th style="width: 160px;">State</th>
-                            <th class="text-center" style="width: 90px;">Publish</th>
+                            <td colspan="5">
+                                <div class="empty-state py-4">
+                                    <div class="empty-icon" aria-hidden="true"><i class="bi bi-inboxes"></i></div>
+                                    <div>
+                                        <div class="fw-semibold">No translations available</div>
+                                        <div class="text-muted small">There is nothing to publish for this language right now.</div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
-                        </thead>
-
-                        <tbody>
-                        @if (Model.Rows.Count == 0)
+                    }
+                    else
+                    {
+                        for (var i = 0; i < Model.Rows.Count; i++)
                         {
-                            <tr>
-                                <td colspan="5" class="text-muted py-4 text-center">
-                                    No translations available to publish.
+                            <tr class="selectable-row">
+                                <td>
+                                    <div class="fw-semibold text-truncate" title="@Model.Rows[i].FriendlyKey">
+                                        @Model.Rows[i].FriendlyKey
+                                    </div>
+                                </td>
+
+                                <td class="content-cell">
+                                    @if (string.IsNullOrWhiteSpace(Model.Rows[i].Content))
+                                    {
+                                        <span class="text-muted">—</span>
+                                    }
+                                    else
+                                    {
+                                        <div class="content-preview" title="@Model.Rows[i].Content">
+                                            @Model.Rows[i].Content
+                                        </div>
+                                    }
+                                </td>
+
+                                <td class="text-end">
+                                    <span class="badge text-bg-light border font-monospace">
+                                        @Model.Rows[i].VersionNumber
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @Html.Raw(StateBadge(Model.Rows[i].CurrentState))
+                                </td>
+
+                                <td class="text-center">
+                                    <input type="hidden" asp-for="@Model.Rows[i].TranslationVersionId" />
+
+                                    <input class="form-check-input publish-check"
+                                           type="checkbox"
+                                           asp-for="@Model.Rows[@i].Selected"
+                                           aria-label="Select translation to publish" />
                                 </td>
                             </tr>
                         }
-                        else
-                        {
-                            for (var i = 0; i < Model.Rows.Count; i++)
-                            {
-                                <tr>
-                                    <td>
-                                        <div class="fw-semibold">@Model.Rows[i].FriendlyKey</div>
-                                    </td>
+                    }
+                    </tbody>
+                </table>
+            </div>
 
-                                    <td style="max-width: 520px;">
-                                        <div class="text-truncate d-block">
-                                            @(string.IsNullOrWhiteSpace(Model.Rows[i].Content) ? "—" : Model.Rows[i].Content)
-                                        </div>
-                                    </td>
-
-                                    <td class="text-end">
-                                        <span class="text-muted">@Model.Rows[i].VersionNumber</span>
-                                    </td>
-
-                                    <td>
-                                        @Html.Raw(StateBadge(Model.Rows[i].CurrentState))
-                                    </td>
-
-                                    <td class="text-center">
-                                        <input type="hidden" asp-for="@Model.Rows[i].TranslationVersionId" />
-
-                                        <div class="form-check d-inline-flex justify-content-center m-0">
-                                            <input class="form-check-input"
-                                                   type="checkbox"
-                                                   asp-for="@Model.Rows[@i].Selected" />
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="card-footer bg-white border-0 pt-3">
-                    <div class="d-flex gap-2 justify-content-end">
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            Publish selected
-                        </button>
-
-                        <a asp-action="Index"
-                           asp-route-languageId="@Model.SelectedLanguageId"
-                           class="btn btn-outline-secondary btn-sm">
-                            Cancel
-                        </a>
-                    </div>
-                </div>
-
+            <div class="text-muted small mt-3">
+                Tip: click a row to toggle selection. Only checked rows will be published.
             </div>
         </div>
-    </form>
-</div>
+    </div>
+</form>
+
+@section Scripts {
+<script>
+(function () {
+    const rows = Array.from(document.querySelectorAll('.selectable-row'));
+    const checks = Array.from(document.querySelectorAll('.publish-check'));
+    const selectedCountEl = document.getElementById('selectedCount');
+    const publishBtn = document.getElementById('publishBtn');
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    const clearBtn = document.getElementById('clearBtn');
+
+    function update() {
+        const selected = checks.filter(c => c.checked).length;
+        selectedCountEl.textContent = String(selected);
+        publishBtn.disabled = selected === 0;
+
+        rows.forEach((row, idx) => {
+            const cb = checks[idx];
+            if (!cb) return;
+            row.classList.toggle('is-selected', cb.checked);
+        });
+    }
+
+    // Checkbox changes
+    checks.forEach(cb => cb.addEventListener('change', update));
+
+    // Click row toggles checkbox (but not when clicking on the checkbox itself)
+    rows.forEach((row, idx) => {
+        row.addEventListener('click', (e) => {
+            if (e.target.closest('input, button, a, label')) return;
+            const cb = checks[idx];
+            if (!cb) return;
+            cb.checked = !cb.checked;
+            cb.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+    });
+
+    selectAllBtn?.addEventListener('click', () => {
+        checks.forEach(cb => cb.checked = true);
+        update();
+    });
+
+    clearBtn?.addEventListener('click', () => {
+        checks.forEach(cb => cb.checked = false);
+        update();
+    });
+
+    update();
+})();
+</script>
+}
 
 @functions {
-    // Works whether CurrentState is an enum or string (we just ToString it).
+    // Works whether CurrentState is an enum or string
     private static string StateBadge(object? stateObj)
     {
         var state = stateObj?.ToString() ?? "";
 
-        var (cls, txt) = state switch
+        var (cls, txt, icon) = state switch
         {
-            "Published" => ("bg-success", "Published"),
-            "WaitingReview" => ("bg-warning text-dark", "Waiting review"),
-            "Approved" => ("bg-success", "Approved"),
-            "Rejected" => ("bg-danger", "Rejected"),
-            "Depricated" => ("bg-dark", "Archived"),
-            _ => ("bg-light text-dark", string.IsNullOrWhiteSpace(state) ? "—" : state)
+            "Published" => ("text-bg-success", "Published", "check-circle"),
+            "WaitingReview" => ("text-bg-warning", "Waiting review", "hourglass-split"),
+            "Approved" => ("text-bg-success", "Approved", "check2"),
+            "Rejected" => ("text-bg-danger", "Rejected", "x-circle"),
+            "Depricated" => ("text-bg-secondary", "Archived", "archive"),
+            _ => ("text-bg-light", string.IsNullOrWhiteSpace(state) ? "—" : state, "info-circle")
         };
 
-        return $"<span class=\"badge {cls}\">{txt}</span>";
+        var extra = state == "WaitingReview" ? " text-dark" : "";
+        return $"<span class=\"badge {cls}{extra}\"><i class=\"bi bi-{icon} me-1\"></i>{txt}</span>";
     }
 }
