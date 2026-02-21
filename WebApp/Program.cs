@@ -21,8 +21,16 @@ using WebApp.Redis.Client.Impl;
 var builder = WebApplication.CreateBuilder(args);
 
 // PostgreSQL Database connection
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
-                       throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        "Missing DB connection string. Set it via:\n" +
+        "- dotnet user-secrets: ConnectionStrings:DefaultConnection (local)\n" +
+        "- env var: ConnectionStrings__DefaultConnection (docker)"
+    );
+}
 
 if (builder.Environment.IsProduction())
 {
@@ -55,7 +63,13 @@ builder.Services.AddScoped<ResxImportRepository>();
 builder.Services.AddScoped<IAppBll, AppBll>();
 builder.Services.AddScoped<ResourcesImporter>();
 
-builder.Services.Configure<RedisOptions>(builder.Configuration.GetSection("Redis"));
+builder.Services
+    .AddOptions<RedisOptions>()
+    .Bind(builder.Configuration.GetSection("Redis"))
+    .Validate(o => !string.IsNullOrWhiteSpace(o.ConnectionString),
+        "Redis:ConnectionString must be set")
+    .ValidateOnStart();
+
 builder.Services.AddSingleton<IRedisClient, RedisClient>();
 
 builder.Services.AddMemoryCache();
