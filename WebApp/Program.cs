@@ -6,6 +6,7 @@ using App.Repository.Impl.ResxImport;
 using App.Service.BllUow;
 using App.Service.Impl.Assemblies.Importer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using WebApp.Extensions.Builder;
@@ -83,7 +84,11 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(o => o.SignIn.RequireC
 //builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthorization();
-builder.Services.AddControllersWithViews();
+builder.Services
+    .AddControllersWithViews()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization();
+
 builder.Services.AddRazorPages();
 
 builder.Services.ConfigureApplicationCookie(options =>

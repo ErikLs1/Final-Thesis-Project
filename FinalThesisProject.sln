@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!Solution Item", "!Solution
 		.gitignore = .gitignore
 		Dockerfile = Dockerfile
 		docker-compose.yml = docker-compose.yml
+		.env = .env
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App", "App", "{7E573F5F-B632-4028-B7F0-FD8A99DC6647}"
