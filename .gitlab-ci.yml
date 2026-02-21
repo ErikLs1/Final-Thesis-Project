@@ -1,6 +1,25 @@
-create_file:
-  image: alpine
+stages:
+  - build
+  - unit_tests
+  - integration_tests
+
+build:
+  stage: build
+  script: 
+    - dotnet restore FinalThesisProject.sln
+    - dotnet build FinalThesisProject.sln --configuration Release --no-restore
+
+uni_tests:
+  stage: unit_tests
+  needs:
+    - build
   script:
-    - echo "Building..."
-    - mkdir build
-    - touch build/somefile.txt
+    - dotnet test tests/App.UnitTests/App.UnitTests.csproj --configuration Release --no-restore --logger "trx;LogFileName=unit-tests.trx"
+
+
+integration_tests:
+  stage: integration_tests
+  needs:
+    - build
+  script:
+    - dotnet test tests/App.IntegrationTests/App.IntegrationTests.csproj --configuration Release --no-restore --logger "trx;LogFileName=integration-tests.trx"
