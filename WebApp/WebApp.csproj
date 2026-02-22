@@ -31,4 +31,190 @@
       <Folder Include="Extensions\Translations\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="Views\Admin\Resources\Admin.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Admin.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Admin\Resources\Admin.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Admin.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Admin\Resources\Admin.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Admin.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Admin\Resources\Admin.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Admin.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Reviewer\Resources\Reviewer.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Reviewer.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Reviewer\Resources\Reviewer.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Reviewer.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Reviewer\Resources\Reviewer.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Reviewer.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Reviewer\Resources\Reviewer.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Reviewer.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Translator\Resources\Translator.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Translator.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Translator\Resources\Translator.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Translator.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Translator\Resources\Translator.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Translator.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Translator\Resources\Translator.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Translator.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\LanguageSelection\Resources\LanguageSelection.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>LanguageSelection.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\LanguageSelection\Resources\LanguageSelection.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>LanguageSelection.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\LanguageSelection\Resources\LanguageSelection.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>LanguageSelection.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\LanguageSelection\Resources\LanguageSelection.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>LanguageSelection.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Shared\Resources\Shared.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Shared.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Shared\Resources\Shared.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Shared.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Shared\Resources\Shared.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Shared.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Shared\Resources\Shared.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Shared.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\Admin\Resources\Admin.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Admin.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Admin\Resources\Admin.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Admin.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Admin\Resources\Admin.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Admin.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Admin\Resources\Admin.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Admin.et-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Reviewer\Resources\Reviewer.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Reviewer.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Reviewer\Resources\Reviewer.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Reviewer.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Reviewer\Resources\Reviewer.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Reviewer.et-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Reviewer\Resources\Reviewer.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Reviewer.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Translator\Resources\Translator.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Translator.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Translator\Resources\Translator.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Translator.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Translator\Resources\Translator.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Translator.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Translator\Resources\Translator.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Translator.et-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\LanguageSelection\Resources\LanguageSelection.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>LanguageSelection.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\LanguageSelection\Resources\LanguageSelection.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>LanguageSelection.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\LanguageSelection\Resources\LanguageSelection.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>LanguageSelection.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\LanguageSelection\Resources\LanguageSelection.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>LanguageSelection.et-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Shared\Resources\Shared.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Shared.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Shared\Resources\Shared.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Shared.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Shared\Resources\Shared.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Shared.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Shared\Resources\Shared.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Shared.et-EE.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>
