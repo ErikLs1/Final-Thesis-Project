@@ -47,8 +47,32 @@ public class UITranslationRepository : IUITranslationRepository
             .FirstOrDefaultAsync(v => v.Id == request.TranslationVersionId);
 
         if (version == null) return 0;
+
+        var oldState = version.TranslationState;
+        if (oldState == request.NewState) return 0;
         
         version.TranslationState = request.NewState;
+
+        var now = DateTime.UtcNow;
+        var audit = new UITranslationAuditLog
+        {
+            LanguageId = version.LanguageId,
+            ResourceKeyId = version.ResourceKeyId,
+            TranslationVersionId = version.Id,
+            ActivatedAt = now,
+            ActivatedBy = request.UpdatedBy,
+            DeactivatedAt = now,
+            DeactivatedBy = request.UpdatedBy,
+            ActionType = TranslationAuditAction.StateChanged,
+            ChangedAt = now,
+            ChangedBy = request.UpdatedBy,
+            OldState = oldState,
+            NewState = request.NewState,
+            OldContent = version.Content,
+            NewContent = version.Content
+        };
+
+        await _db.UITranslationAuditLogs.AddAsync(audit);
 
         return await _db.SaveChangesAsync();
     }
@@ -121,12 +145,22 @@ public class UITranslationRepository : IUITranslationRepository
                 x.LanguageId == newTranslationVersion.LanguageId &&
                 x.ResourceKeyId == newTranslationVersion.ResourceKeyId);
 
+        if (publishedTranslations != null && publishedTranslations.TranslationVersionId == newTranslationVersion.Id)
+        {
+            return 0;
+        }
+
         UITranslationVersions? current = null; 
+
+        var now = DateTime.UtcNow;
+
+        TranslationState? oldPublishedState = null;
 
         if (publishedTranslations != null && publishedTranslations.TranslationVersionId != newTranslationVersion.Id)
         {
             current = await _db.UITranslationVersions
                 .FirstOrDefaultAsync(x => x.Id == publishedTranslations.TranslationVersionId);
+            oldPublishedState = current?.TranslationState;
 
             var audit = new UITranslationAuditLog
             {
@@ -135,8 +169,15 @@ public class UITranslationRepository : IUITranslationRepository
                 TranslationVersionId = publishedTranslations.TranslationVersionId,
                 ActivatedAt = publishedTranslations.PublishedAt, // Todo redactor (delete this from uitranslation table)
                 ActivatedBy = publishedTranslations.PublishedBy,
-                DeactivatedAt = DateTime.UtcNow,
-                DeactivatedBy = request.ActivatedBy
+                DeactivatedAt = now,
+                DeactivatedBy = request.ActivatedBy,
+                ActionType = TranslationAuditAction.Unpublished,
+                ChangedAt = now,
+                ChangedBy = request.ActivatedBy,
+                OldState = oldPublishedState ?? TranslationState.Published,
+                NewState = TranslationState.Inactive,
+                OldContent = current?.Content,
+                NewContent = current?.Content
             };
 
             await _db.UITranslationAuditLogs.AddAsync(audit);
@@ -150,10 +191,30 @@ public class UITranslationRepository : IUITranslationRepository
 
         newTranslationVersion.TranslationState = TranslationState.Published;
         
+        var publishAudit = new UITranslationAuditLog
+        {
+            LanguageId = newTranslationVersion.LanguageId,
+            ResourceKeyId = newTranslationVersion.ResourceKeyId,
+            TranslationVersionId = newTranslationVersion.Id,
+            ActivatedAt = now,
+            ActivatedBy = request.ActivatedBy,
+            DeactivatedAt = now,
+            DeactivatedBy = request.ActivatedBy,
+            ActionType = TranslationAuditAction.Published,
+            ChangedAt = now,
+            ChangedBy = request.ActivatedBy,
+            OldState = oldPublishedState,
+            NewState = TranslationState.Published,
+            OldContent = current?.Content,
+            NewContent = newTranslationVersion.Content
+        };
+
+        await _db.UITranslationAuditLogs.AddAsync(publishAudit);
+        
         if (publishedTranslations != null)
         {
             publishedTranslations.TranslationVersionId = newTranslationVersion.Id;
-            publishedTranslations.PublishedAt = DateTime.UtcNow;
+            publishedTranslations.PublishedAt = now;
             publishedTranslations.PublishedBy = request.ActivatedBy;
         }
         

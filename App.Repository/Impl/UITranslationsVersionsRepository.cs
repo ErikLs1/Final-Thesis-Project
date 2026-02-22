@@ -206,9 +206,12 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
 
             request.Content.TryGetValue(keyId, out var content);
             content ??= string.Empty;
+
+            var versionId = Guid.NewGuid();
             
             toInsert.Add(new UITranslationVersions
             {
+                Id = versionId,
                 LanguageId = request.LanguageId,
                 ResourceKeyId = keyId,
                 VersionNumber = nextVersion,
@@ -220,6 +223,26 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
         }
 
         await _db.UITranslationVersions.AddRangeAsync(toInsert);
+        var now = DateTime.UtcNow;
+        var auditRows = toInsert.Select(v => new UITranslationAuditLog
+        {
+            LanguageId = v.LanguageId,
+            ResourceKeyId = v.ResourceKeyId,
+            TranslationVersionId = v.Id,
+            ActivatedAt = now,
+            ActivatedBy = request.CreatedBy,
+            DeactivatedAt = now,
+            DeactivatedBy = request.CreatedBy,
+            ActionType = TranslationAuditAction.VersionCreated,
+            ChangedAt = now,
+            ChangedBy = request.CreatedBy,
+            OldState = null,
+            NewState = v.TranslationState,
+            OldContent = null,
+            NewContent = v.Content
+        }).ToList();
+
+        await _db.UITranslationAuditLogs.AddRangeAsync(auditRows);
         return await _db.SaveChangesAsync();
     }
 

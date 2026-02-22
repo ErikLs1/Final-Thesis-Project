@@ -107,6 +107,10 @@
                         <i class="bi bi-gear"></i>
                         <span>Manage translations</span>
                     </a>
+                    <a class="nav-link @Active("AdminTranslations","Audit")" asp-controller="AdminTranslations" asp-action="Audit">
+                        <i class="bi bi-journal-text"></i>
+                        <span>Translation audit</span>
+                    </a>
                 }
                 @if (isReviewer)
                 {

@@ -1,0 +1,239 @@
+@model WebApp.Models.Admin.Audit.AdminTranslationAuditIndexVm
+@using App.Domain.Enum
+
+@{
+    ViewData["Title"] = "Translation audit";
+}
+
+<div class="page-head mb-3">
+    <div>
+        <h2 class="page-title mb-1">@ViewData["Title"]</h2>
+        <div class="page-subtitle text-muted">
+            Inspect translation lifecycle history: who changed what and when.
+        </div>
+    </div>
+</div>
+
+<div class="card app-card">
+    <div class="card-body p-3 p-lg-4">
+        <form method="get" class="row g-2 align-items-end mb-3">
+            <input type="hidden" name="page" value="1" />
+            <input type="hidden" name="pageSize" value="@Model.PageSize" />
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <label class="form-label mb-1">Language</label>
+                <select name="languageId" class="form-select">
+                    <option value="">All languages</option>
+                    @foreach (var lang in Model.LanguageOptions)
+                    {
+                        <option value="@lang.Id" selected="@(Model.SelectedLanguageId == lang.Id ? "selected" : null)">
+                            @lang.Display
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label mb-1">Action</label>
+                <select name="actionType" class="form-select">
+                    <option value="">All actions</option>
+                    @foreach (TranslationAuditAction action in Enum.GetValues(typeof(TranslationAuditAction)))
+                    {
+                        <option value="@action"
+                                selected="@(Model.SelectedActionType.HasValue && Model.SelectedActionType.Value == action ? "selected" : null)">
+                            @action
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-2">
+                <label class="form-label mb-1">Changed by</label>
+                <input type="text" class="form-control" name="changedBy" value="@Model.ChangedBy" placeholder="username" />
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <label class="form-label mb-1">Resource key</label>
+                <input type="text" class="form-control" name="resourceKeySearch" value="@Model.ResourceKeySearch" placeholder="Search key..." />
+            </div>
+
+            <div class="col-6 col-md-3 col-lg-1">
+                <label class="form-label mb-1">From</label>
+                <input type="date" class="form-control" name="changedFromUtc" value="@Model.ChangedFromUtc?.ToString("yyyy-MM-dd")" />
+            </div>
+
+            <div class="col-6 col-md-3 col-lg-1">
+                <label class="form-label mb-1">To</label>
+                <input type="date" class="form-control" name="changedToUtc" value="@Model.ChangedToUtc?.ToString("yyyy-MM-dd")" />
+            </div>
+
+            <div class="col-12 col-lg-12 d-grid d-sm-flex gap-2 justify-content-lg-end">
+                <button type="submit" class="btn btn-outline-secondary">
+                    <i class="bi bi-funnel me-2"></i>Filter
+                </button>
+                <a class="btn btn-outline-secondary" asp-action="Audit">
+                    <i class="bi bi-x-circle me-2"></i>Reset
+                </a>
+            </div>
+        </form>
+
+        <div class="table-responsive app-table-wrap">
+            <table class="table app-table align-middle mb-0">
+                <thead>
+                <tr>
+                    <th style="width: 170px;">When (UTC)</th>
+                    <th style="width: 150px;">Who</th>
+                    <th style="width: 130px;">Action</th>
+                    <th style="width: 110px;">Lang</th>
+                    <th style="width: 280px;">Resource</th>
+                    <th style="width: 80px;" class="text-end">Ver</th>
+                    <th style="width: 220px;">State change</th>
+                    <th>Content change</th>
+                </tr>
+                </thead>
+                <tbody>
+                @if (Model.Rows.Count == 0)
+                {
+                    <tr>
+                        <td colspan="8">
+                            <div class="empty-state py-4">
+                                <div class="empty-icon" aria-hidden="true">
+                                    <i class="bi bi-journal-x"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">No audit events found</div>
+                                    <div class="text-muted small">Try changing filters to broaden results.</div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var r in Model.Rows)
+                    {
+                        <tr>
+                            <td class="font-monospace small">@r.ChangedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                            <td>@r.ChangedBy</td>
+                            <td>@Html.Raw(ActionBadge(r.ActionType))</td>
+                            <td><span class="badge text-bg-light border font-monospace">@r.LanguageTag</span></td>
+                            <td>
+                                <div class="fw-semibold text-truncate" title="@r.FriendlyKey">@r.FriendlyKey</div>
+                                <div class="text-muted small text-truncate" title="@r.ResourceKey">@r.ResourceKey</div>
+                            </td>
+                            <td class="text-end"><span class="badge text-bg-light border font-monospace">@r.VersionNumber</span></td>
+                            <td>
+                                <span class="text-muted">@FormatState(r.OldState)</span>
+                                <span class="mx-1">-></span>
+                                <span class="fw-semibold">@FormatState(r.NewState)</span>
+                            </td>
+                            <td class="small">
+                                @if (r.OldContent == r.NewContent)
+                                {
+                                    <span class="text-muted">No content change</span>
+                                }
+                                else
+                                {
+                                    <div title="@r.OldContent"><span class="text-muted">Old:</span> @TrimForTable(r.OldContent)</div>
+                                    <div title="@r.NewContent"><span class="text-muted">New:</span> @TrimForTable(r.NewContent)</div>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card-footer bg-transparent border-0 px-3 px-lg-4 pb-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <form method="get" class="d-flex align-items-center gap-2">
+                <input type="hidden" name="languageId" value="@Model.SelectedLanguageId" />
+                <input type="hidden" name="actionType" value="@Model.SelectedActionType" />
+                <input type="hidden" name="changedBy" value="@Model.ChangedBy" />
+                <input type="hidden" name="resourceKeySearch" value="@Model.ResourceKeySearch" />
+                <input type="hidden" name="changedFromUtc" value="@Model.ChangedFromUtc?.ToString("yyyy-MM-dd")" />
+                <input type="hidden" name="changedToUtc" value="@Model.ChangedToUtc?.ToString("yyyy-MM-dd")" />
+                <input type="hidden" name="page" value="1" />
+
+                <span class="text-muted small">Rows</span>
+                <select name="pageSize" class="form-select form-select-sm" style="width: 90px;" onchange="this.form.submit()">
+                    @{
+                        var sizes = new[] { 10, 25, 50, 100 };
+                        foreach (var s in sizes)
+                        {
+                            <option value="@s" selected="@(Model.PageSize == s)">@s</option>
+                        }
+                    }
+                </select>
+            </form>
+
+            <nav aria-label="Pagination">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-action="Audit"
+                           asp-route-languageId="@Model.SelectedLanguageId"
+                           asp-route-actionType="@Model.SelectedActionType"
+                           asp-route-changedBy="@Model.ChangedBy"
+                           asp-route-resourceKeySearch="@Model.ResourceKeySearch"
+                           asp-route-changedFromUtc="@Model.ChangedFromUtc?.ToString("yyyy-MM-dd")"
+                           asp-route-changedToUtc="@Model.ChangedToUtc?.ToString("yyyy-MM-dd")"
+                           asp-route-page="@(Model.Page - 1)"
+                           asp-route-pageSize="@Model.PageSize">Prev</a>
+                    </li>
+
+                    <li class="page-item disabled d-none d-sm-inline">
+                        <span class="page-link">Page @Model.Page of @Model.TotalPages (@Model.TotalCount total)</span>
+                    </li>
+
+                    <li class="page-item disabled d-inline d-sm-none">
+                        <span class="page-link">@Model.Page/@Model.TotalPages</span>
+                    </li>
+
+                    <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                        <a class="page-link"
+                           asp-action="Audit"
+                           asp-route-languageId="@Model.SelectedLanguageId"
+                           asp-route-actionType="@Model.SelectedActionType"
+                           asp-route-changedBy="@Model.ChangedBy"
+                           asp-route-resourceKeySearch="@Model.ResourceKeySearch"
+                           asp-route-changedFromUtc="@Model.ChangedFromUtc?.ToString("yyyy-MM-dd")"
+                           asp-route-changedToUtc="@Model.ChangedToUtc?.ToString("yyyy-MM-dd")"
+                           asp-route-page="@(Model.Page + 1)"
+                           asp-route-pageSize="@Model.PageSize">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+@functions {
+    private static string FormatState(TranslationState? state)
+    {
+        return state?.ToString() ?? "n/a";
+    }
+
+    private static string TrimForTable(string? value, int max = 60)
+    {
+        if (string.IsNullOrWhiteSpace(value)) return "empty";
+        if (value.Length <= max) return value;
+        return value[..max] + "...";
+    }
+
+    private static string ActionBadge(TranslationAuditAction actionType)
+    {
+        var cls = actionType switch
+        {
+            TranslationAuditAction.VersionCreated => "text-bg-info",
+            TranslationAuditAction.StateChanged => "text-bg-warning text-dark",
+            TranslationAuditAction.Published => "text-bg-success",
+            TranslationAuditAction.Unpublished => "text-bg-secondary",
+            _ => "text-bg-light"
+        };
+
+        return $"<span class=\"badge {cls}\">{actionType}</span>";
+    }
+}

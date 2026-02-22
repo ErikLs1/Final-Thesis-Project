@@ -217,6 +217,32 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
             e.Property(p => p.DeactivatedBy)
                 .HasMaxLength(255)
                 .IsRequired();
+            
+            e.Property(p => p.ActionType)
+                .HasConversion<string>()
+                .HasMaxLength(50)
+                .IsRequired();
+            
+            e.Property(p => p.ChangedAt)
+                .IsRequired();
+            
+            e.Property(p => p.ChangedBy)
+                .HasMaxLength(255)
+                .IsRequired();
+            
+            e.Property(p => p.OldState)
+                .HasConversion<string>()
+                .HasMaxLength(150);
+            
+            e.Property(p => p.NewState)
+                .HasConversion<string>()
+                .HasMaxLength(150);
+
+            e.Property(p => p.OldContent)
+                .HasMaxLength(1024);
+            
+            e.Property(p => p.NewContent)
+                .HasMaxLength(1024);
 
             e.HasOne(p => p.Language)
                 .WithMany(l => l.UITranslationAuditLogs)

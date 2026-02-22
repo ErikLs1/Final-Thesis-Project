@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Helpers;
 using WebApp.Helpers.Translations.Interfaces;
+using WebApp.Models.Admin.Audit;
 using WebApp.Models.Admin.Translations;
 using WebApp.Models.Shared;
 
@@ -169,7 +170,78 @@ public class AdminTranslationsController : Controller
             await _cache.GetLanguageMapAsync(langTag);
         }
 
-        return RedirectToAction(nameof(Index), new { languageId = vm.SelectedLanguageId });
+         return RedirectToAction(nameof(Index), new { languageId = vm.SelectedLanguageId });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Audit(
+        Guid? languageId,
+        TranslationAuditAction? actionType,
+        string? changedBy,
+        string? resourceKeySearch,
+        DateTime? changedFromUtc,
+        DateTime? changedToUtc,
+        int page = 1,
+        int pageSize = 25)
+    {
+        var allLanguages = await _bll.LanguageService.GetAllLanguages();
+
+        var paging = new PagedRequest
+        {
+            Page = page,
+            PageSize = pageSize
+        };
+
+        var request = new FilteredTranslationAuditRequestDto(
+            languageId,
+            actionType,
+            changedBy,
+            resourceKeySearch,
+            changedFromUtc,
+            changedToUtc);
+
+        var paged = await _bll.UITranslationAuditLogService.GetAuditLogsAsync(request, paging);
+
+        var languageOptions = allLanguages
+            .OrderBy(l => l.Name)
+            .Select(l => new LanguageOptionVm
+            {
+                Id = l.Id,
+                Display = $"{l.Name} ({l.Tag})",
+                LanguageName = l.Name,
+                LanguageTag = l.Tag
+            })
+            .ToList();
+
+        var vm = new AdminTranslationAuditIndexVm
+        {
+            SelectedLanguageId = languageId,
+            SelectedActionType = actionType,
+            ChangedBy = changedBy,
+            ResourceKeySearch = resourceKeySearch,
+            ChangedFromUtc = changedFromUtc,
+            ChangedToUtc = changedToUtc,
+            Page = paged.Page,
+            PageSize = paged.PageSize,
+            TotalCount = paged.TotalCount,
+            LanguageOptions = languageOptions,
+            Rows = paged.Items.Select(a => new AdminTranslationAuditIndexRowVm
+            {
+                ChangedAt = a.ChangedAt,
+                ChangedBy = a.ChangedBy,
+                ActionType = a.ActionType,
+                LanguageTag = a.LanguageTag,
+                ResourceKey = a.ResourceKey,
+                FriendlyKey = a.FriendlyKey,
+                VersionNumber = a.VersionNumber,
+                OldState = a.OldState,
+                NewState = a.NewState,
+                OldContent = a.OldContent,
+                NewContent = a.NewContent
+            }).ToList()
+        };
+
+        return View(vm);
     }
     
     private async Task<(Guid selectedLangId, string langTag, IReadOnlyList<LanguageDto> allLanguages)>
