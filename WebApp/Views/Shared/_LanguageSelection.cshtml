@@ -28,7 +28,7 @@
     </button>
 
     <ul class="dropdown-menu dropdown-menu-end topbar-menu" aria-labelledby="langDropdown">
-        <li class="dropdown-header">Language</li>
+        <li class="dropdown-header">@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Language)))</li>
 
         @foreach (var c in cultures)
         {

@@ -14,7 +14,7 @@ namespace WebApp.Views.Shared.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Shared {
+    public class Shared {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace WebApp.Views.Shared.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("WebApp.Views.Shared.Resources.Shared", typeof(Shared).Assembly);
@@ -36,12 +36,30 @@ namespace WebApp.Views.Shared.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string Shared_Account {
+            get {
+                return ResourceManager.GetString("Shared_Account", resourceCulture);
+            }
+        }
+        
+        public static string Shared_ManageProfile {
+            get {
+                return ResourceManager.GetString("Shared_ManageProfile", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Language {
+            get {
+                return ResourceManager.GetString("Shared_Language", resourceCulture);
             }
         }
     }

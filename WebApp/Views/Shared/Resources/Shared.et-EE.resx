@@ -18,4 +18,13 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Shared_Account" xml:space="preserve">
+        <value>Konto</value>
+    </data>
+    <data name="Shared_ManageProfile" xml:space="preserve">
+        <value>Halda profiili</value>
+    </data>
+    <data name="Shared_Language" xml:space="preserve">
+        <value>Keel</value>
+    </data>
 </root>

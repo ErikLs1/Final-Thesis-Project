@@ -190,23 +190,45 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
     public async Task<int> CreateNewVersionAsync(CreateVersionRequestDto request)
     {
         if (request.ResourceKeyIds == null) return 0;
-        
-        // Get current max version per resource key for the language
-        var maxPerKey = await _db.UITranslationVersions
-            .Where(v => v.LanguageId == request.LanguageId && request.ResourceKeyIds.Contains(v.ResourceKeyId))
+
+        var keyIds = request.ResourceKeyIds.Distinct().ToArray();
+
+        // For each key, get the latest version row so we can decide:
+        // - Rejected latest => reuse same version and move it back to WaitingReview
+        // - Anything else => create a brand-new version (VersionNumber + 1)
+        var latestPerKey = await _db.UITranslationVersions
+            .Where(v => v.LanguageId == request.LanguageId && keyIds.Contains(v.ResourceKeyId))
             .GroupBy(v => v.ResourceKeyId)
-            .Select(v => new { ResourceKeyId = v.Key, MaxVersion = v.Max(v => v.VersionNumber) })
-            .ToDictionaryAsync(v => v.ResourceKeyId, x => x.MaxVersion);
+            .Select(g => g
+                .OrderByDescending(v => v.VersionNumber)
+                .ThenByDescending(v => v.CreatedAt)
+                .First())
+            .ToDictionaryAsync(v => v.ResourceKeyId);
 
         var toInsert = new List<UITranslationVersions>();
+        var updatedRejected = new List<(UITranslationVersions Version, TranslationState OldState, string OldContent)>();
 
-        foreach (var keyId in request.ResourceKeyIds)
+        foreach (var keyId in keyIds)
         {
-            var nextVersion = maxPerKey.TryGetValue(keyId, out var max) ? max + 1 : 0;
-
             request.Content.TryGetValue(keyId, out var content);
             content ??= string.Empty;
 
+            if (latestPerKey.TryGetValue(keyId, out var latest) &&
+                latest.TranslationState == TranslationState.Rejected)
+            {
+                var oldState = latest.TranslationState;
+                var oldContent = latest.Content;
+
+                latest.Content = content;
+                latest.TranslationState = TranslationState.WaitingReview;
+                latest.CreatedAt = DateTime.UtcNow;
+                latest.CreatedBy = request.CreatedBy;
+
+                updatedRejected.Add((latest, oldState, oldContent));
+                continue;
+            }
+
+            var nextVersion = latestPerKey.TryGetValue(keyId, out var current) ? current.VersionNumber + 1 : 0;
             var versionId = Guid.NewGuid();
             
             toInsert.Add(new UITranslationVersions
@@ -224,7 +246,8 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
 
         await _db.UITranslationVersions.AddRangeAsync(toInsert);
         var now = DateTime.UtcNow;
-        var auditRows = toInsert.Select(v => new UITranslationAuditLog
+        
+        var createdAuditRows = toInsert.Select(v => new UITranslationAuditLog
         {
             LanguageId = v.LanguageId,
             ResourceKeyId = v.ResourceKeyId,
@@ -241,8 +264,27 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
             OldContent = null,
             NewContent = v.Content
         }).ToList();
+        
+        var revisedAuditRows = updatedRejected.Select(x => new UITranslationAuditLog
+        {
+            LanguageId = x.Version.LanguageId,
+            ResourceKeyId = x.Version.ResourceKeyId,
+            TranslationVersionId = x.Version.Id,
+            ActivatedAt = now,
+            ActivatedBy = request.CreatedBy,
+            DeactivatedAt = now,
+            DeactivatedBy = request.CreatedBy,
+            ActionType = TranslationAuditAction.StateChanged,
+            ChangedAt = now,
+            ChangedBy = request.CreatedBy,
+            OldState = x.OldState,
+            NewState = TranslationState.WaitingReview,
+            OldContent = x.OldContent,
+            NewContent = x.Version.Content
+        }).ToList();
 
-        await _db.UITranslationAuditLogs.AddRangeAsync(auditRows);
+        await _db.UITranslationAuditLogs.AddRangeAsync(createdAuditRows);
+        await _db.UITranslationAuditLogs.AddRangeAsync(revisedAuditRows);
         return await _db.SaveChangesAsync();
     }
 
