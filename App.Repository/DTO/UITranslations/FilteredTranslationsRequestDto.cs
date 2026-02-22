@@ -5,5 +5,6 @@ namespace App.Repository.DTO.UITranslations;
 public record FilteredTranslationsRequestDto(
     Guid LanguageId,
     int? VersionNumber,
-    TranslationState? State
+    TranslationState? State,
+    IReadOnlyCollection<TranslationState>? States = null
 );

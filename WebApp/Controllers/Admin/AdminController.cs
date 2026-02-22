@@ -15,12 +15,12 @@ namespace WebApp.Controllers.Admin;
 
 [Authorize(Roles = "Admin")] 
 [AutoValidateAntiforgeryToken] 
-public class AdminTranslationsController : Controller
+public class AdminController : Controller
 {
     private readonly IAppBll _bll;
     private readonly ITranslationCache _cache;
 
-    public AdminTranslationsController(
+    public AdminController(
         IAppBll bll,
         ITranslationCache cache)
     {
@@ -51,7 +51,8 @@ public class AdminTranslationsController : Controller
          var request = new FilteredTranslationsRequestDto(
              selectedLangId,
              version,
-             state
+             State: state,
+             States: state.HasValue ? null : new[] { TranslationState.Published, TranslationState.Approved }
          );
 
          var paged = await _bll.UITranslationService.GetFilteredUITranslationsAsync(request, paging);
@@ -103,11 +104,12 @@ public class AdminTranslationsController : Controller
 
          var paging = new PagedRequest { Page = page, PageSize = pageSize };
 
-         // Show newly submitted translations so admin can publish them.
+         // Show translations that can be published by admin.
          var request = new FilteredTranslationsRequestDto(
              selectedLangId,
              VersionNumber: null,
-             State: TranslationState.WaitingReview
+             State: null,
+             States: new[] { TranslationState.Approved, TranslationState.Inactive }
          );
 
          var paged = await _bll.UITranslationService.GetFilteredUITranslationsAsync(request, paging);

@@ -143,6 +143,65 @@
                 Tip: click a row to toggle selection. Only checked rows will be published.
             </div>
         </div>
+
+        <div class="card-footer bg-transparent border-0 px-3 px-lg-4 pb-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <form method="get" class="d-flex align-items-center gap-2">
+                    <input type="hidden" name="languageId" value="@Model.SelectedLanguageId" />
+                    <input type="hidden" name="page" value="1" />
+
+                    <span class="text-muted small">Rows</span>
+                    <select name="pageSize"
+                            class="form-select form-select-sm"
+                            style="width: 90px;"
+                            onchange="this.form.submit()">
+                        @{
+                            var sizes = new[] { 10, 25, 50, 100 };
+                            foreach (var s in sizes)
+                            {
+                                <option value="@s" selected="@(Model.PageSize == s)">@s</option>
+                            }
+                        }
+                    </select>
+                </form>
+
+                <nav aria-label="Pagination">
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item @(Model.Page <= 1 ? "disabled" : "")">
+                            <a class="page-link"
+                               asp-action="Publish"
+                               asp-route-languageId="@Model.SelectedLanguageId"
+                               asp-route-page="@(Model.Page - 1)"
+                               asp-route-pageSize="@Model.PageSize">
+                                Prev
+                            </a>
+                        </li>
+
+                        <li class="page-item disabled d-none d-sm-inline">
+                            <span class="page-link">
+                                Page @Model.Page of @Model.TotalPages
+                            </span>
+                        </li>
+
+                        <li class="page-item disabled d-inline d-sm-none">
+                            <span class="page-link">
+                                @Model.Page/@Model.TotalPages
+                            </span>
+                        </li>
+
+                        <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : "")">
+                            <a class="page-link"
+                               asp-action="Publish"
+                               asp-route-languageId="@Model.SelectedLanguageId"
+                               asp-route-page="@(Model.Page + 1)"
+                               asp-route-pageSize="@Model.PageSize">
+                                Next
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
 </form>
 
@@ -207,7 +266,7 @@
         {
             "Published" => ("text-bg-success", "Published", "check-circle"),
             "WaitingReview" => ("text-bg-warning", "Waiting review", "hourglass-split"),
-            "Approved" => ("text-bg-success", "Approved", "check2"),
+            "Approved" => ("text-bg-info", "Approved", "check2"),
             "Rejected" => ("text-bg-danger", "Rejected", "x-circle"),
             "Depricated" => ("text-bg-secondary", "Archived", "archive"),
             _ => ("text-bg-light", string.IsNullOrWhiteSpace(state) ? "—" : state, "info-circle")

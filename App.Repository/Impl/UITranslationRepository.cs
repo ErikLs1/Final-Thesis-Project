@@ -111,6 +111,9 @@ public class UITranslationRepository : IUITranslationRepository
 
         if (request.State.HasValue)
             query = query.Where(x => x.TranslationState == request.State.Value);
+        
+        if (request.States is { Count: > 0 })
+            query = query.Where(x => request.States.Contains(x.TranslationState));
 
         var dataQuery = query
             .OrderBy(x => x.UIResourceKeys.ResourceKey)

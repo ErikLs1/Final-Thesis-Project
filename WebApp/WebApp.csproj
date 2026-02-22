@@ -112,6 +112,22 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Shared.et-EE.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <EmbeddedResource Update="Views\Home\Resources\Home.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Home.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Home\Resources\Home.ru.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Home.ru.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Home\Resources\Home.en-US.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Home.en-US.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Views\Home\Resources\Home.et-EE.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Home.et-EE.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -214,6 +230,26 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Shared.et-EE.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Home\Resources\Home.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Home.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Home\Resources\Home.ru.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Home.ru.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Home\Resources\Home.en-US.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Home.en-US.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Views\Home\Resources\Home.et-EE.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Home.et-EE.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 

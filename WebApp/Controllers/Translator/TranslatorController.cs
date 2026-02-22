@@ -13,11 +13,11 @@ using WebApp.Models.Translator.Versions;
 namespace WebApp.Controllers.Translator;
 
 [Authorize]
-public class TranslationsController : Controller
+public class TranslatorController : Controller
 {
     private readonly IAppBll _bll;
 
-    public TranslationsController(IAppBll bll)
+    public TranslatorController(IAppBll bll)
     {
         _bll = bll;
     }
