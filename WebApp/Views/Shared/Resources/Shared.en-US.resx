@@ -27,4 +27,70 @@
     <data name="Shared_Language" xml:space="preserve">
         <value>Language</value>
     </data>
+    <data name="Shared_Navigation_Translations" xml:space="preserve">
+        <value>Translations</value>
+    </data>
+    <data name="Shared_Navigation_Translation_Audit" xml:space="preserve">
+        <value>Translation audit</value>
+    </data>
+    <data name="Shared_Navigation_Reviews" xml:space="preserve">
+        <value>Reviews</value>
+    </data>
+    <data name="Shared_Navigation_Manage_Translations" xml:space="preserve">
+        <value>Manage translations</value>
+    </data>
+    <data name="Shared_Navigation_About_Us" xml:space="preserve">
+        <value>About Us</value>
+    </data>
+    <data name="Shared_Navigation_Contact" xml:space="preserve">
+        <value>Contact</value>
+    </data>
+    <data name="Shared_Heading_Products" xml:space="preserve">
+        <value>Featured products</value>
+    </data>
+    <data name="Shared_Heading_Categories" xml:space="preserve">
+        <value>Categories</value>
+    </data>
+    <data name="Shared_Navigation_Login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="Heading_Shop" xml:space="preserve">
+        <value>Shop</value>
+    </data>
+    <data name="Shared_Navigation_Language_Selection" xml:space="preserve">
+        <value>Language selection</value>
+    </data>
+    <data name="Shared_Navigation_Category_Mouse" xml:space="preserve">
+        <value>Mice</value>
+    </data>
+    <data name="Shared_Navigation_Category_Monitor" xml:space="preserve">
+        <value>Monitors</value>
+    </data>
+    <data name="Shared_Navigation_Category_Laptop" xml:space="preserve">
+        <value>Monitors</value>
+    </data>
+    <data name="Shared_Navigation_Category_Keyboard" xml:space="preserve">
+        <value>Keyboards</value>
+    </data>
+    <data name="Shared_Navigation_Category_Headphones" xml:space="preserve">
+        <value>Headphones</value>
+    </data>
+    <data name="Shared_Navigation_Home" xml:space="preserve">
+        <value>Home</value>
+    </data>
+    <data name="Shared_Navigation_Dashboard" xml:space="preserve">
+        <value>Dashboard</value>
+    </data>
+    <data name="Shared_Navigation_Orders" xml:space="preserve">
+        <value>Orders</value>
+    </data>
+    <data name="Shared_Navigation_Products" xml:space="preserve">
+        <value>Products</value>
+    </data>
+    <data name="Navigation_Register" xml:space="preserve">
+        <value>Register</value>
+    </data>
+    <data name="Navigation_Logout" xml:space="preserve">
+        <value>Logout</value>
+    </data>
 </root>

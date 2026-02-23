@@ -45,7 +45,7 @@
                           asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                         <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-danger">
                             <i class="bi bi-box-arrow-right"></i>
-                            <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Logout)))</span>
+                            <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Navigation_Logout)))</span>
                         </button>
                     </form>
                 </li>
@@ -60,7 +60,7 @@
                asp-page="/Account/Login">
                 <i class="bi bi-box-arrow-in-right me-2"></i>
                 <span class="d-none d-lg-inline">@(
-                    await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Login))
+                    await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Login))
                 )</span>
                 <span class="d-inline d-lg-none">Login</span>
             </a>
@@ -69,7 +69,7 @@
                asp-area="Identity"
                asp-page="/Account/Register">
                 <i class="bi bi-person-plus me-2"></i>
-                @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Register)))
+                @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Navigation_Register)))
             </a>
         </div>
     }

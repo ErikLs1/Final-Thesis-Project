@@ -23,7 +23,7 @@
             <i class="bi bi-bag"></i>
         </span>
         <div class="brand-text">
-            <div class="brand-title">@((await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Home))))</div>
+            <div class="brand-title">@((await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Home))))</div>
             <div class="brand-subtitle text-muted">Control panel</div>
         </div>
     </a>
@@ -36,24 +36,24 @@
            asp-controller="Home" asp-action="Index"
            aria-current="@(Active("Home","Index") == "active" ? "page" : null)">
             <i class="bi bi-house-door"></i>
-            <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Home)))</span>
+            <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Home)))</span>
         </a>
 
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
             <i class="bi bi-speedometer2"></i>
-            <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Dashboard)))</span>
+            <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Dashboard)))</span>
             <span class="ms-auto badge rounded-pill text-bg-secondary">Soon</span>
         </a>
 
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
             <i class="bi bi-table"></i>
-            <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Order)))</span>
+            <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Orders)))</span>
             <span class="ms-auto badge rounded-pill text-bg-secondary">Soon</span>
         </a>
 
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
             <i class="bi bi-grid"></i>
-            <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Product)))</span>
+            <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Heading_Products)))</span>
             <span class="ms-auto badge rounded-pill text-bg-secondary">Soon</span>
         </a>
     </nav>
@@ -63,29 +63,29 @@
     <!-- Categories -->
     <div class="sidebar-section">
         <div class="sidebar-section-title">
-            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Heading_Categories)))
+            @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Heading_Categories)))
         </div>
 
         <nav class="nav flex-column">
             <a class="nav-link" asp-route-slug="monitors">
                 <i class="bi bi-display"></i>
-                <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Category_Monitor)))</span>
+                <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Category_Monitor)))</span>
             </a>
             <a class="nav-link" asp-route-slug="laptops">
                 <i class="bi bi-laptop"></i>
-                <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Category_Laptop)))</span>
+                <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Category_Laptop)))</span>
             </a>
             <a class="nav-link" asp-route-slug="keyboards">
                 <i class="bi bi-keyboard"></i>
-                <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Category_Keyboard)))</span>
+                <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Category_Keyboard)))</span>
             </a>
             <a class="nav-link" asp-route-slug="mice">
                 <i class="bi bi-mouse"></i>
-                <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Category_Mouse)))</span>
+                <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Category_Mouse)))</span>
             </a>
             <a class="nav-link" asp-route-slug="audio">
                 <i class="bi bi-headphones"></i>
-                <span>@(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Category_Headphones)))</span>
+                <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Category_Headphones)))</span>
             </a>
         </nav>
     </div>
@@ -105,29 +105,29 @@
                 {
                     <a class="nav-link @Active("AdminTranslations","Index")" asp-controller="Admin" asp-action="Index">
                         <i class="bi bi-gear"></i>
-                        <span>Manage translations</span>
+                        <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Manage_Translations)))</span>
                     </a>
                     <a class="nav-link @Active("AdminTranslations","Audit")" asp-controller="Admin" asp-action="Audit">
                         <i class="bi bi-journal-text"></i>
-                        <span>Translation audit</span>
+                        <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Translation_Audit)))</span>
                     </a>
                 }
                 @if (isReviewer)
                 {
                     <a class="nav-link @Active("Reviewer","Index")" asp-controller="Reviewer" asp-action="Index">
                         <i class="bi bi-inboxes"></i>
-                        <span>Review queue</span>
+                        <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Reviews)))</span>
                     </a>
                 }
                 @if (isTranslator)
                 {
                     <a class="nav-link @Active("LanguageSelection","MyLanguages")" asp-controller="LanguageSelection" asp-action="MyLanguages">
                         <i class="bi bi-translate"></i>
-                        <span>Language selection</span>
+                        <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Language_Selection)))</span>
                     </a>
                     <a class="nav-link @Active("Translations","Index")" asp-controller="Translator" asp-action="Index">
                         <i class="bi bi-chat-left-text"></i>
-                        <span>Translations</span>
+                        <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Translations)))</span>
                     </a>
                 }
             </nav>

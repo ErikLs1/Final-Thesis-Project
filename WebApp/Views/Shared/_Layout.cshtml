@@ -38,22 +38,22 @@
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Home" asp-action="Index">
                             <i class="bi bi-house-door me-2 d-lg-none"></i>
-                            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Home)))
+                            @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Home)))
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Product)))
+                            @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Heading_Products)))
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_About_Us)))
+                                @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_About_Us)))
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">
-                            @(await Translation.GetAsync(nameof(App.Data.Resources.Resources.Navigation_Contact)))
+                            @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Navigation_Contact)))
                         </a>
                     </li>
                 </ul>

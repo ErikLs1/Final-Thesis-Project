@@ -45,129 +45,69 @@ namespace App.Data.Resources {
             }
         }
         
-        public static string Navigation_Home {
-            get {
-                return ResourceManager.GetString("Navigation_Home", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Dashboard {
-            get {
-                return ResourceManager.GetString("Navigation_Dashboard", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Order {
-            get {
-                return ResourceManager.GetString("Navigation_Order", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Product {
-            get {
-                return ResourceManager.GetString("Navigation_Product", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Category_Monitor {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Monitor", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Category_Laptop {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Laptop", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Category_Keyboard {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Keyboard", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Category_Mouse {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Mouse", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Category_Headphones {
-            get {
-                return ResourceManager.GetString("Navigation_Category_Headphones", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_About_Us {
-            get {
-                return ResourceManager.GetString("Navigation_About_Us", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Contact {
-            get {
-                return ResourceManager.GetString("Navigation_Contact", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Register {
-            get {
-                return ResourceManager.GetString("Navigation_Register", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Login {
-            get {
-                return ResourceManager.GetString("Navigation_Login", resourceCulture);
-            }
-        }
-        
-        public static string Navigation_Logout {
-            get {
-                return ResourceManager.GetString("Navigation_Logout", resourceCulture);
-            }
-        }
-        
-        public static string Heading_Categories {
-            get {
-                return ResourceManager.GetString("Heading_Categories", resourceCulture);
-            }
-        }
-        
-        public static string Heading_Products {
-            get {
-                return ResourceManager.GetString("Heading_Products", resourceCulture);
-            }
-        }
-        
         public static string Heading_Shop {
             get {
                 return ResourceManager.GetString("Heading_Shop", resourceCulture);
             }
         }
         
-        public static string Button_Product_Add_To_Cart {
+        public static string Shared_Navigation_Language_Selection {
             get {
-                return ResourceManager.GetString("Button_Product_Add_To_Cart", resourceCulture);
+                return ResourceManager.GetString("Shared_Navigation_Language_Selection", resourceCulture);
             }
         }
         
-        public static string Button_Product_Details {
+        public static string Shared_Navigation_Category_Headphones {
             get {
-                return ResourceManager.GetString("Button_Product_Details", resourceCulture);
+                return ResourceManager.GetString("Shared_Navigation_Category_Headphones", resourceCulture);
             }
         }
         
-        public static string Test {
+        public static string Shared_Navigation_Category_Keyboard {
             get {
-                return ResourceManager.GetString("Test", resourceCulture);
+                return ResourceManager.GetString("Shared_Navigation_Category_Keyboard", resourceCulture);
             }
         }
         
-        public static string test2 {
+        public static string Shared_Navigation_Category_Laptop {
             get {
-                return ResourceManager.GetString("test2", resourceCulture);
+                return ResourceManager.GetString("Shared_Navigation_Category_Laptop", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Category_Monitor {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Category_Monitor", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Category_Mouse {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Category_Mouse", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Products {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Products", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Orders {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Orders", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Dashboard {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Dashboard", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Home {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Home", resourceCulture);
             }
         }
     }

@@ -62,5 +62,137 @@ namespace WebApp.Views.Shared.Resources {
                 return ResourceManager.GetString("Shared_Language", resourceCulture);
             }
         }
+        
+        public static string Shared_Navigation_Translations {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Translations", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Translation_Audit {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Translation_Audit", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Reviews {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Reviews", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Manage_Translations {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Manage_Translations", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_About_Us {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_About_Us", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Contact {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Contact", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Heading_Categories {
+            get {
+                return ResourceManager.GetString("Shared_Heading_Categories", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Heading_Products {
+            get {
+                return ResourceManager.GetString("Shared_Heading_Products", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Login {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Login", resourceCulture);
+            }
+        }
+        
+        public static string Heading_Shop {
+            get {
+                return ResourceManager.GetString("Heading_Shop", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Language_Selection {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Language_Selection", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Category_Headphones {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Category_Headphones", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Category_Keyboard {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Category_Keyboard", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Category_Laptop {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Category_Laptop", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Category_Monitor {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Category_Monitor", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Category_Mouse {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Category_Mouse", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Products {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Products", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Orders {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Orders", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Dashboard {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Dashboard", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Navigation_Home {
+            get {
+                return ResourceManager.GetString("Shared_Navigation_Home", resourceCulture);
+            }
+        }
+        
+        public static string Navigation_Register {
+            get {
+                return ResourceManager.GetString("Navigation_Register", resourceCulture);
+            }
+        }
+        
+        public static string Navigation_Logout {
+            get {
+                return ResourceManager.GetString("Navigation_Logout", resourceCulture);
+            }
+        }
     }
 }

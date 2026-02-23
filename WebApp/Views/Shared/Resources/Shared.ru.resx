@@ -27,4 +27,70 @@
     <data name="Shared_Language" xml:space="preserve">
         <value>Язык</value>
     </data>
+    <data name="Shared_Navigation_Translations" xml:space="preserve">
+        <value>Переводы</value>
+    </data>
+    <data name="Shared_Navigation_Translation_Audit" xml:space="preserve">
+        <value>Аудит переводов</value>
+    </data>
+    <data name="Shared_Navigation_Reviews" xml:space="preserve">
+        <value>Проверки</value>
+    </data>
+    <data name="Shared_Navigation_Manage_Translations" xml:space="preserve">
+        <value>Управление переводами</value>
+    </data>
+    <data name="Shared_Navigation_About_Us" xml:space="preserve">
+        <value>О Нас</value>
+    </data>
+    <data name="Shared_Navigation_Contact" xml:space="preserve">
+        <value>Контакт</value>
+    </data>
+    <data name="Shared_Heading_Products" xml:space="preserve">
+        <value>Рекомендуемые продукты</value>
+    </data>
+    <data name="Shared_Heading_Categories" xml:space="preserve">
+        <value>Категории</value>
+    </data>
+    <data name="Shared_Navigation_Login" xml:space="preserve">
+        <value>Авторизоваться</value>
+    </data>
+    <data name="Heading_Shop" xml:space="preserve">
+        <value>Магазин</value>
+    </data>
+    <data name="Shared_Navigation_Language_Selection" xml:space="preserve">
+        <value>Выбор языка</value>
+    </data>
+    <data name="Shared_Navigation_Category_Mouse" xml:space="preserve">
+        <value>Мыши</value>
+    </data>
+    <data name="Shared_Navigation_Category_Monitor" xml:space="preserve">
+        <value>Мониторы</value>
+    </data>
+    <data name="Shared_Navigation_Category_Laptop" xml:space="preserve">
+        <value>Ноутбуки</value>
+    </data>
+    <data name="Shared_Navigation_Category_Keyboard" xml:space="preserve">
+        <value>Клавиатуры</value>
+    </data>
+    <data name="Shared_Navigation_Category_Headphones" xml:space="preserve">
+        <value>Наушники</value>
+    </data>
+    <data name="Shared_Navigation_Home" xml:space="preserve">
+        <value>Домашняя страница</value>
+    </data>
+    <data name="Shared_Navigation_Dashboard" xml:space="preserve">
+        <value>Рабочий стол</value>
+    </data>
+    <data name="Shared_Navigation_Orders" xml:space="preserve">
+        <value>Заказы</value>
+    </data>
+    <data name="Shared_Navigation_Products" xml:space="preserve">
+        <value>Товары</value>
+    </data>
+    <data name="Navigation_Register" xml:space="preserve">
+        <value>Зарегистрироваться</value>
+    </data>
+    <data name="Navigation_Logout" xml:space="preserve">
+        <value>Выйти</value>
+    </data>
 </root>

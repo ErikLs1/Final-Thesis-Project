@@ -27,4 +27,70 @@
     <data name="Shared_Language" xml:space="preserve">
         <value>Keel</value>
     </data>
+    <data name="Shared_Navigation_Translations" xml:space="preserve">
+        <value>Tõlked</value>
+    </data>
+    <data name="Shared_Navigation_Translation_Audit" xml:space="preserve">
+        <value>Tõlgete audit</value>
+    </data>
+    <data name="Shared_Navigation_Reviews" xml:space="preserve">
+        <value>Ülevaatused</value>
+    </data>
+    <data name="Shared_Navigation_Manage_Translations" xml:space="preserve">
+        <value>Halda tõlkeid</value>
+    </data>
+    <data name="Shared_Navigation_About_Us" xml:space="preserve">
+        <value>Meist</value>
+    </data>
+    <data name="Shared_Navigation_Contact" xml:space="preserve">
+        <value>Kontakt</value>
+    </data>
+    <data name="Shared_Heading_Products" xml:space="preserve">
+        <value>Soovitatud tooted</value>
+    </data>
+    <data name="Shared_Heading_Categories" xml:space="preserve">
+        <value>Kategooriad</value>
+    </data>
+    <data name="Shared_Navigation_Login" xml:space="preserve">
+        <value>Sisselogi</value>
+    </data>
+    <data name="Heading_Shop" xml:space="preserve">
+        <value>Pood</value>
+    </data>
+    <data name="Shared_Navigation_Language_Selection" xml:space="preserve">
+        <value>Keele valik</value>
+    </data>
+    <data name="Shared_Navigation_Category_Mouse" xml:space="preserve">
+        <value>Hiired</value>
+    </data>
+    <data name="Shared_Navigation_Category_Headphones" xml:space="preserve">
+        <value>Kõrvaklapid</value>
+    </data>
+    <data name="Shared_Navigation_Category_Keyboard" xml:space="preserve">
+        <value>Klaviatuurid</value>
+    </data>
+    <data name="Shared_Navigation_Category_Laptop" xml:space="preserve">
+        <value>Sülearvutid</value>
+    </data>
+    <data name="Shared_Navigation_Category_Monitor" xml:space="preserve">
+        <value>Monitorid</value>
+    </data>
+    <data name="Shared_Navigation_Home" xml:space="preserve">
+        <value>Avaleht</value>
+    </data>
+    <data name="Shared_Navigation_Dashboard" xml:space="preserve">
+        <value>Töölaud</value>
+    </data>
+    <data name="Shared_Navigation_Orders" xml:space="preserve">
+        <value>Tellimused</value>
+    </data>
+    <data name="Shared_Navigation_Products" xml:space="preserve">
+        <value>Tooted</value>
+    </data>
+    <data name="Navigation_Register" xml:space="preserve">
+        <value>Registreeru</value>
+    </data>
+    <data name="Navigation_Logout" xml:space="preserve">
+        <value>Logi välja</value>
+    </data>
 </root>
