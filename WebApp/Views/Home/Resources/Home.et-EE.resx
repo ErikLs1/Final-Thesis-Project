@@ -24,4 +24,19 @@
     <data name="Home_Button_Product_Add_To_Cart" xml:space="preserve">
         <value>Lisa ostukorvi</value>
     </data>
+    <data name="Home_Badge_New" xml:space="preserve">
+        <value>Uus</value>
+    </data>
+    <data name="Home_Badge_Hot" xml:space="preserve">
+        <value>Populaarne</value>
+    </data>
+    <data name="Home_Badge_Best_Value" xml:space="preserve">
+        <value>Parim hind</value>
+    </data>
+    <data name="Home_Button_Filter" xml:space="preserve">
+        <value>Filter</value>
+    </data>
+    <data name="Home_Button_Sort" xml:space="preserve">
+        <value>Sorteeri</value>
+    </data>
 </root>

@@ -194,5 +194,47 @@ namespace WebApp.Views.Shared.Resources {
                 return ResourceManager.GetString("Navigation_Logout", resourceCulture);
             }
         }
+        
+        public static string Shared_Badge_Soon {
+            get {
+                return ResourceManager.GetString("Shared_Badge_Soon", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Badge_Translator {
+            get {
+                return ResourceManager.GetString("Shared_Badge_Translator", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Badge_Reviewer {
+            get {
+                return ResourceManager.GetString("Shared_Badge_Reviewer", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Badge_Admin {
+            get {
+                return ResourceManager.GetString("Shared_Badge_Admin", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Heading_Admin {
+            get {
+                return ResourceManager.GetString("Shared_Heading_Admin", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Heading_Translator {
+            get {
+                return ResourceManager.GetString("Shared_Heading_Translator", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Heading_Reviewer {
+            get {
+                return ResourceManager.GetString("Shared_Heading_Reviewer", resourceCulture);
+            }
+        }
     }
 }

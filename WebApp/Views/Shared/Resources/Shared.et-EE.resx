@@ -93,4 +93,25 @@
     <data name="Navigation_Logout" xml:space="preserve">
         <value>Logi välja</value>
     </data>
+    <data name="Shared_Badge_Admin" xml:space="preserve">
+        <value>Administraator</value>
+    </data>
+    <data name="Shared_Badge_Reviewer" xml:space="preserve">
+        <value>Ülevaataja</value>
+    </data>
+    <data name="Shared_Badge_Translator" xml:space="preserve">
+        <value>Tõlkija</value>
+    </data>
+    <data name="Shared_Badge_Soon" xml:space="preserve">
+        <value>Varsti</value>
+    </data>
+    <data name="Shared_Heading_Admin" xml:space="preserve">
+        <value>Administraator</value>
+    </data>
+    <data name="Shared_Heading_Translator" xml:space="preserve">
+        <value>Tõlkija</value>
+    </data>
+    <data name="Shared_Heading_Reviewer" xml:space="preserve">
+        <value>Ülevaataja</value>
+    </data>
 </root>

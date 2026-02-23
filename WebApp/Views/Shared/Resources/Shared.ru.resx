@@ -93,4 +93,25 @@
     <data name="Navigation_Logout" xml:space="preserve">
         <value>Выйти</value>
     </data>
+    <data name="Shared_Badge_Admin" xml:space="preserve">
+        <value>Администратор</value>
+    </data>
+    <data name="Shared_Badge_Reviewer" xml:space="preserve">
+        <value>Рецензент</value>
+    </data>
+    <data name="Shared_Badge_Translator" xml:space="preserve">
+        <value>Переводчик</value>
+    </data>
+    <data name="Shared_Badge_Soon" xml:space="preserve">
+        <value>Скоро</value>
+    </data>
+    <data name="Shared_Heading_Admin" xml:space="preserve">
+        <value>Администратор</value>
+    </data>
+    <data name="Shared_Heading_Translator" xml:space="preserve">
+        <value>Переводчик</value>
+    </data>
+    <data name="Shared_Heading_Reviewer" xml:space="preserve">
+        <value>Переводчик</value>
+    </data>
 </root>

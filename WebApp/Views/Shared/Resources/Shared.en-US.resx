@@ -93,4 +93,25 @@
     <data name="Navigation_Logout" xml:space="preserve">
         <value>Logout</value>
     </data>
+    <data name="Shared_Badge_Admin" xml:space="preserve">
+        <value>Admin</value>
+    </data>
+    <data name="Shared_Badge_Reviewer" xml:space="preserve">
+        <value>Reviewer</value>
+    </data>
+    <data name="Shared_Badge_Translator" xml:space="preserve">
+        <value>Translator</value>
+    </data>
+    <data name="Shared_Badge_Soon" xml:space="preserve">
+        <value>Soon</value>
+    </data>
+    <data name="Shared_Heading_Admin" xml:space="preserve">
+        <value>Admin</value>
+    </data>
+    <data name="Shared_Heading_Reviewer" xml:space="preserve">
+        <value>Reviewer</value>
+    </data>
+    <data name="Shared_Heading_Translator" xml:space="preserve">
+        <value>Translator</value>
+    </data>
 </root>

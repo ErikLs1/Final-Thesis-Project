@@ -10,10 +10,10 @@
 
         <div class="d-flex gap-2">
             <button class="btn btn-outline-secondary btn-sm" type="button" disabled>
-                <i class="bi bi-funnel me-2"></i>Filter
+                <i class="bi bi-funnel me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Home.Resources.Home.Home_Button_Filter)))
             </button>
             <button class="btn btn-outline-secondary btn-sm" type="button" disabled>
-                <i class="bi bi-sort-down me-2"></i>Sort
+                <i class="bi bi-sort-down me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Home.Resources.Home.Home_Button_Sort)))
             </button>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <div class="col">
             <article class="product-card card h-100 border-0 shadow-sm">
                 <div class="product-media">
-                    <span class="badge text-bg-primary product-badge">New</span>
+                    <span class="badge text-bg-primary product-badge">@(await Translation.GetAsync(nameof(WebApp.Views.Home.Resources.Home.Home_Badge_New)))</span>
                     <div class="product-img-placeholder" aria-hidden="true">
                         <i class="bi bi-laptop"></i>
                     </div>
@@ -79,7 +79,7 @@
         <div class="col">
             <article class="product-card card h-100 border-0 shadow-sm">
                 <div class="product-media">
-                    <span class="badge text-bg-success product-badge">Best value</span>
+                    <span class="badge text-bg-success product-badge">@(await Translation.GetAsync(nameof(WebApp.Views.Home.Resources.Home.Home_Badge_Best_Value)))</span>
                     <div class="product-img-placeholder" aria-hidden="true">
                         <i class="bi bi-headphones"></i>
                     </div>
@@ -134,7 +134,7 @@
         <div class="col">
             <article class="product-card card h-100 border-0 shadow-sm">
                 <div class="product-media">
-                    <span class="badge text-bg-warning product-badge">Hot</span>
+                    <span class="badge text-bg-warning product-badge">@(await Translation.GetAsync(nameof(WebApp.Views.Home.Resources.Home.Home_Badge_Hot)))</span>
                     <div class="product-img-placeholder" aria-hidden="true">
                         <i class="bi bi-display"></i>
                     </div>

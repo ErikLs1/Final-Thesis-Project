@@ -56,5 +56,35 @@ namespace WebApp.Views.Home.Resources {
                 return ResourceManager.GetString("Home_Button_Product_Details", resourceCulture);
             }
         }
+        
+        public static string Home_Badge_New {
+            get {
+                return ResourceManager.GetString("Home_Badge_New", resourceCulture);
+            }
+        }
+        
+        public static string Home_Badge_Best_Value {
+            get {
+                return ResourceManager.GetString("Home_Badge_Best_Value", resourceCulture);
+            }
+        }
+        
+        public static string Home_Badge_Hot {
+            get {
+                return ResourceManager.GetString("Home_Badge_Hot", resourceCulture);
+            }
+        }
+        
+        public static string Home_Button_Filter {
+            get {
+                return ResourceManager.GetString("Home_Button_Filter", resourceCulture);
+            }
+        }
+        
+        public static string Home_Button_Sort {
+            get {
+                return ResourceManager.GetString("Home_Button_Sort", resourceCulture);
+            }
+        }
     }
 }

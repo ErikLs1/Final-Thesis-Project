@@ -24,4 +24,19 @@
     <data name="Home_Button_Product_Add_To_Cart" xml:space="preserve">
         <value>Подробности</value>
     </data>
+    <data name="Home_Badge_New" xml:space="preserve">
+        <value>Новинка</value>
+    </data>
+    <data name="Home_Badge_Hot" xml:space="preserve">
+        <value>Хит</value>
+    </data>
+    <data name="Home_Badge_Best_Value" xml:space="preserve">
+        <value>Лучшая цена</value>
+    </data>
+    <data name="Home_Button_Filter" xml:space="preserve">
+        <value>Фильтр</value>
+    </data>
+    <data name="Home_Button_Sort" xml:space="preserve">
+        <value>Сортировка</value>
+    </data>
 </root>
