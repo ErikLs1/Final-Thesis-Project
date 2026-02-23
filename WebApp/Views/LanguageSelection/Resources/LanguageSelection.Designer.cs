@@ -14,7 +14,7 @@ namespace WebApp.Views.LanguageSelection.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class LanguageSelection {
+    public class LanguageSelection {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace WebApp.Views.LanguageSelection.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("WebApp.Views.LanguageSelection.Resources.LanguageSelection", typeof(LanguageSelection).Assembly);
@@ -36,12 +36,96 @@ namespace WebApp.Views.LanguageSelection.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string LanguageSelection_Heading_My_Languages {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Heading_My_Languages", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Button_Select_Languages {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Button_Select_Languages", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Button_Back {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Button_Back", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Button_Select_All {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Button_Select_All", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Button_Cancel {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Button_Cancel", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Button_Save_Changes {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Button_Save_Changes", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Heading_Search {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Heading_Search", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Badge_Selected {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Badge_Selected", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Button_Clear {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Button_Clear", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Column_Language {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Column_Language", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Column_Tag {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Column_Tag", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Badge_Total {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Badge_Total", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Button_Edit {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Button_Edit", resourceCulture);
+            }
+        }
+        
+        public static string LanguageSelection_Heding_Languages_I_Know {
+            get {
+                return ResourceManager.GetString("LanguageSelection_Heding_Languages_I_Know", resourceCulture);
             }
         }
     }

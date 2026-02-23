@@ -1,24 +1,11 @@
 @model WebApp.Models.Translator.Languages.TranslatorMyLanguagesVm
 @{
-    ViewData["Title"] = "My languages";
     var count = Model.Selected?.Count ?? 0;
 }
 
 <div class="page-head mb-3">
     <div>
-        <h2 class="page-title mb-1">@ViewData["Title"]</h2>
-        <div class="page-subtitle">
-            @if (Model.HasAny) { <span>@count selected</span> } else { <span>No languages selected</span> }
-        </div>
-    </div>
-
-    <div class="page-actions">
-        <a asp-controller="LanguageSelection"
-           asp-action="Languages"
-           class="btn @(Model.HasAny ? "btn-outline-primary" : "btn-primary")">
-            <i class="bi bi-sliders me-2"></i>
-            @(Model.HasAny ? "Edit languages" : "Select languages")
-        </a>
+        <h2 class="page-title mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.LanguageSelection.Resources.LanguageSelection.LanguageSelection_Heading_My_Languages)))</h2>
     </div>
 </div>
 
@@ -34,7 +21,7 @@
                         This helps tailor the translator tools and improves your workflow.
                     </p>
                     <a asp-controller="LanguageSelection" asp-action="Languages" class="btn btn-primary">
-                        <i class="bi bi-plus-lg me-2"></i>Select languages
+                        <i class="bi bi-plus-lg me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.LanguageSelection.Resources.LanguageSelection.LanguageSelection_Button_Select_Languages)))
                     </a>
                 </div>
             </div>
@@ -45,16 +32,15 @@ else
 {
     <div class="card app-card">
         <div class="card-header app-card-header">
-            <div class="fw-semibold">Your languages</div>
-            <span class="badge text-bg-light border">@count total</span>
+            <span class="badge text-bg-light border">@count @(await Translation.GetAsync(nameof(WebApp.Views.LanguageSelection.Resources.LanguageSelection.LanguageSelection_Badge_Total)))</span>
         </div>
 
         <div class="table-responsive app-table-wrap">
             <table class="table app-table mb-0 align-middle">
                 <thead>
                 <tr>
-                    <th class="ps-3" style="width: 65%">Language</th>
-                    <th style="width: 35%">Tag</th>
+                    <th class="ps-3" style="width: 65%">@(await Translation.GetAsync(nameof(WebApp.Views.LanguageSelection.Resources.LanguageSelection.LanguageSelection_Column_Language)))</th>
+                    <th style="width: 35%">@(await Translation.GetAsync(nameof(WebApp.Views.LanguageSelection.Resources.LanguageSelection.LanguageSelection_Column_Tag)))</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -75,7 +61,7 @@ else
 
         <div class="card-footer bg-transparent border-0 d-flex justify-content-end p-3">
             <a asp-controller="LanguageSelection" asp-action="Languages" class="btn btn-outline-primary">
-                <i class="bi bi-pencil-square me-2"></i>Edit
+                <i class="bi bi-pencil-square me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.LanguageSelection.Resources.LanguageSelection.LanguageSelection_Button_Edit)))
             </a>
         </div>
     </div>

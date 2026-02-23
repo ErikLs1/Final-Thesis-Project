@@ -18,4 +18,46 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="LanguageSelection_Badge_Selected" xml:space="preserve">
+        <value>выбрано</value>
+    </data>
+    <data name="LanguageSelection_Heading_Search" xml:space="preserve">
+        <value>Поиск</value>
+    </data>
+    <data name="LanguageSelection_Heading_My_Languages" xml:space="preserve">
+        <value>Мои языки</value>
+    </data>
+    <data name="LanguageSelection_Button_Select_Languages" xml:space="preserve">
+        <value>Выберите языки</value>
+    </data>
+    <data name="LanguageSelection_Button_Select_All" xml:space="preserve">
+        <value>Выбрать все</value>
+    </data>
+    <data name="LanguageSelection_Button_Save_Changes" xml:space="preserve">
+        <value>Сохранить изменения</value>
+    </data>
+    <data name="LanguageSelection_Button_Cancel" xml:space="preserve">
+        <value>отменить</value>
+    </data>
+    <data name="LanguageSelection_Button_Back" xml:space="preserve">
+        <value>Назад</value>
+    </data>
+    <data name="LanguageSelection_Button_Clear" xml:space="preserve">
+        <value>очистить</value>
+    </data>
+    <data name="LanguageSelection_Heding_Languages_I_Know" xml:space="preserve">
+        <value>Языки, которые я знаю</value>
+    </data>
+    <data name="LanguageSelection_Column_Tag" xml:space="preserve">
+        <value>Тег</value>
+    </data>
+    <data name="LanguageSelection_Column_Language" xml:space="preserve">
+        <value>Язык</value>
+    </data>
+    <data name="LanguageSelection_Button_Edit" xml:space="preserve">
+        <value>Редактировать</value>
+    </data>
+    <data name="LanguageSelection_Badge_Total" xml:space="preserve">
+        <value>всего</value>
+    </data>
 </root>

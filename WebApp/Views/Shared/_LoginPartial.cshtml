@@ -25,14 +25,14 @@
             </button>
 
             <ul class="dropdown-menu dropdown-menu-end topbar-menu" aria-labelledby="accountDropdown">
-                <li class="dropdown-header">Account</li>
+                <li class="dropdown-header">@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Account)))</li>
 
                 <li>
                     <a class="dropdown-item d-flex align-items-center gap-2"
                        asp-area="Identity"
                        asp-page="/Account/Manage/Index">
                         <i class="bi bi-gear"></i>
-                        <span>Manage profile</span>
+                        <span>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_ManageProfile)))</span>
                     </a>
                 </li>
 
