@@ -18,4 +18,85 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Translator_Button_Back" xml:space="preserve">
+        <value>Назад</value>
+    </data>
+    <data name="Translator_Button_Clear" xml:space="preserve">
+        <value>Очистить</value>
+    </data>
+    <data name="Translator_Badge_Selected" xml:space="preserve">
+        <value>выбрано</value>
+    </data>
+    <data name="Translator_Button_Search" xml:space="preserve">
+        <value>Поиск</value>
+    </data>
+    <data name="Translator_Button_Reset" xml:space="preserve">
+        <value>Сбросить</value>
+    </data>
+    <data name="Translator_Button_Search_All" xml:space="preserve">
+        <value>Искать все</value>
+    </data>
+    <data name="Translator_Column_Content" xml:space="preserve">
+        <value>Содержимое</value>
+    </data>
+    <data name="Translator_Column_New_Content" xml:space="preserve">
+        <value>Новое содержимое</value>
+    </data>
+    <data name="Translator_Column_Pick" xml:space="preserve">
+        <value>Выбрать</value>
+    </data>
+    <data name="Translator_Placeholder_Type_New_Translation" xml:space="preserve">
+        <value>Введите новый перевод..</value>
+    </data>
+    <data name="Translator_Heading_Create_New_Translations" xml:space="preserve">
+        <value>Создать новые версии перевода</value>
+    </data>
+    <data name="Translator_Text_total" xml:space="preserve">
+        <value>всего</value>
+    </data>
+    <data name="Translator_Column_Key" xml:space="preserve">
+        <value>Ключ</value>
+    </data>
+    <data name="Translator_Button_Revise" xml:space="preserve">
+        <value>Доработать</value>
+    </data>
+    <data name="Translator_Button_Create_Versions" xml:space="preserve">
+        <value>Создать версии</value>
+    </data>
+    <data name="Translator_Button_Cancel" xml:space="preserve">
+        <value>Отмена</value>
+    </data>
+    <data name="Translator_Column_State" xml:space="preserve">
+        <value>Состояние</value>
+    </data>
+    <data name="Translator_Column_Version" xml:space="preserve">
+        <value>Версия</value>
+    </data>
+    <data name="Translator_Text_Hint" xml:space="preserve">
+        <value>олько отмеченные строки будут созданы как новые версии</value>
+    </data>
+    <data name="Translator_Text_Search_Keys" xml:space="preserve">
+        <value>Искать ключи</value>
+    </data>
+    <data name="Translator_Column_Action" xml:space="preserve">
+        <value>Действие</value>
+    </data>
+    <data name="Translator_Heading_Translation" xml:space="preserve">
+        <value>Переводы</value>
+    </data>
+    <data name="Translator_Text_All_States" xml:space="preserve">
+        <value>Все состояния</value>
+    </data>
+    <data name="Translator_Text_Language" xml:space="preserve">
+        <value>Язык</value>
+    </data>
+    <data name="Translator_Text_State" xml:space="preserve">
+        <value>Состояние</value>
+    </data>
+    <data name="Translator_Text_Version" xml:space="preserve">
+        <value>Версия</value>
+    </data>
+    <data name="Translator_Button_Filter" xml:space="preserve">
+        <value>Фильтровать</value>
+    </data>
 </root>

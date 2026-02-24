@@ -114,4 +114,22 @@
     <data name="Shared_Heading_Reviewer" xml:space="preserve">
         <value>Ülevaataja</value>
     </data>
+    <data name="Shared_Translation_State_Inactive" xml:space="preserve">
+        <value>Mitteaktiivne</value>
+    </data>
+    <data name="Shared_Translation_State_Depricated" xml:space="preserve">
+        <value>Aegunud</value>
+    </data>
+    <data name="Shared_Translation_State_Approved" xml:space="preserve">
+        <value>Kinnitatud</value>
+    </data>
+    <data name="Shared_Translation_State_Published" xml:space="preserve">
+        <value>Avaldatud</value>
+    </data>
+    <data name="Shared_Translation_State_Rejected" xml:space="preserve">
+        <value>Tagasi lükatud</value>
+    </data>
+    <data name="Shared_Translation_State_Waiting_Review" xml:space="preserve">
+        <value>Ootab ülevaatust</value>
+    </data>
 </root>

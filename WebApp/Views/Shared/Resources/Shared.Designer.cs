@@ -236,5 +236,41 @@ namespace WebApp.Views.Shared.Resources {
                 return ResourceManager.GetString("Shared_Heading_Reviewer", resourceCulture);
             }
         }
+        
+        public static string Shared_Translation_State_Published {
+            get {
+                return ResourceManager.GetString("Shared_Translation_State_Published", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Translation_State_Inactive {
+            get {
+                return ResourceManager.GetString("Shared_Translation_State_Inactive", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Translation_State_Depricated {
+            get {
+                return ResourceManager.GetString("Shared_Translation_State_Depricated", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Translation_State_Approved {
+            get {
+                return ResourceManager.GetString("Shared_Translation_State_Approved", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Translation_State_Rejected {
+            get {
+                return ResourceManager.GetString("Shared_Translation_State_Rejected", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Translation_State_Waiting_Review {
+            get {
+                return ResourceManager.GetString("Shared_Translation_State_Waiting_Review", resourceCulture);
+            }
+        }
     }
 }

@@ -114,4 +114,22 @@
     <data name="Shared_Heading_Translator" xml:space="preserve">
         <value>Translator</value>
     </data>
+    <data name="Shared_Translation_State_Waiting_Review" xml:space="preserve">
+        <value>Waiting review</value>
+    </data>
+    <data name="Shared_Translation_State_Rejected" xml:space="preserve">
+        <value>Rejected</value>
+    </data>
+    <data name="Shared_Translation_State_Published" xml:space="preserve">
+        <value>Published</value>
+    </data>
+    <data name="Shared_Translation_State_Approved" xml:space="preserve">
+        <value>Approved</value>
+    </data>
+    <data name="Shared_Translation_State_Depricated" xml:space="preserve">
+        <value>Depricated</value>
+    </data>
+    <data name="Shared_Translation_State_Inactive" xml:space="preserve">
+        <value>Inactive</value>
+    </data>
 </root>

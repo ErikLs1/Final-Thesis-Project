@@ -1,24 +1,24 @@
 @model WebApp.Models.Translator.Translations.TranslationsIndexVm
 @using App.Domain.Enum
+@using WebApp.Views.Shared.Resources
 @{
-    ViewData["Title"] = "Translations";
     var langTag = Model.Rows.FirstOrDefault()?.LanguageTag ?? "";
 }
 
 <div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-3">
     <div>
-        <h2 class="mb-1">@ViewData["Title"]</h2>
+        <h2 class="mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Heading_Translation)))</h2>
         <div class="text-muted small">
             @if (!string.IsNullOrWhiteSpace(langTag))
             {
-                <span>Showing: <span class="badge text-bg-light border">@langTag</span></span>
+                <span class="badge text-bg-light border">@langTag</span>
             }
-            <span class="ms-2">@Model.TotalCount total</span>
+            <span class="ms-2">@Model.TotalCount @(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Text_total)))</span>
         </div>
     </div>
 
     <a asp-action="CreateVersions" asp-route-languageId="@Model.SelectedLanguageId" class="btn btn-primary">
-        <i class="bi bi-plus-lg me-2"></i>Create new version
+        <i class="bi bi-plus-lg me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Button_Create_Versions)))
     </a>
 </div>
 
@@ -30,7 +30,7 @@
             <input type="hidden" name="pageSize" value="@Model.PageSize" />
 
             <div class="col-12 col-md-5 col-lg-4">
-                <label class="form-label mb-1">Language</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Text_Language)))</label>
                 <select name="languageId" class="form-select">
                     @foreach (var l in Model.LanguageOptions)
                     {
@@ -42,24 +42,23 @@
             </div>
 
             <div class="col-12 col-md-3 col-lg-2">
-                <label class="form-label mb-1">Version</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Text_Version)))</label>
                 <input type="number"
                        class="form-control"
                        name="version"
                        min="1"
-                       value="@(Model.SelectedVersion?.ToString() ?? "")"
-                       placeholder="Any" />
+                       value="@(Model.SelectedVersion?.ToString() ?? "")" />
             </div>
 
             <div class="col-12 col-md-4 col-lg-3">
-                <label class="form-label mb-1">State</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Text_State)))</label>
                 <select name="state" class="form-select">
-                    <option value="">All states</option>
+                    <option value="">@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Text_All_States)))</option>
                     @foreach (TranslationState st in Enum.GetValues(typeof(TranslationState)))
                     {
                         <option value="@st"
                                 selected="@(Model.SelectedState.HasValue && Model.SelectedState.Value == st ? "selected" : null)">
-                            @st
+                            @StateText(st)
                         </option>
                     }
                 </select>
@@ -67,7 +66,7 @@
 
             <div class="col-12 col-lg-3 d-grid d-md-flex gap-2 justify-content-lg-end">
                 <button type="submit" class="btn btn-outline-secondary">
-                    <i class="bi bi-funnel me-2"></i>Filter
+                    <i class="bi bi-funnel me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Button_Filter)))
                 </button>
 
                 <a class="btn btn-outline-secondary"
@@ -75,7 +74,7 @@
                    asp-route-languageId="@Model.SelectedLanguageId"
                    asp-route-page="1"
                    asp-route-pageSize="@Model.PageSize">
-                    <i class="bi bi-x-circle me-2"></i>Reset
+                    <i class="bi bi-x-circle me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Button_Reset)))
                 </a>
             </div>
         </form>
@@ -85,11 +84,11 @@
             <table class="table align-middle mb-0 translations-table">
                 <thead>
                 <tr>
-                    <th style="width: 30%">Resource key</th>
-                    <th>Content @if (!string.IsNullOrWhiteSpace(langTag)) { <span class="text-muted">(@langTag)</span> }</th>
-                    <th class="text-end" style="width: 12%">Version</th>
-                    <th style="width: 150px">State</th>
-                    <th class="text-end" style="width: 160px">Action</th>
+                    <th style="width: 30%">@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Column_Key)))</th>
+                    <th>@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Column_Content))) @if (!string.IsNullOrWhiteSpace(langTag)) { <span class="text-muted">(@langTag)</span> }</th>
+                    <th class="text-end" style="width: 12%">@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Column_Version)))</th>
+                    <th style="width: 150px">@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Column_State)))</th>
+                    <th class="text-end" style="width: 160px">@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Column_Action)))</th>
                 </tr>
                 </thead>
 
@@ -158,7 +157,7 @@
                                        asp-action="CreateVersions"
                                        asp-route-languageId="@Model.SelectedLanguageId"
                                        asp-route-q="@r.ResourceKey">
-                                        <i class="bi bi-pencil-square me-1"></i>Revise
+                                        <i class="bi bi-pencil-square me-1"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Button_Revise)))
                                     </a>
                                 }
                             </td>
@@ -240,6 +239,20 @@
 </div>
 
 @functions{
+    private static string StateText(TranslationState state)
+    {
+        return state switch
+        {
+            TranslationState.Published => Shared.Shared_Translation_State_Published,
+            TranslationState.WaitingReview => Shared.Shared_Translation_State_Waiting_Review,
+            TranslationState.Approved => Shared.Shared_Translation_State_Approved,
+            TranslationState.Rejected => Shared.Shared_Translation_State_Rejected,
+            TranslationState.Inactive => Shared.Shared_Translation_State_Inactive,
+            TranslationState.Depricated => Shared.Shared_Translation_State_Depricated,
+            _ => state.ToString()
+        };
+    }
+
     private static string StateBadge(TranslationState? state)
     {
         if (state is null)
@@ -247,16 +260,17 @@
             return "<span class=\"badge text-bg-light\">Unknown</span>";
         }
 
-        var (cls, txt, icon) = state.Value switch
+        var (cls, icon) = state.Value switch
         {
-            TranslationState.Published => ("text-bg-success", "Published", "check-circle"),
-            TranslationState.WaitingReview => ("text-bg-warning", "Waiting review", "hourglass-split"),
-            TranslationState.Approved => ("text-bg-success", "Approved", "check2"),
-            TranslationState.Rejected => ("text-bg-danger", "Rejected", "x-circle"),
-            TranslationState.Depricated => ("text-bg-secondary", "Archived", "archive"),
-            _ => ("text-bg-light", state.Value.ToString(), "info-circle")
+            TranslationState.Published => ("text-bg-success", "check-circle"),
+            TranslationState.WaitingReview => ("text-bg-warning", "hourglass-split"),
+            TranslationState.Approved => ("text-bg-success", "check2"),
+            TranslationState.Rejected => ("text-bg-danger", "x-circle"),
+            TranslationState.Depricated => ("text-bg-secondary", "archive"),
+            _ => ("text-bg-light", "info-circle")
         };
 
+        var txt = StateText(state.Value);
         var extra = state == TranslationState.WaitingReview ? " text-dark" : "";
         return $"<span class=\"badge {cls}{extra}\"><i class=\"bi bi-{icon} me-1\"></i>{txt}</span>";
     }

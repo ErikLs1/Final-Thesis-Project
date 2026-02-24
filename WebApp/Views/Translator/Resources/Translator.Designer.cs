@@ -14,7 +14,7 @@ namespace WebApp.Views.Translator.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Translator {
+    public class Translator {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace WebApp.Views.Translator.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("WebApp.Views.Translator.Resources.Translator", typeof(Translator).Assembly);
@@ -36,12 +36,174 @@ namespace WebApp.Views.Translator.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string Translator_Button_Back {
+            get {
+                return ResourceManager.GetString("Translator_Button_Back", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Button_Clear {
+            get {
+                return ResourceManager.GetString("Translator_Button_Clear", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Button_Search_All {
+            get {
+                return ResourceManager.GetString("Translator_Button_Search_All", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Button_Reset {
+            get {
+                return ResourceManager.GetString("Translator_Button_Reset", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Button_Search {
+            get {
+                return ResourceManager.GetString("Translator_Button_Search", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Badge_Selected {
+            get {
+                return ResourceManager.GetString("Translator_Badge_Selected", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Text_total {
+            get {
+                return ResourceManager.GetString("Translator_Text_total", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Heading_Create_New_Translations {
+            get {
+                return ResourceManager.GetString("Translator_Heading_Create_New_Translations", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Column_Pick {
+            get {
+                return ResourceManager.GetString("Translator_Column_Pick", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Column_Key {
+            get {
+                return ResourceManager.GetString("Translator_Column_Key", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Column_Content {
+            get {
+                return ResourceManager.GetString("Translator_Column_Content", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Column_New_Content {
+            get {
+                return ResourceManager.GetString("Translator_Column_New_Content", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Placeholder_Type_New_Translation {
+            get {
+                return ResourceManager.GetString("Translator_Placeholder_Type_New_Translation", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Text_Search_Keys {
+            get {
+                return ResourceManager.GetString("Translator_Text_Search_Keys", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Button_Cancel {
+            get {
+                return ResourceManager.GetString("Translator_Button_Cancel", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Button_Create_Versions {
+            get {
+                return ResourceManager.GetString("Translator_Button_Create_Versions", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Text_Hint {
+            get {
+                return ResourceManager.GetString("Translator_Text_Hint", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Column_Action {
+            get {
+                return ResourceManager.GetString("Translator_Column_Action", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Column_State {
+            get {
+                return ResourceManager.GetString("Translator_Column_State", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Column_Version {
+            get {
+                return ResourceManager.GetString("Translator_Column_Version", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Button_Revise {
+            get {
+                return ResourceManager.GetString("Translator_Button_Revise", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Heading_Translation {
+            get {
+                return ResourceManager.GetString("Translator_Heading_Translation", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Text_Language {
+            get {
+                return ResourceManager.GetString("Translator_Text_Language", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Text_Version {
+            get {
+                return ResourceManager.GetString("Translator_Text_Version", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Text_State {
+            get {
+                return ResourceManager.GetString("Translator_Text_State", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Text_All_States {
+            get {
+                return ResourceManager.GetString("Translator_Text_All_States", resourceCulture);
+            }
+        }
+        
+        public static string Translator_Button_Filter {
+            get {
+                return ResourceManager.GetString("Translator_Button_Filter", resourceCulture);
             }
         }
     }

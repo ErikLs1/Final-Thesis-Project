@@ -114,4 +114,22 @@
     <data name="Shared_Heading_Reviewer" xml:space="preserve">
         <value>Переводчик</value>
     </data>
+    <data name="Shared_Translation_State_Inactive" xml:space="preserve">
+        <value>Неактивный</value>
+    </data>
+    <data name="Shared_Translation_State_Depricated" xml:space="preserve">
+        <value>Устаревший</value>
+    </data>
+    <data name="Shared_Translation_State_Approved" xml:space="preserve">
+        <value>Одобрен</value>
+    </data>
+    <data name="Shared_Translation_State_Published" xml:space="preserve">
+        <value>Опубликован</value>
+    </data>
+    <data name="Shared_Translation_State_Rejected" xml:space="preserve">
+        <value>Отклонён</value>
+    </data>
+    <data name="Shared_Translation_State_Waiting_Review" xml:space="preserve">
+        <value>Ожидает проверки</value>
+    </data>
 </root>

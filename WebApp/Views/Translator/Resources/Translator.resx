@@ -18,4 +18,85 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Translator_Button_Back" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="Translator_Button_Clear" xml:space="preserve">
+        <value>Clear</value>
+    </data>
+    <data name="Translator_Button_Search_All" xml:space="preserve">
+        <value>Search all</value>
+    </data>
+    <data name="Translator_Button_Reset" xml:space="preserve">
+        <value>Reset</value>
+    </data>
+    <data name="Translator_Button_Search" xml:space="preserve">
+        <value>Search</value>
+    </data>
+    <data name="Translator_Badge_Selected" xml:space="preserve">
+        <value>selected</value>
+    </data>
+    <data name="Translator_Text_total" xml:space="preserve">
+        <value>total</value>
+    </data>
+    <data name="Translator_Heading_Create_New_Translations" xml:space="preserve">
+        <value>Create new translation versions</value>
+    </data>
+    <data name="Translator_Column_Pick" xml:space="preserve">
+        <value>Pick</value>
+    </data>
+    <data name="Translator_Column_Key" xml:space="preserve">
+        <value>Key</value>
+    </data>
+    <data name="Translator_Column_Content" xml:space="preserve">
+        <value>Content</value>
+    </data>
+    <data name="Translator_Column_New_Content" xml:space="preserve">
+        <value>New content</value>
+    </data>
+    <data name="Translator_Placeholder_Type_New_Translation" xml:space="preserve">
+        <value>Type new translation...</value>
+    </data>
+    <data name="Translator_Text_Search_Keys" xml:space="preserve">
+        <value>Search keys</value>
+    </data>
+    <data name="Translator_Button_Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="Translator_Button_Create_Versions" xml:space="preserve">
+        <value>Create versions</value>
+    </data>
+    <data name="Translator_Text_Hint" xml:space="preserve">
+        <value>Only checked rows will be created as new versions</value>
+    </data>
+    <data name="Translator_Column_Action" xml:space="preserve">
+        <value>Action</value>
+    </data>
+    <data name="Translator_Column_State" xml:space="preserve">
+        <value>State</value>
+    </data>
+    <data name="Translator_Column_Version" xml:space="preserve">
+        <value>Version</value>
+    </data>
+    <data name="Translator_Button_Revise" xml:space="preserve">
+        <value>Revise</value>
+    </data>
+    <data name="Translator_Heading_Translation" xml:space="preserve">
+        <value>Translations</value>
+    </data>
+    <data name="Translator_Text_Language" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="Translator_Text_Version" xml:space="preserve">
+        <value>Version</value>
+    </data>
+    <data name="Translator_Text_State" xml:space="preserve">
+        <value>State</value>
+    </data>
+    <data name="Translator_Text_All_States" xml:space="preserve">
+        <value>All states</value>
+    </data>
+    <data name="Translator_Button_Filter" xml:space="preserve">
+        <value>Filter</value>
+    </data>
 </root>
