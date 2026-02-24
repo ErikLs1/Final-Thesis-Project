@@ -7,6 +7,7 @@ using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using WebApp.Helpers;
 using WebApp.Helpers.Translations.Interfaces;
 using WebApp.Models.Admin.Audit;
@@ -146,6 +147,7 @@ public class AdminController : Controller
      }
 
     [HttpPost]
+    [EnableRateLimiting("AdminPublishPolicy")]
     public async Task<IActionResult> Publish(AdminPublishTranslationsVm vm)
     {
         var chosenVersionIds = vm.Rows

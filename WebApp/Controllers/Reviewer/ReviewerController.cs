@@ -5,6 +5,7 @@ using App.Repository.Pager;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using WebApp.Models.Reviewer;
 using WebApp.Models.Shared;
 
@@ -79,6 +80,7 @@ public class ReviewerController : Controller
     }
 
     [HttpPost]
+    [EnableRateLimiting("WritePolicy")]
     public async Task<IActionResult> Decide(
         Guid translationVersionId,
         Guid selectedLanguageId,

@@ -11,4 +11,5 @@ public interface IUITranslationRepository
     Task<Dictionary<string, string>> GetLiveTranslationsByLanguageTagAsync(string languageTag);
     Task<PagedResult<FilteredUITranslationsDto>> GetFilteredUITranslationsAsync(FilteredTranslationsRequestDto request, PagedRequest paging);
     Task<int> PublishTranslationVersionAsync(PublishTranslationVersionRequestDto request);
+    Task<int> PublishTranslationVersionsAsync(IReadOnlyList<PublishTranslationVersionRequestDto> requests);
 }

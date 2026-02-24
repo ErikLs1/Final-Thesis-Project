@@ -135,6 +135,36 @@ public class UITranslationRepository : IUITranslationRepository
 
     public async Task<int> PublishTranslationVersionAsync(PublishTranslationVersionRequestDto request)
     {
+        return await PublishTranslationVersionInternalAsync(request, saveChanges: true);
+    }
+
+    public async Task<int> PublishTranslationVersionsAsync(IReadOnlyList<PublishTranslationVersionRequestDto> requests)
+    {
+        if (requests.Count == 0) return 0;
+
+        var changed = 0;
+        var uniqueRequests = requests
+            .GroupBy(x => x.TranslationVersionId)
+            .Select(g => g.First())
+            .ToList();
+
+        foreach (var request in uniqueRequests)
+        {
+            changed += await PublishTranslationVersionInternalAsync(request, saveChanges: false);
+        }
+
+        if (changed > 0)
+        {
+            await _db.SaveChangesAsync();
+        }
+
+        return changed;
+    }
+
+    private async Task<int> PublishTranslationVersionInternalAsync(
+        PublishTranslationVersionRequestDto request,
+        bool saveChanges)
+    {
         var newTranslationVersion = await _db.UITranslationVersions
             .FirstOrDefaultAsync(x => x.Id == request.TranslationVersionId);
 
@@ -221,7 +251,12 @@ public class UITranslationRepository : IUITranslationRepository
             publishedTranslations.PublishedAt = now;
             publishedTranslations.PublishedBy = request.ActivatedBy;
         }
-        
-        return await _db.SaveChangesAsync();
+
+        if (saveChanges)
+        {
+            await _db.SaveChangesAsync();
+        }
+
+        return 1;
     }
 }

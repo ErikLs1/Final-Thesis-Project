@@ -5,6 +5,7 @@ using App.Repository.Pager;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using WebApp.Helpers;
 using WebApp.Models.Shared;
 using WebApp.Models.Translator.Translations;
@@ -12,7 +13,7 @@ using WebApp.Models.Translator.Versions;
 
 namespace WebApp.Controllers.Translator;
 
-[Authorize]
+[Authorize(Roles = nameof(RoleType.Translator))]
 public class TranslatorController : Controller
 {
     private readonly IAppBll _bll;
@@ -33,7 +34,17 @@ public class TranslatorController : Controller
             return Forbid();
         
         var userLanguages = await _bll.UserLanguageService.GetUserKnownLanguagesAsync(userId);
-        languageId ??= await _bll.LanguageService.GetDefaultLanguageIdAsync();
+        var userLanguageIds = userLanguages.Select(l => l.Id).ToHashSet();
+
+        if (!languageId.HasValue)
+        {
+            languageId = userLanguages.FirstOrDefault()?.Id;
+        }
+
+        if (!languageId.HasValue || !userLanguageIds.Contains(languageId.Value))
+        {
+            return Forbid();
+        }
 
         var paging = new PagedRequest { Page = page, PageSize = pageSize };
 
@@ -135,6 +146,7 @@ public class TranslatorController : Controller
     // PAGE - CREATE NEW TRANSLATION VERSION
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [EnableRateLimiting("WritePolicy")]
     public async Task<IActionResult> CreateVersions(CreateVersionsVm vm)
     {
         

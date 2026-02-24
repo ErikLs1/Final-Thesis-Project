@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace WebApp.Controllers;
 
@@ -7,6 +8,7 @@ public class LocalizationController : Controller
 {
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [EnableRateLimiting("WritePolicy")]
     public IActionResult SetLanguage(string culture, string returnUrl = "/")
     {
         var cookieValue = CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture));

@@ -1,4 +1,6 @@
 using System.Globalization;
+using System.Security.Claims;
+using System.Threading.RateLimiting;
 using App.Domain.Identity;
 using App.Domain.Enum;
 using App.EF;
@@ -7,11 +9,14 @@ using App.Repository.Impl.ResxImport;
 using App.Service.BllUow;
 using App.Service.Impl.Assemblies.Importer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using WebApp.Extensions.Builder;
 using WebApp.Extensions.Services;
+using WebApp.HealthChecks;
 using WebApp.Helpers;
 using WebApp.Helpers.Translations.Imp;
 using WebApp.Helpers.Translations.Interfaces;
@@ -100,7 +105,51 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(o => o.SignIn.RequireC
 //builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthorization();
-builder.Services.AddHealthChecks();
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: GetRateLimitPartitionKey(context),
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 120,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            }));
+
+    options.AddPolicy("WritePolicy", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: GetRateLimitPartitionKey(context),
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 20,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            }));
+
+    options.AddPolicy("AdminPublishPolicy", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: GetRateLimitPartitionKey(context),
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0,
+                AutoReplenishment = true
+            }));
+});
+
+builder.Services.AddHealthChecks()
+    .AddCheck("self", () => HealthCheckResult.Healthy("Application is running."), tags: new[] { "live" })
+    .AddCheck<DatabaseReadinessHealthCheck>("postgres", tags: new[] { "ready" })
+    .AddCheck<RedisReadinessHealthCheck>(
+        "redis",
+        failureStatus: HealthStatus.Degraded,
+        tags: new[] { "ready" });
 builder.Services
     .AddControllersWithViews()
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
@@ -174,10 +223,22 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthentication();
+app.UseRateLimiter();
 app.UseAuthorization();
 
 app.MapStaticAssets();
-app.MapHealthChecks("/health");
+app.MapHealthChecks("/health/live", new HealthCheckOptions
+{
+    Predicate = r => r.Tags.Contains("live")
+});
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = r => r.Tags.Contains("ready")
+});
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    Predicate = r => r.Tags.Contains("ready")
+});
 
 app.MapControllerRoute(
         name: "default",
@@ -218,3 +279,20 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+static string GetRateLimitPartitionKey(HttpContext context)
+{
+    var userId = context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (!string.IsNullOrWhiteSpace(userId))
+    {
+        return $"user:{userId}";
+    }
+
+    var ip = context.Connection.RemoteIpAddress?.ToString();
+    if (!string.IsNullOrWhiteSpace(ip))
+    {
+        return $"ip:{ip}";
+    }
+
+    return "anonymous";
+}

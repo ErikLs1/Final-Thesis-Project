@@ -1,12 +1,14 @@
+using App.Domain.Enum;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using WebApp.Helpers;
 using WebApp.Models.Translator.Languages;
 
 namespace WebApp.Controllers.Translator;
 
-[Authorize]
+[Authorize(Roles = nameof(RoleType.Translator))]
 public class LanguageSelection : Controller
 {
     private readonly IAppBll _bll;
@@ -70,6 +72,7 @@ public class LanguageSelection : Controller
     // SELECTION PAGE
     [HttpPost]
     [ValidateAntiForgeryToken]
+    [EnableRateLimiting("WritePolicy")]
     public async Task<IActionResult> Languages(TranslatorLanguagesSelectionVm vm)
     {
         if (!User.GetUserId(out var userId))

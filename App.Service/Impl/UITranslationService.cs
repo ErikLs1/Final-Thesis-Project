@@ -39,18 +39,6 @@ public class UITranslationService : IUITranslationService
 
     public async Task<int> PublishTranslationTranslationsAsync(IReadOnlyList<PublishTranslationVersionRequestDto> requests)
     {
-        var sum = 0;
-        foreach (var version in requests)
-        {
-            var singleReq = new PublishTranslationVersionRequestDto(
-                version.TranslationVersionId,
-                version.ActivatedBy
-            );
-
-            var changed = await _uow.UITranslationRepository.PublishTranslationVersionAsync(singleReq);
-            sum += changed;
-        }
-
-        return sum;
+        return await _uow.UITranslationRepository.PublishTranslationVersionsAsync(requests);
     }
 }
