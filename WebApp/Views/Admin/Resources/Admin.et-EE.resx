@@ -19,4 +19,76 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+    <data name="Admin_Column_Language" xml:space="preserve">
+        <value>Keel</value>
+    </data>
+    <data name="Admin_Column_State_Change" xml:space="preserve">
+        <value>Olekumuutus</value>
+    </data>
+    <data name="Admin_Column_Version" xml:space="preserve">
+        <value>Versioon</value>
+    </data>
+    <data name="Admin_Column_When" xml:space="preserve">
+        <value>Millal</value>
+    </data>
+    <data name="Admin_Column_Who" xml:space="preserve">
+        <value>Kes</value>
+    </data>
+    <data name="Admin_Column_Key" xml:space="preserve">
+        <value>Võti</value>
+    </data>
+    <data name="Admin_Column_Content_Change" xml:space="preserve">
+        <value>Sisu muutus</value>
+    </data>
+    <data name="Admin_Column_Action" xml:space="preserve">
+        <value>Tegevus</value>
+    </data>
+    <data name="Admin_Text_To" xml:space="preserve">
+        <value>Kuni</value>
+    </data>
+    <data name="Admin_Text_From" xml:space="preserve">
+        <value>Alates</value>
+    </data>
+    <data name="Admin_Text_Old" xml:space="preserve">
+        <value>Vana</value>
+    </data>
+    <data name="Admin_Text_New" xml:space="preserve">
+        <value>Uus</value>
+    </data>
+    <data name="Admin_Text_Key" xml:space="preserve">
+        <value>Võti</value>
+    </data>
+    <data name="Admin_Text_Language" xml:space="preserve">
+        <value>Keel</value>
+    </data>
+    <data name="Admin_Text_Action" xml:space="preserve">
+        <value>Tegevus</value>
+    </data>
+    <data name="Admin_Text_Changed_By" xml:space="preserve">
+        <value>Muutis</value>
+    </data>
+    <data name="Admin_Action_Version_Created" xml:space="preserve">
+        <value>Versioon loodud</value>
+    </data>
+    <data name="Admin_Action_Unpublished" xml:space="preserve">
+        <value>Avaldamata</value>
+    </data>
+    <data name="Admin_Action_State_Changed" xml:space="preserve">
+        <value>Olek muudetud</value>
+    </data>
+    <data name="Admin_Action_Published" xml:space="preserve">
+        <value>Avaldatud</value>
+    </data>
+    <data name="Admin_Heading_Translation_Audit" xml:space="preserve">
+        <value>Tõlgete audit</value>
+    </data>
+    <data name="Admin_Text_All_Usernames" xml:space="preserve">
+        <value>Kõik kasutajanimed</value>
+    </data>
+    <data name="Admin_Text_All_Actions" xml:space="preserve">
+        <value>Kõik tegevused</value>
+    </data>
+    <data name="Admin_Text_All_Languages" xml:space="preserve">
+        <value>Kõik keeled</value>
+    </data>
 </root>

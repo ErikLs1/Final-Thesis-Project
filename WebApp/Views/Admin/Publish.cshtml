@@ -150,7 +150,7 @@
                     <input type="hidden" name="languageId" value="@Model.SelectedLanguageId" />
                     <input type="hidden" name="page" value="1" />
 
-                    <span class="text-muted small">Rows</span>
+                    <span class="text-muted small">@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Rows)))</span>
                     <select name="pageSize"
                             class="form-select form-select-sm"
                             style="width: 90px;"
@@ -173,13 +173,14 @@
                                asp-route-languageId="@Model.SelectedLanguageId"
                                asp-route-page="@(Model.Page - 1)"
                                asp-route-pageSize="@Model.PageSize">
-                                Prev
+                                @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Prev)))
                             </a>
                         </li>
 
                         <li class="page-item disabled d-none d-sm-inline">
                             <span class="page-link">
-                                Page @Model.Page of @Model.TotalPages
+                                @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Page))) @Model.Page 
+                                @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Of))) @Model.TotalPages
                             </span>
                         </li>
 
@@ -195,7 +196,7 @@
                                asp-route-languageId="@Model.SelectedLanguageId"
                                asp-route-page="@(Model.Page + 1)"
                                asp-route-pageSize="@Model.PageSize">
-                                Next
+                                @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Next)))
                             </a>
                         </li>
                     </ul>

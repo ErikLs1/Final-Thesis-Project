@@ -14,7 +14,7 @@ namespace WebApp.Views.Admin.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Admin {
+    public class Admin {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace WebApp.Views.Admin.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("WebApp.Views.Admin.Resources.Admin", typeof(Admin).Assembly);
@@ -36,12 +36,156 @@ namespace WebApp.Views.Admin.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string Admin_Column_When {
+            get {
+                return ResourceManager.GetString("Admin_Column_When", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Column_Who {
+            get {
+                return ResourceManager.GetString("Admin_Column_Who", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Column_Action {
+            get {
+                return ResourceManager.GetString("Admin_Column_Action", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Column_Language {
+            get {
+                return ResourceManager.GetString("Admin_Column_Language", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Column_Key {
+            get {
+                return ResourceManager.GetString("Admin_Column_Key", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Column_Version {
+            get {
+                return ResourceManager.GetString("Admin_Column_Version", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Column_State_Change {
+            get {
+                return ResourceManager.GetString("Admin_Column_State_Change", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Column_Content_Change {
+            get {
+                return ResourceManager.GetString("Admin_Column_Content_Change", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_Language {
+            get {
+                return ResourceManager.GetString("Admin_Text_Language", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_Action {
+            get {
+                return ResourceManager.GetString("Admin_Text_Action", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_Changed_By {
+            get {
+                return ResourceManager.GetString("Admin_Text_Changed_By", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_Key {
+            get {
+                return ResourceManager.GetString("Admin_Text_Key", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_From {
+            get {
+                return ResourceManager.GetString("Admin_Text_From", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_To {
+            get {
+                return ResourceManager.GetString("Admin_Text_To", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Action_State_Changed {
+            get {
+                return ResourceManager.GetString("Admin_Action_State_Changed", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Action_Version_Created {
+            get {
+                return ResourceManager.GetString("Admin_Action_Version_Created", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Action_Published {
+            get {
+                return ResourceManager.GetString("Admin_Action_Published", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Action_Unpublished {
+            get {
+                return ResourceManager.GetString("Admin_Action_Unpublished", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_Old {
+            get {
+                return ResourceManager.GetString("Admin_Text_Old", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_New {
+            get {
+                return ResourceManager.GetString("Admin_Text_New", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Heading_Translation_Audit {
+            get {
+                return ResourceManager.GetString("Admin_Heading_Translation_Audit", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_All_Usernames {
+            get {
+                return ResourceManager.GetString("Admin_Text_All_Usernames", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_All_Languages {
+            get {
+                return ResourceManager.GetString("Admin_Text_All_Languages", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_All_Actions {
+            get {
+                return ResourceManager.GetString("Admin_Text_All_Actions", resourceCulture);
             }
         }
     }

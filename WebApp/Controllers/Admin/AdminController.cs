@@ -1,9 +1,11 @@
 using App.Domain.Enum;
+using App.Domain.Identity;
 using App.Repository.DTO;
 using App.Repository.DTO.UITranslations;
 using App.Repository.Pager;
 using App.Service.BllUow;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Helpers;
 using WebApp.Helpers.Translations.Interfaces;
@@ -19,13 +21,16 @@ public class AdminController : Controller
 {
     private readonly IAppBll _bll;
     private readonly ITranslationCache _cache;
+    private readonly UserManager<AppUser> _userManager;
 
     public AdminController(
         IAppBll bll,
-        ITranslationCache cache)
+        ITranslationCache cache,
+        UserManager<AppUser> userManager)
     {
         _bll = bll;
         _cache = cache;
+        _userManager = userManager;
     }
 
      [HttpGet]
@@ -214,6 +219,8 @@ public class AdminController : Controller
                 LanguageTag = l.Tag
             })
             .ToList();
+        
+        var changedByOptions = await GetAuditActorOptionsAsync();
 
         var vm = new AdminTranslationAuditIndexVm
         {
@@ -227,6 +234,7 @@ public class AdminController : Controller
             PageSize = paged.PageSize,
             TotalCount = paged.TotalCount,
             LanguageOptions = languageOptions,
+            ChangedByOptions = changedByOptions,
             Rows = paged.Items.Select(a => new AdminTranslationAuditIndexRowVm
             {
                 ChangedAt = a.ChangedAt,
@@ -262,5 +270,27 @@ public class AdminController : Controller
         }
 
         return (selectedLangId, lang.Tag, allLanguages);
+    }
+
+    private async Task<List<string>> GetAuditActorOptionsAsync()
+    {
+        var allowedRoles = new[] { "Admin", "Reviewer", "Translator" };
+        var usernames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var role in allowedRoles)
+        {
+            var users = await _userManager.GetUsersInRoleAsync(role);
+            foreach (var user in users)
+            {
+                if (!string.IsNullOrWhiteSpace(user.UserName))
+                {
+                    usernames.Add(user.UserName);
+                }
+            }
+        }
+
+        return usernames
+            .OrderBy(x => x, StringComparer.OrdinalIgnoreCase)
+            .ToList();
     }
 }

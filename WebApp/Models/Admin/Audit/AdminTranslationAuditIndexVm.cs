@@ -18,5 +18,6 @@ public class AdminTranslationAuditIndexVm
     public int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);
 
     public List<LanguageOptionVm> LanguageOptions { get; set; } = new();
+    public List<string> ChangedByOptions { get; set; } = new();
     public List<AdminTranslationAuditIndexRowVm> Rows { get; set; } = new();
 }
