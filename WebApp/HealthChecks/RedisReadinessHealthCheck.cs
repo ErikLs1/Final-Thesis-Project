@@ -26,7 +26,7 @@ public sealed class RedisReadinessHealthCheck : IHealthCheck
         }
         catch (Exception ex)
         {
-            return HealthCheckResult.Degraded("Redis health check failed.", ex);
+            return HealthCheckResult.Unhealthy("Redis health check failed.", ex);
         }
     }
 }

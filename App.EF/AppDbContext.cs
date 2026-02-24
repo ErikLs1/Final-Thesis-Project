@@ -206,6 +206,12 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
         b.Entity<UITranslationAuditLog>(e =>
         {
             e.ToTable("ui_translation_audit_log");
+
+            // Query path in audit screen: filter by dimensions + date range, sort by ChangedAt desc.
+            e.HasIndex(p => p.ChangedAt);
+            e.HasIndex(p => new { p.LanguageId, p.ChangedAt });
+            e.HasIndex(p => new { p.ActionType, p.ChangedAt });
+            e.HasIndex(p => new { p.ChangedBy, p.ChangedAt });
             
             e.Property(p => p.Id)
                 .HasDefaultValueSql("gen_random_uuid()")

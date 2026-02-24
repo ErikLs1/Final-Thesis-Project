@@ -31,7 +31,10 @@ public class UITranslationAuditLogRepository: IUITranslationAuditLogRepository
             query = query.Where(x => x.ActionType == request.ActionType.Value);
 
         if (!string.IsNullOrWhiteSpace(request.ChangedBy))
-            query = query.Where(x => x.ChangedBy.Contains(request.ChangedBy));
+        {
+            var changedBy = request.ChangedBy.Trim();
+            query = query.Where(x => x.ChangedBy == changedBy);
+        }
 
         if (!string.IsNullOrWhiteSpace(request.ResourceKeySearch))
         {

@@ -148,7 +148,6 @@ builder.Services.AddHealthChecks()
     .AddCheck<DatabaseReadinessHealthCheck>("postgres", tags: new[] { "ready" })
     .AddCheck<RedisReadinessHealthCheck>(
         "redis",
-        failureStatus: HealthStatus.Degraded,
         tags: new[] { "ready" });
 builder.Services
     .AddControllersWithViews()
