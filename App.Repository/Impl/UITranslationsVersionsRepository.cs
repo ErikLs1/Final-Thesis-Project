@@ -285,7 +285,8 @@ public class UITranslationsVersionsRepository : IUITranslationsVersionsRepositor
 
         await _db.UITranslationAuditLogs.AddRangeAsync(createdAuditRows);
         await _db.UITranslationAuditLogs.AddRangeAsync(revisedAuditRows);
-        return await _db.SaveChangesAsync();
+        await _db.SaveChangesAsync();
+        return toInsert.Count + updatedRejected.Count;
     }
 
     private static PagedResult<T> EmptyPaged<T>(PagedRequest paging) => new()

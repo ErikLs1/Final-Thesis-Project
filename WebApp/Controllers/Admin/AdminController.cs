@@ -15,7 +15,7 @@ using WebApp.Models.Shared;
 
 namespace WebApp.Controllers.Admin;
 
-[Authorize(Roles = "Admin")] 
+[Authorize(Roles = nameof(RoleType.Admin))] 
 [AutoValidateAntiforgeryToken] 
 public class AdminController : Controller
 {
@@ -276,7 +276,7 @@ public class AdminController : Controller
 
     private async Task<List<string>> GetAuditActorOptionsAsync()
     {
-        var allowedRoles = new[] { "Admin", "Reviewer", "Translator" };
+        var allowedRoles = new[] { nameof(RoleType.Admin), nameof(RoleType.Reviewer), nameof(RoleType.Translator) };
         var usernames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         foreach (var role in allowedRoles)

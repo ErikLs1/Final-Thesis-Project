@@ -10,7 +10,7 @@ using WebApp.Models.Shared;
 
 namespace WebApp.Controllers.Reviewer;
 
-[Authorize(Roles = "Reviewer")]
+[Authorize(Roles = nameof(RoleType.Reviewer))]
 [AutoValidateAntiforgeryToken]
 public class ReviewerController : Controller
 {

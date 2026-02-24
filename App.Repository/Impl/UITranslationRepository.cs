@@ -74,7 +74,8 @@ public class UITranslationRepository : IUITranslationRepository
 
         await _db.UITranslationAuditLogs.AddAsync(audit);
 
-        return await _db.SaveChangesAsync();
+        await _db.SaveChangesAsync();
+        return 1;
     }
 
     public async Task<Dictionary<string, string>> GetLiveTranslationsByLanguageTagAsync(string languageTag)

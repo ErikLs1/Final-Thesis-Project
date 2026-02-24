@@ -10,6 +10,8 @@ namespace App.EF;
 
 public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
 {
+    private readonly ICurrentUserProvider? _currentUserProvider;
+
     public DbSet<Languages> Languages { get; set; } = null!;
     public DbSet<UserLanguages> UserLanguages { get; set; } = null!;
     
@@ -19,19 +21,24 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
     public DbSet<UITranslations> UITranslations { get; set; } = null!;
     public DbSet<UITranslationVersions> UITranslationVersions { get; set; } = null!;
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    public AppDbContext(
+        DbContextOptions<AppDbContext> options,
+        ICurrentUserProvider? currentUserProvider = null) : base(options)
     {
+        _currentUserProvider = currentUserProvider;
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
+        var actor = _currentUserProvider?.GetCurrentUserName() ?? "system";
+
         foreach (var entry in ChangeTracker.Entries<BaseEntity>())
         {
             switch (entry.State)
             {
                 case EntityState.Added:
                     entry.Entity.CreatedAt = DateTime.UtcNow;
-                    entry.Entity.CreatedBy = "Some User"; // todo: put user name here.
+                    entry.Entity.CreatedBy = actor;
                     entry.Entity.UpdatedAt = null;
                     entry.Entity.UpdatedBy = null;
                     break;
@@ -40,7 +47,7 @@ public class AppDbContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Guid>
                     entry.Property(x => x.CreatedAt).IsModified = false;
                     entry.Property(x => x.CreatedBy).IsModified = false;
                     entry.Entity.UpdatedAt = DateTime.UtcNow;
-                    entry.Entity.UpdatedBy = "Some User";
+                    entry.Entity.UpdatedBy = actor;
                     break;
             }
         }

@@ -1,5 +1,6 @@
 using System.Globalization;
 using App.Domain.Identity;
+using App.Domain.Enum;
 using App.EF;
 using App.Repository.DalUow;
 using App.Repository.Impl.ResxImport;
@@ -86,6 +87,7 @@ builder.Services.AddScoped<IUITranslationsProvider>(sp =>
     return new UITranslationsProvider(redis, langTag);
 });
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUserProvider, HttpContextCurrentUserProvider>();
 
 // IDENTITY
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(o => o.SignIn.RequireConfirmedAccount = false)
@@ -98,6 +100,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>(o => o.SignIn.RequireC
 //builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthorization();
+builder.Services.AddHealthChecks();
 builder.Services
     .AddControllersWithViews()
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
@@ -121,9 +124,6 @@ builder.Services.ConfigureApplicationCookie(options =>
 // https://learn.microsoft.com/en-us/aspnet/core/fundamentals/localization/make-content-localizable?view=aspnetcore-9.0
 // LOCALIZATION CONFIG
 builder.Services.AddAppLocalization(builder.Configuration);
-
-// RESX IMPORT CONFIG
-builder.Services.AddScoped<ResxImportRepository>();
 
 var app = builder.Build();
 
@@ -177,6 +177,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+app.MapHealthChecks("/health");
 
 app.MapControllerRoute(
         name: "default",
@@ -193,7 +194,7 @@ using (var scope = app.Services.CreateScope())
     var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
     var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
-    var roles = new[] { "Admin", "Reviewer", "Translator" };
+    var roles = new[] { nameof(RoleType.Admin), nameof(RoleType.Reviewer), nameof(RoleType.Translator) };
     foreach (var r in roles)
         if (!await roleMgr.RoleExistsAsync(r))
             await roleMgr.CreateAsync(new IdentityRole<Guid>(r));
@@ -211,9 +212,9 @@ using (var scope = app.Services.CreateScope())
             await userMgr.AddToRoleAsync(user, role);
     }
 
-    await EnsureUserAsync("admin@mail.com", "Admin");
-    await EnsureUserAsync("reviewer@mail.com", "Reviewer");
-    await EnsureUserAsync("translator@mail.com", "Translator");
+    await EnsureUserAsync("admin@mail.com", nameof(RoleType.Admin));
+    await EnsureUserAsync("reviewer@mail.com", nameof(RoleType.Reviewer));
+    await EnsureUserAsync("translator@mail.com", nameof(RoleType.Translator));
 }
 
 app.Run();
