@@ -272,5 +272,65 @@ namespace WebApp.Views.Shared.Resources {
                 return ResourceManager.GetString("Shared_Translation_State_Waiting_Review", resourceCulture);
             }
         }
+        
+        public static string Shared_Pager_Rows {
+            get {
+                return ResourceManager.GetString("Shared_Pager_Rows", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Pager_Prev {
+            get {
+                return ResourceManager.GetString("Shared_Pager_Prev", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Pager_Page {
+            get {
+                return ResourceManager.GetString("Shared_Pager_Page", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Pager_Of {
+            get {
+                return ResourceManager.GetString("Shared_Pager_Of", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Pager_Total {
+            get {
+                return ResourceManager.GetString("Shared_Pager_Total", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Pager_Next {
+            get {
+                return ResourceManager.GetString("Shared_Pager_Next", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Text_Language {
+            get {
+                return ResourceManager.GetString("Shared_Text_Language", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Text_Version {
+            get {
+                return ResourceManager.GetString("Shared_Text_Version", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Button_Filter {
+            get {
+                return ResourceManager.GetString("Shared_Button_Filter", resourceCulture);
+            }
+        }
+        
+        public static string Shared_Button_Reset {
+            get {
+                return ResourceManager.GetString("Shared_Button_Reset", resourceCulture);
+            }
+        }
     }
 }

@@ -132,4 +132,34 @@
     <data name="Shared_Translation_State_Waiting_Review" xml:space="preserve">
         <value>Ожидает проверки</value>
     </data>
+    <data name="Shared_Button_Filter" xml:space="preserve">
+        <value>Фильтровать</value>
+    </data>
+    <data name="Shared_Button_Reset" xml:space="preserve">
+        <value>Сбросить</value>
+    </data>
+    <data name="Shared_Pager_Of" xml:space="preserve">
+        <value>из</value>
+    </data>
+    <data name="Shared_Pager_Next" xml:space="preserve">
+        <value>Вперёд</value>
+    </data>
+    <data name="Shared_Pager_Prev" xml:space="preserve">
+        <value>Назад</value>
+    </data>
+    <data name="Shared_Pager_Page" xml:space="preserve">
+        <value>Страница</value>
+    </data>
+    <data name="Shared_Pager_Rows" xml:space="preserve">
+        <value>Строки</value>
+    </data>
+    <data name="Shared_Pager_Total" xml:space="preserve">
+        <value>всего</value>
+    </data>
+    <data name="Shared_Text_Language" xml:space="preserve">
+        <value>Язык</value>
+    </data>
+    <data name="Shared_Text_Version" xml:space="preserve">
+        <value>Версия</value>
+    </data>
 </root>

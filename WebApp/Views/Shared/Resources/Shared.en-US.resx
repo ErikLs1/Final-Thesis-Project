@@ -132,4 +132,34 @@
     <data name="Shared_Translation_State_Inactive" xml:space="preserve">
         <value>Inactive</value>
     </data>
+    <data name="Shared_Button_Reset" xml:space="preserve">
+        <value>Reset</value>
+    </data>
+    <data name="Shared_Button_Filter" xml:space="preserve">
+        <value>Filter</value>
+    </data>
+    <data name="Shared_Pager_Of" xml:space="preserve">
+        <value>of</value>
+    </data>
+    <data name="Shared_Pager_Next" xml:space="preserve">
+        <value>Next</value>
+    </data>
+    <data name="Shared_Pager_Prev" xml:space="preserve">
+        <value>Prev</value>
+    </data>
+    <data name="Shared_Pager_Page" xml:space="preserve">
+        <value>Page</value>
+    </data>
+    <data name="Shared_Pager_Rows" xml:space="preserve">
+        <value>Rows</value>
+    </data>
+    <data name="Shared_Pager_Total" xml:space="preserve">
+        <value>total</value>
+    </data>
+    <data name="Shared_Text_Language" xml:space="preserve">
+        <value>Language</value>
+    </data>
+    <data name="Shared_Text_Version" xml:space="preserve">
+        <value>Version</value>
+    </data>
 </root>

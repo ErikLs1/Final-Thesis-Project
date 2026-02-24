@@ -1,15 +1,8 @@
 @model WebApp.Models.Reviewer.ReviewerQueueVm
 
-@{
-    ViewData["Title"] = "Review queue";
-}
-
 <div class="page-head mb-3">
     <div>
-        <h2 class="page-title mb-1">@ViewData["Title"]</h2>
-        <div class="page-subtitle text-muted">
-            Review pending translations and approve or reject each item.
-        </div>
+        <h2 class="page-title mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Reviewer.Resources.Reviewer.Reviewer_Heading_Review)))</h2>
     </div>
 </div>
 
@@ -20,7 +13,7 @@
             <input type="hidden" name="pageSize" value="@Model.PageSize" />
 
             <div class="col-12 col-md-6 col-lg-4">
-                <label class="form-label mb-1">Language</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Language)))</label>
                 <select name="languageId" class="form-select">
                     @foreach (var lang in Model.LanguageOptions)
                     {
@@ -32,23 +25,22 @@
             </div>
 
             <div class="col-12 col-md-3 col-lg-2">
-                <label class="form-label mb-1">Version</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Text_Version)))</label>
                 <input type="number"
                        class="form-control"
                        name="version"
                        min="1"
-                       value="@(Model.SelectedVersion?.ToString() ?? "")"
-                       placeholder="Any" />
+                       value="@(Model.SelectedVersion?.ToString() ?? "")" />
             </div>
 
             <div class="col-12 col-md-3 col-lg-6 d-grid d-sm-flex gap-2 justify-content-lg-end">
                 <button type="submit" class="btn btn-outline-secondary">
-                    <i class="bi bi-funnel me-2"></i>Filter
+                    <i class="bi bi-funnel me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Button_Filter)))
                 </button>
                 <a class="btn btn-outline-secondary"
                    asp-action="Index"
                    asp-route-languageId="@Model.SelectedLanguageId">
-                    <i class="bi bi-x-circle me-2"></i>Reset
+                    <i class="bi bi-x-circle me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Button_Reset)))
                 </a>
             </div>
         </form>
@@ -57,11 +49,11 @@
             <table class="table app-table align-middle mb-0">
                 <thead>
                 <tr>
-                    <th style="width: 110px;">Lang</th>
-                    <th style="width: 340px;">Resource key</th>
-                    <th>Content</th>
-                    <th class="text-end" style="width: 90px;">Ver</th>
-                    <th class="text-end" style="width: 220px;">Action</th>
+                    <th style="width: 110px;">@(await Translation.GetAsync(nameof(WebApp.Views.Reviewer.Resources.Reviewer.Reviewer_Column_Language)))</th>
+                    <th style="width: 340px;">@(await Translation.GetAsync(nameof(WebApp.Views.Reviewer.Resources.Reviewer.Reviewer_Column_Key)))</th>
+                    <th>@(await Translation.GetAsync(nameof(WebApp.Views.Reviewer.Resources.Reviewer.Reviewer_Column_Content)))</th>
+                    <th class="text-end" style="width: 90px;">@(await Translation.GetAsync(nameof(WebApp.Views.Reviewer.Resources.Reviewer.Reviewer_Column_Version)))</th>
+                    <th class="text-end" style="width: 220px;">@(await Translation.GetAsync(nameof(WebApp.Views.Reviewer.Resources.Reviewer.Reviewer_Column_Action)))</th>
                 </tr>
                 </thead>
 
@@ -118,7 +110,7 @@
                                         <input type="hidden" name="pageSize" value="@Model.PageSize" />
                                         <input type="hidden" name="decision" value="Approved" />
                                         <button type="submit" class="btn btn-sm btn-success">
-                                            <i class="bi bi-check2 me-1"></i>Approve
+                                            <i class="bi bi-check2 me-1"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Reviewer.Resources.Reviewer.Reviewer_Button_Approve)))
                                         </button>
                                     </form>
                                     <form method="post" asp-action="Decide">
@@ -130,7 +122,7 @@
                                         <input type="hidden" name="pageSize" value="@Model.PageSize" />
                                         <input type="hidden" name="decision" value="Rejected" />
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            <i class="bi bi-x-lg me-1"></i>Reject
+                                            <i class="bi bi-x-lg me-1"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Reviewer.Resources.Reviewer.Reviewer_Button_Reject)))
                                         </button>
                                     </form>
                                 </div>
@@ -150,7 +142,7 @@
                 <input type="hidden" name="version" value="@Model.SelectedVersion" />
                 <input type="hidden" name="page" value="1" />
 
-                <span class="text-muted small">Rows</span>
+                <span class="text-muted small">@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Rows)))</span>
                 <select name="pageSize" class="form-select form-select-sm" style="width: 90px;" onchange="this.form.submit()">
                     @{
                         var sizes = new[] { 10, 25, 50, 100 };
@@ -170,11 +162,13 @@
                            asp-route-languageId="@Model.SelectedLanguageId"
                            asp-route-version="@Model.SelectedVersion"
                            asp-route-page="@(Model.Page - 1)"
-                           asp-route-pageSize="@Model.PageSize">Prev</a>
+                           asp-route-pageSize="@Model.PageSize">@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Prev)))</a>
                     </li>
 
                     <li class="page-item disabled d-none d-sm-inline">
-                        <span class="page-link">Page @Model.Page of @Model.TotalPages (@Model.TotalCount total)</span>
+                        <span class="page-link">@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Page))) 
+                            @Model.Page @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Of))) 
+                            @Model.TotalPages (@Model.TotalCount @(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Total))))</span>
                     </li>
 
                     <li class="page-item disabled d-inline d-sm-none">
@@ -187,7 +181,7 @@
                            asp-route-languageId="@Model.SelectedLanguageId"
                            asp-route-version="@Model.SelectedVersion"
                            asp-route-page="@(Model.Page + 1)"
-                           asp-route-pageSize="@Model.PageSize">Next</a>
+                           asp-route-pageSize="@Model.PageSize">@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Pager_Next)))</a>
                     </li>
                 </ul>
             </nav>

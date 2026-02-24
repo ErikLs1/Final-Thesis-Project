@@ -66,7 +66,7 @@
 
             <div class="col-12 col-lg-3 d-grid d-md-flex gap-2 justify-content-lg-end">
                 <button type="submit" class="btn btn-outline-secondary">
-                    <i class="bi bi-funnel me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Button_Filter)))
+                    <i class="bi bi-funnel me-2"></i>@(await Translation.GetAsync(nameof(Shared.Shared_Button_Filter)))
                 </button>
 
                 <a class="btn btn-outline-secondary"
@@ -74,7 +74,7 @@
                    asp-route-languageId="@Model.SelectedLanguageId"
                    asp-route-page="1"
                    asp-route-pageSize="@Model.PageSize">
-                    <i class="bi bi-x-circle me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Translator.Resources.Translator.Translator_Button_Reset)))
+                    <i class="bi bi-x-circle me-2"></i>@(await Translation.GetAsync(nameof(Shared.Shared_Button_Reset)))
                 </a>
             </div>
         </form>
@@ -204,13 +204,14 @@
                            asp-route-state="@Model.SelectedState"
                            asp-route-page="@(Model.Page - 1)"
                            asp-route-pageSize="@Model.PageSize">
-                            Prev
+                            @(await Translation.GetAsync(nameof(Shared.Shared_Pager_Prev)))
                         </a>
                     </li>
 
                     <li class="page-item disabled d-none d-sm-inline">
                         <span class="page-link">
-                            Page @Model.Page of @Model.TotalPages
+                            @(await Translation.GetAsync(nameof(Shared.Shared_Pager_Page))) 
+                            @Model.Page @(await Translation.GetAsync(nameof(Shared.Shared_Pager_Of))) @Model.TotalPages
                         </span>
                     </li>
 
@@ -228,7 +229,7 @@
                            asp-route-state="@Model.SelectedState"
                            asp-route-page="@(Model.Page + 1)"
                            asp-route-pageSize="@Model.PageSize">
-                            Next
+                            @(await Translation.GetAsync(nameof(Shared.Shared_Pager_Next)))
                         </a>
                     </li>
                 </ul>

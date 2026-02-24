@@ -14,7 +14,7 @@ namespace WebApp.Views.Reviewer.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Reviewer {
+    public class Reviewer {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -25,7 +25,7 @@ namespace WebApp.Views.Reviewer.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("WebApp.Views.Reviewer.Resources.Reviewer", typeof(Reviewer).Assembly);
@@ -36,12 +36,60 @@ namespace WebApp.Views.Reviewer.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string Reviewer_Column_Language {
+            get {
+                return ResourceManager.GetString("Reviewer_Column_Language", resourceCulture);
+            }
+        }
+        
+        public static string Reviewer_Column_Key {
+            get {
+                return ResourceManager.GetString("Reviewer_Column_Key", resourceCulture);
+            }
+        }
+        
+        public static string Reviewer_Column_Content {
+            get {
+                return ResourceManager.GetString("Reviewer_Column_Content", resourceCulture);
+            }
+        }
+        
+        public static string Reviewer_Column_Version {
+            get {
+                return ResourceManager.GetString("Reviewer_Column_Version", resourceCulture);
+            }
+        }
+        
+        public static string Reviewer_Column_Action {
+            get {
+                return ResourceManager.GetString("Reviewer_Column_Action", resourceCulture);
+            }
+        }
+        
+        public static string Reviewer_Heading_Review {
+            get {
+                return ResourceManager.GetString("Reviewer_Heading_Review", resourceCulture);
+            }
+        }
+        
+        public static string Reviewer_Button_Approve {
+            get {
+                return ResourceManager.GetString("Reviewer_Button_Approve", resourceCulture);
+            }
+        }
+        
+        public static string Reviewer_Button_Reject {
+            get {
+                return ResourceManager.GetString("Reviewer_Button_Reject", resourceCulture);
             }
         }
     }
