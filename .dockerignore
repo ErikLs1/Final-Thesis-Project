@@ -1,0 +1,43 @@
+# ---------- Source control / IDE ----------
+.git
+.gitmodules
+.gitattributes
+.idea/
+.vscode/
+.fleet/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.swp
+*.tmp
+.DS_Store
+
+# ---------- Build outputs ----------
+**/[Bb]in/
+**/[Oo]bj/
+**/out/
+**/artifacts/
+**/TestResults/
+**/*.nupkg
+**/*.snupkg
+
+# ---------- Frontend/tooling caches ----------
+**/node_modules/
+**/npm-debug.log
+**/yarn-error.log
+
+# ---------- Test projects (not needed for runtime image) ----------
+tests/
+
+# ---------- Local secrets / env ----------
+.env
+.env.*
+!.env.example
+**/secrets.json
+**/appsettings.Local.json
+
+# ---------- Dev-only files ----------
+docker-compose*.yml
+FinalThesisProject.sln.DotSettings.user

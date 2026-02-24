@@ -14,7 +14,7 @@ COPY App.Repository/App.Repository.csproj App.Repository/
 COPY App.Service/App.Service.csproj App.Service/
 COPY WebApp/WebApp.csproj WebApp/
 
-RUN dotnet restore "FinalThesisProject.sln"
+RUN dotnet restore "WebApp/WebApp.csproj"
 
 # Copy everything else and publish
 COPY . .
@@ -38,5 +38,3 @@ COPY --from=build /app/publish .
 COPY --from=build /src/App.Data/Resources /app/local_resources
 
 ENTRYPOINT ["dotnet", "WebApp.dll"]
-
-
