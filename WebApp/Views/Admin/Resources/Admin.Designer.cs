@@ -188,5 +188,95 @@ namespace WebApp.Views.Admin.Resources {
                 return ResourceManager.GetString("Admin_Text_All_Actions", resourceCulture);
             }
         }
+        
+        public static string Admin_Column_Content {
+            get {
+                return ResourceManager.GetString("Admin_Column_Content", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Column_State {
+            get {
+                return ResourceManager.GetString("Admin_Column_State", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Column_Publish {
+            get {
+                return ResourceManager.GetString("Admin_Column_Publish", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Badge_Selected {
+            get {
+                return ResourceManager.GetString("Admin_Badge_Selected", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Heading_Live_Translations {
+            get {
+                return ResourceManager.GetString("Admin_Heading_Live_Translations", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Heading_Publish_Translations {
+            get {
+                return ResourceManager.GetString("Admin_Heading_Publish_Translations", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Button_Select_All {
+            get {
+                return ResourceManager.GetString("Admin_Button_Select_All", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Button_Back {
+            get {
+                return ResourceManager.GetString("Admin_Button_Back", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Button_Cancel {
+            get {
+                return ResourceManager.GetString("Admin_Button_Cancel", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Button_Publish_Selected {
+            get {
+                return ResourceManager.GetString("Admin_Button_Publish_Selected", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Button_Clear {
+            get {
+                return ResourceManager.GetString("Admin_Button_Clear", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_Version {
+            get {
+                return ResourceManager.GetString("Admin_Text_Version", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_State {
+            get {
+                return ResourceManager.GetString("Admin_Text_State", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Button_Change_Translations {
+            get {
+                return ResourceManager.GetString("Admin_Button_Change_Translations", resourceCulture);
+            }
+        }
+        
+        public static string Admin_Text_All_States {
+            get {
+                return ResourceManager.GetString("Admin_Text_All_States", resourceCulture);
+            }
+        }
     }
 }

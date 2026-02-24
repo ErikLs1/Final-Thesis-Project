@@ -53,11 +53,13 @@ public class AdminController : Controller
              PageSize = pageSize
          };
          
+         var effectiveState = state ?? TranslationState.Published;
+         
          var request = new FilteredTranslationsRequestDto(
              selectedLangId,
              version,
-             State: state,
-             States: state.HasValue ? null : new[] { TranslationState.Published, TranslationState.Approved }
+             State: effectiveState,
+             States: null
          );
 
          var paged = await _bll.UITranslationService.GetFilteredUITranslationsAsync(request, paging);
@@ -77,7 +79,7 @@ public class AdminController : Controller
          {
              SelectedLanguageId = selectedLangId,
              SelectedVersion = version,
-             SelectedState = state,
+             SelectedState = effectiveState,
 
              Page = paged.Page,
              PageSize = paged.PageSize,

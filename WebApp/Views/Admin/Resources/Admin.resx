@@ -90,4 +90,49 @@
     <data name="Admin_Text_All_Actions" xml:space="preserve">
         <value>All actions</value>
     </data>
+    <data name="Admin_Column_Content" xml:space="preserve">
+        <value>Content</value>
+    </data>
+    <data name="Admin_Column_State" xml:space="preserve">
+        <value>State</value>
+    </data>
+    <data name="Admin_Column_Publish" xml:space="preserve">
+        <value>Publish</value>
+    </data>
+    <data name="Admin_Badge_Selected" xml:space="preserve">
+        <value>selected</value>
+    </data>
+    <data name="Admin_Heading_Live_Translations" xml:space="preserve">
+        <value>Live translations</value>
+    </data>
+    <data name="Admin_Heading_Publish_Translations" xml:space="preserve">
+        <value>Publish translations</value>
+    </data>
+    <data name="Admin_Button_Select_All" xml:space="preserve">
+        <value>Select all</value>
+    </data>
+    <data name="Admin_Button_Back" xml:space="preserve">
+        <value>Back</value>
+    </data>
+    <data name="Admin_Button_Cancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="Admin_Button_Publish_Selected" xml:space="preserve">
+        <value>Publish selected</value>
+    </data>
+    <data name="Admin_Button_Clear" xml:space="preserve">
+        <value>Clear</value>
+    </data>
+    <data name="Admin_Text_Version" xml:space="preserve">
+        <value>Version</value>
+    </data>
+    <data name="Admin_Text_State" xml:space="preserve">
+        <value>State</value>
+    </data>
+    <data name="Admin_Button_Change_Translations" xml:space="preserve">
+        <value>Change translation</value>
+    </data>
+    <data name="Admin_Text_All_States" xml:space="preserve">
+        <value>All states</value>
+    </data>
 </root>

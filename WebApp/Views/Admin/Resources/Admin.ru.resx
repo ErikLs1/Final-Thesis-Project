@@ -91,4 +91,49 @@
     <data name="Admin_Text_All_Languages" xml:space="preserve">
         <value>Все языки</value>
     </data>
+    <data name="Admin_Heading_Publish_Translations" xml:space="preserve">
+        <value>Опубликовать переводы</value>
+    </data>
+    <data name="Admin_Heading_Live_Translations" xml:space="preserve">
+        <value>Активные переводы</value>
+    </data>
+    <data name="Admin_Column_State" xml:space="preserve">
+        <value>Состояние</value>
+    </data>
+    <data name="Admin_Column_Publish" xml:space="preserve">
+        <value>Опубликовать</value>
+    </data>
+    <data name="Admin_Column_Content" xml:space="preserve">
+        <value>Содержимое</value>
+    </data>
+    <data name="Admin_Button_Back" xml:space="preserve">
+        <value>Назад</value>
+    </data>
+    <data name="Admin_Badge_Selected" xml:space="preserve">
+        <value>выбрано</value>
+    </data>
+    <data name="Admin_Button_Cancel" xml:space="preserve">
+        <value>Отмена</value>
+    </data>
+    <data name="Admin_Button_Clear" xml:space="preserve">
+        <value>очистить</value>
+    </data>
+    <data name="Admin_Button_Publish_Selected" xml:space="preserve">
+        <value>Опубликовать выбранное</value>
+    </data>
+    <data name="Admin_Button_Select_All" xml:space="preserve">
+        <value>Выбрать все</value>
+    </data>
+    <data name="Admin_Text_Version" xml:space="preserve">
+        <value>Версия</value>
+    </data>
+    <data name="Admin_Text_State" xml:space="preserve">
+        <value>Состояние</value>
+    </data>
+    <data name="Admin_Button_Change_Translations" xml:space="preserve">
+        <value>Изменить перевод</value>
+    </data>
+    <data name="Admin_Text_All_States" xml:space="preserve">
+        <value>Все состояния</value>
+    </data>
 </root>

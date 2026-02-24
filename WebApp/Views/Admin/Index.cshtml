@@ -1,16 +1,12 @@
 @model WebApp.Models.Admin.Translations.AdminTranslationsIndexVm
 @using App.Domain.Enum
+@using WebApp.Views.Admin.Resources
+@using WebApp.Views.Shared.Resources
 
-@{
-    ViewData["Title"] = "Live translations";
-}
 
 <div class="page-head mb-3">
     <div>
-        <h2 class="page-title mb-1">@ViewData["Title"]</h2>
-        <div class="page-subtitle text-muted">
-            Review current live content and filter by language, version, or state.
-        </div>
+        <h2 class="page-title mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Heading_Live_Translations)))</h2>
     </div>
 
     <div class="page-actions d-flex gap-2">
@@ -18,7 +14,7 @@
            asp-action="Publish"
            asp-route-languageId="@Model.SelectedLanguageId">
             <i class="bi bi-pencil-square me-2"></i>
-            Change translation
+            @(await Translation.GetAsync(nameof(Admin.Admin_Button_Change_Translations)))
         </a>
     </div>
 </div>
@@ -31,7 +27,7 @@
             <input type="hidden" name="pageSize" value="@Model.PageSize" />
 
             <div class="col-12 col-md-5 col-lg-4">
-                <label class="form-label mb-1">Language</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Text_Language)))</label>
                 <select name="languageId" class="form-select">
                     @foreach (var lang in Model.LanguageOptions)
                     {
@@ -44,7 +40,7 @@
             </div>
 
             <div class="col-12 col-md-3 col-lg-2">
-                <label class="form-label mb-1">Version</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Text_Version)))</label>
                 <input type="number"
                        class="form-control"
                        name="version"
@@ -54,14 +50,13 @@
             </div>
 
             <div class="col-12 col-md-4 col-lg-3">
-                <label class="form-label mb-1">State</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Text_State)))</label>
                 <select name="state" class="form-select">
-                    <option value="" selected="@(!Model.SelectedState.HasValue ? "selected" : null)">Published + Approved (default)</option>
                     @foreach (TranslationState st in Enum.GetValues(typeof(TranslationState)))
                     {
                         <option value="@st"
                                 selected="@(Model.SelectedState.HasValue && Model.SelectedState.Value == st ? "selected" : null)">
-                            @st
+                            @StateText(st)
                         </option>
                     }
                 </select>
@@ -69,7 +64,7 @@
 
             <div class="col-12 col-lg-3 d-grid d-sm-flex gap-2 justify-content-lg-end">
                 <button type="submit" class="btn btn-outline-secondary">
-                    <i class="bi bi-funnel me-2"></i>Filter
+                    <i class="bi bi-funnel me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Button_Filter)))
                 </button>
 
                 <a class="btn btn-outline-secondary"
@@ -77,7 +72,7 @@
                    asp-route-languageId="@Model.SelectedLanguageId"
                    asp-route-page="1"
                    asp-route-pageSize="@Model.PageSize">
-                    <i class="bi bi-x-circle me-2"></i>Reset
+                    <i class="bi bi-x-circle me-2"></i>@(await Translation.GetAsync(nameof(WebApp.Views.Shared.Resources.Shared.Shared_Button_Reset)))
                 </a>
             </div>
         </form>
@@ -87,11 +82,11 @@
             <table class="table app-table align-middle mb-0">
                 <thead>
                 <tr>
-                    <th style="width: 110px;">Lang</th>
-                    <th style="width: 340px;">Resource key</th>
-                    <th>Content</th>
-                    <th class="text-end" style="width: 90px;">Ver</th>
-                    <th style="width: 160px;">State</th>
+                    <th style="width: 110px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Language)))</th>
+                    <th style="width: 340px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Key)))</th>
+                    <th>@(await Translation.GetAsync(nameof(Admin.Admin_Column_Content)))</th>
+                    <th class="text-end" style="width: 90px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Version)))</th>
+                    <th style="width: 160px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_State)))</th>
                 </tr>
                 </thead>
 
@@ -221,19 +216,34 @@
 </div>
 
 @functions{
+    private static string StateText(TranslationState state)
+    {
+        return state switch
+        {
+            TranslationState.Published => Shared.Shared_Translation_State_Published,
+            TranslationState.WaitingReview => Shared.Shared_Translation_State_Waiting_Review,
+            TranslationState.Approved => Shared.Shared_Translation_State_Approved,
+            TranslationState.Rejected => Shared.Shared_Translation_State_Rejected,
+            TranslationState.Inactive => Shared.Shared_Translation_State_Inactive,
+            TranslationState.Depricated => Shared.Shared_Translation_State_Depricated,
+            _ => state.ToString()
+        };
+    }
+
     private static string StateBadge(TranslationState state)
     {
         // Use consistent “soft” badge styles (still Bootstrap-native)
-        var (cls, txt, icon) = state switch
+        var (cls, icon) = state switch
         {
-            TranslationState.Published => ("text-bg-success", "Published", "check-circle"),
-            TranslationState.WaitingReview => ("text-bg-warning", "Waiting review", "hourglass-split"),
-            TranslationState.Approved => ("text-bg-info", "Approved", "check2"),
-            TranslationState.Rejected => ("text-bg-danger", "Rejected", "x-circle"),
-            TranslationState.Depricated => ("text-bg-secondary", "Archived", "archive"),
-            _ => ("text-bg-light", state.ToString(), "info-circle")
+            TranslationState.Published => ("text-bg-success", "check-circle"),
+            TranslationState.WaitingReview => ("text-bg-warning", "hourglass-split"),
+            TranslationState.Approved => ("text-bg-info", "check2"),
+            TranslationState.Rejected => ("text-bg-danger", "x-circle"),
+            TranslationState.Depricated => ("text-bg-secondary", "archive"),
+            _ => ("text-bg-light", "info-circle")
         };
 
+        var txt = StateText(state);
         // Add icon + ensure contrast on warning
         var extra = state is TranslationState.WaitingReview or TranslationState.Approved ? " text-dark" : "";
         return $"<span class=\"badge {cls}{extra}\"><i class=\"bi bi-{icon} me-1\"></i>{txt}</span>";

@@ -1,14 +1,13 @@
 @model WebApp.Models.Admin.Translations.AdminPublishTranslationsVm
+@using WebApp.Views.Admin.Resources
+@using WebApp.Views.Shared.Resources
 
-@{
-    ViewData["Title"] = "Publish translations";
-}
 
 <div class="page-head mb-3">
     <div>
-        <h2 class="page-title mb-1">@ViewData["Title"]</h2>
+        <h2 class="page-title mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Heading_Publish_Translations)))</h2>
         <div class="page-subtitle">
-            Publish updates for <span class="badge text-bg-light border font-monospace">@Model.SelectedLanguageTag</span>
+           <span class="badge text-bg-light border font-monospace">@Model.SelectedLanguageTag</span>
         </div>
     </div>
 
@@ -16,7 +15,7 @@
         <a asp-action="Index"
            asp-route-languageId="@Model.SelectedLanguageId"
            class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left me-2"></i>Back to list
+            <i class="bi bi-arrow-left me-2"></i>@(await Translation.GetAsync(nameof(Admin.Admin_Button_Back)))
         </a>
     </div>
 </div>
@@ -33,31 +32,31 @@
             <!-- Toolbar -->
             <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
                 <div class="d-flex align-items-center gap-2">
-                    <span class="text-muted small">Language</span>
+                    <span class="text-muted small">@(await Translation.GetAsync(nameof(Admin.Admin_Text_Language)))</span>
                     <span class="badge text-bg-light border font-monospace">@Model.SelectedLanguageTag</span>
 
                     <span class="badge text-bg-light border ms-2">
-                        <span id="selectedCount">0</span> selected
+                        <span id="selectedCount">0</span> @(await Translation.GetAsync(nameof(Admin.Admin_Badge_Selected)))
                     </span>
                 </div>
 
                 <div class="d-flex flex-wrap gap-2">
                     <button type="button" class="btn btn-outline-secondary btn-sm" id="selectAllBtn">
-                        <i class="bi bi-check2-square me-2"></i>Select all
+                        <i class="bi bi-check2-square me-2"></i>@(await Translation.GetAsync(nameof(Admin.Admin_Button_Select_All)))
                     </button>
 
                     <button type="button" class="btn btn-outline-secondary btn-sm" id="clearBtn">
-                        <i class="bi bi-square me-2"></i>Clear
+                        <i class="bi bi-square me-2"></i>@(await Translation.GetAsync(nameof(Admin.Admin_Button_Clear)))
                     </button>
 
                     <button type="submit" class="btn btn-primary btn-sm" id="publishBtn" disabled>
-                        <i class="bi bi-upload me-2"></i>Publish selected
+                        <i class="bi bi-upload me-2"></i>@(await Translation.GetAsync(nameof(Admin.Admin_Button_Publish_Selected)))
                     </button>
 
                     <a asp-action="Index"
                        asp-route-languageId="@Model.SelectedLanguageId"
                        class="btn btn-outline-secondary btn-sm">
-                        Cancel
+                        @(await Translation.GetAsync(nameof(Admin.Admin_Button_Cancel)))
                     </a>
                 </div>
             </div>
@@ -67,11 +66,11 @@
                 <table class="table app-table align-middle mb-0 publish-table">
                     <thead>
                     <tr>
-                        <th style="width: 340px;">Resource key</th>
-                        <th>Content</th>
-                        <th class="text-end" style="width: 90px;">Ver</th>
-                        <th style="width: 170px;">State</th>
-                        <th class="text-center" style="width: 96px;">Publish</th>
+                        <th style="width: 340px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Key)))</th>
+                        <th>@(await Translation.GetAsync(nameof(Admin.Admin_Column_Content)))</th>
+                        <th class="text-end" style="width: 90px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Version)))</th>
+                        <th style="width: 170px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_State)))</th>
+                        <th class="text-center" style="width: 96px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Publish)))</th>
                     </tr>
                     </thead>
 
@@ -137,10 +136,6 @@
                     }
                     </tbody>
                 </table>
-            </div>
-
-            <div class="text-muted small mt-3">
-                Tip: click a row to toggle selection. Only checked rows will be published.
             </div>
         </div>
 
@@ -263,14 +258,25 @@
     {
         var state = stateObj?.ToString() ?? "";
 
-        var (cls, txt, icon) = state switch
+        var (cls, icon) = state switch
         {
-            "Published" => ("text-bg-success", "Published", "check-circle"),
-            "WaitingReview" => ("text-bg-warning", "Waiting review", "hourglass-split"),
-            "Approved" => ("text-bg-info", "Approved", "check2"),
-            "Rejected" => ("text-bg-danger", "Rejected", "x-circle"),
-            "Depricated" => ("text-bg-secondary", "Archived", "archive"),
-            _ => ("text-bg-light", string.IsNullOrWhiteSpace(state) ? "—" : state, "info-circle")
+            "Published" => ("text-bg-success", "check-circle"),
+            "WaitingReview" => ("text-bg-warning", "hourglass-split"),
+            "Approved" => ("text-bg-info", "check2"),
+            "Rejected" => ("text-bg-danger", "x-circle"),
+            "Depricated" => ("text-bg-secondary", "archive"),
+            _ => ("text-bg-light", "info-circle")
+        };
+
+        var txt = state switch
+        {
+            "Published" => Shared.Shared_Translation_State_Published,
+            "WaitingReview" => Shared.Shared_Translation_State_Waiting_Review,
+            "Approved" => Shared.Shared_Translation_State_Approved,
+            "Rejected" => Shared.Shared_Translation_State_Rejected,
+            "Inactive" => Shared.Shared_Translation_State_Inactive,
+            "Depricated" => Shared.Shared_Translation_State_Depricated,
+            _ => string.IsNullOrWhiteSpace(state) ? "—" : state
         };
 
         var extra = state == "WaitingReview" ? " text-dark" : "";

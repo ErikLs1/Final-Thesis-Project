@@ -5,7 +5,7 @@
 
 <div class="page-head mb-3">
     <div>
-        <h2 class="page-title mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Heading_Translation_Audit)))</h2>
+        <h2 class="page-title mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Heading_Translation_Audit)))</h2>
     </div>
 </div>
 
@@ -16,9 +16,9 @@
             <input type="hidden" name="pageSize" value="@Model.PageSize" />
 
             <div class="col-12 col-md-6 col-lg-3">
-                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_Language)))</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Text_Language)))</label>
                 <select name="languageId" class="form-select">
-                    <option value="">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_All_Languages)))</option>
+                    <option value="">@(await Translation.GetAsync(nameof(Admin.Admin_Text_All_Languages)))</option>
                     @foreach (var lang in Model.LanguageOptions)
                     {
                         <option value="@lang.Id" selected="@(Model.SelectedLanguageId == lang.Id ? "selected" : null)">
@@ -29,9 +29,9 @@
             </div>
 
             <div class="col-12 col-md-6 col-lg-2">
-                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_Action)))</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Text_Action)))</label>
                 <select name="actionType" class="form-select">
-                    <option value="">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_All_Actions)))</option>
+                    <option value="">@(await Translation.GetAsync(nameof(Admin.Admin_Text_All_Actions)))</option>
                     @foreach (TranslationAuditAction action in Enum.GetValues(typeof(TranslationAuditAction)))
                     {
                         <option value="@action"
@@ -43,9 +43,9 @@
             </div>
 
             <div class="col-12 col-md-6 col-lg-2">
-                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_Changed_By)))</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Text_Changed_By)))</label>
                 <select name="changedBy" class="form-select">
-                    <option value="">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_All_Usernames)))</option>
+                    <option value="">@(await Translation.GetAsync(nameof(Admin.Admin_Text_All_Usernames)))</option>
                     @foreach (var username in Model.ChangedByOptions)
                     {
                         <option value="@username" selected="@(string.Equals(Model.ChangedBy, username, StringComparison.OrdinalIgnoreCase) ? "selected" : null)">
@@ -56,17 +56,17 @@
             </div>
 
             <div class="col-12 col-md-6 col-lg-3">
-                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_Key)))</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Text_Key)))</label>
                 <input type="text" class="form-control" name="resourceKeySearch" value="@Model.ResourceKeySearch" placeholder="Search key..." />
             </div>
 
             <div class="col-6 col-md-3 col-lg-1">
-                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_From)))</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Text_From)))</label>
                 <input type="date" class="form-control" name="changedFromUtc" value="@Model.ChangedFromUtc?.ToString("yyyy-MM-dd")" />
             </div>
 
             <div class="col-6 col-md-3 col-lg-1">
-                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_To)))</label>
+                <label class="form-label mb-1">@(await Translation.GetAsync(nameof(Admin.Admin_Text_To)))</label>
                 <input type="date" class="form-control" name="changedToUtc" value="@Model.ChangedToUtc?.ToString("yyyy-MM-dd")" />
             </div>
 
@@ -84,14 +84,14 @@
             <table class="table app-table align-middle mb-0">
                 <thead>
                 <tr>
-                    <th style="width: 170px;">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Column_When)))</th>
-                    <th style="width: 150px;">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Column_Who)))</th>
-                    <th style="width: 130px;">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Column_Action)))</th>
-                    <th style="width: 110px;">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Column_Language)))</th>
-                    <th style="width: 280px;">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Column_Key)))</th>
-                    <th style="width: 80px;" class="text-end">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Column_Version)))</th>
-                    <th style="width: 220px;">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Column_State_Change)))</th>
-                    <th>@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Column_Content_Change)))</th>
+                    <th style="width: 170px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_When)))</th>
+                    <th style="width: 150px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Who)))</th>
+                    <th style="width: 130px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Action)))</th>
+                    <th style="width: 110px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Language)))</th>
+                    <th style="width: 280px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Key)))</th>
+                    <th style="width: 80px;" class="text-end">@(await Translation.GetAsync(nameof(Admin.Admin_Column_Version)))</th>
+                    <th style="width: 220px;">@(await Translation.GetAsync(nameof(Admin.Admin_Column_State_Change)))</th>
+                    <th>@(await Translation.GetAsync(nameof(Admin.Admin_Column_Content_Change)))</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -137,8 +137,8 @@
                                 }
                                 else
                                 {
-                                    <div title="@r.OldContent"><span class="text-muted">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_Old))):</span> @TrimForTable(r.OldContent)</div>
-                                    <div title="@r.NewContent"><span class="text-muted">@(await Translation.GetAsync(nameof(WebApp.Views.Admin.Resources.Admin.Admin_Text_New))):</span> @TrimForTable(r.NewContent)</div>
+                                    <div title="@r.OldContent"><span class="text-muted">@(await Translation.GetAsync(nameof(Admin.Admin_Text_Old))):</span> @TrimForTable(r.OldContent)</div>
+                                    <div title="@r.NewContent"><span class="text-muted">@(await Translation.GetAsync(nameof(Admin.Admin_Text_New))):</span> @TrimForTable(r.NewContent)</div>
                                 }
                             </td>
                         </tr>
